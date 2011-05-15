@@ -1,10 +1,6 @@
-﻿using System.IO;
-using System.Net;
-using System.Text.RegularExpressions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SubsCenterOrg;
 using SubtitleDownloader.Core;
-using SubtitleDownloader.Util;
 
 namespace SubsCenterOrgTest
 {
@@ -12,45 +8,73 @@ namespace SubsCenterOrgTest
   public class SubsCenterOrgTest
   {
     [TestMethod]
-    public void TestMovieSearch()
+    public void TestExactMovieSearch()
     {
       var downloader = new SubsCenterOrgDownoader();
-      var query = new SearchQuery("batman begins") { Year = 2005, LanguageCodes = new[] { "heb", "eng" } };
+      var query = new SearchQuery("batman begins") { Year = 2005, LanguageCodes = new[] { "heb"} };
       var results = downloader.SearchSubtitles(query);
-      foreach (var subtitle in results)
-      {
-        var subtitleFiles = downloader.SaveSubtitle(subtitle);
-        Assert.AreNotEqual(null, subtitleFiles);
-      }
+
+      // make sure there are resuts
+      Assert.IsNotNull(results);
+      Assert.IsTrue(results.Count > 0);
+
+      // check first result
+      var subtitleFiles = downloader.SaveSubtitle(results[10]);
+      Assert.AreNotEqual(null, subtitleFiles);
+      Assert.AreNotEqual(0, subtitleFiles.Count);
+    }
+
+    [TestMethod]
+    public void TestNotExactMovieSearch()
+    {
+      var downloader = new SubsCenterOrgDownoader();
+      var query = new SearchQuery("batman") { Year = 2005, LanguageCodes = new[] { "heb"} };
+      var results = downloader.SearchSubtitles(query);
+
+      // make sure there are resuts
+      Assert.IsNotNull(results);
+      Assert.IsTrue(results.Count > 0);
+
+      // check first result
+      var subtitleFiles = downloader.SaveSubtitle(results[10]);
+      Assert.AreNotEqual(null, subtitleFiles);
+      Assert.AreNotEqual(0, subtitleFiles.Count);
     }
 
     [TestMethod]
     public void TestSeriesSearch()
     {
       var downloader = new SubsCenterOrgDownoader();
-      var query = new EpisodeSearchQuery("house md", 3, 3) { LanguageCodes = new[] { "heb", "eng" } };
+      var query = new EpisodeSearchQuery("house md", 3, 5) { LanguageCodes = new[] { "heb", "eng" } };
       var results = downloader.SearchSubtitles(query);
-      foreach (var subtitle in results)
-      {
-        var subtitleFiles = downloader.SaveSubtitle(subtitle);
-        Assert.AreNotEqual(null, subtitleFiles);
-      }
+
+      // make sure there are resuts
+      Assert.IsNotNull(results);
+      Assert.IsTrue(results.Count > 0);
+
+      // check first result
+      var subtitleFiles = downloader.SaveSubtitle(results[0]);
+      Assert.AreNotEqual(null, subtitleFiles);
+      Assert.AreNotEqual(0, subtitleFiles.Count);
     }
 
+    /*
     [TestMethod]
     public void TestUnzip()
     {
       const string url = "http://www.subscenter.org/he/subtitle/download/he/10585/?v=batman.begins.X264.hd-DVD.SRT";
-      var archiveFile = Path.GetTempFileName();
+      var archiveFile = Path.GetTempFileName() + ".zip";
 
       var client = new WebClient();
       client.DownloadFile(url, archiveFile);
-      
+
       var extractFilesFromZipOrRarFile = FileUtils.ExtractFilesFromZipOrRarFile(archiveFile);
       Assert.AreNotEqual(null, extractFilesFromZipOrRarFile);
       Assert.AreEqual(1, extractFilesFromZipOrRarFile.Count);
     }
+    */
 
+    /*
     [TestMethod]
     public void TestPattern()
     {
@@ -64,6 +88,7 @@ namespace SubsCenterOrgTest
       var seriesMatch = Regex.Match(seriesLine, findSeriesPagePattern, RegexOptions.IgnoreCase);
       Assert.AreEqual("house-md", seriesMatch.Groups[1].Value);
     }
+    */
 
     /*
     [TestMethod]
@@ -92,6 +117,48 @@ namespace SubsCenterOrgTest
       //query.LanguageCodes = new string[] { "fin" };// default language is "eng"
       results = downloader.SearchSubtitles(query);              // return English subtitles for "Heroes" season 1 episode 3;
       Console.Write("Testing");
+    }
+    */
+
+    /*
+    [TestMethod]
+    public void TestWebHtml404()
+    {
+      var url = "http://www.subscenter.org/he/subtitle/movie/batbam-begins/";
+      var web = new HtmlWeb();
+      var htmlDocument = web.Load(url);
+
+      // verify 404
+      var is404 = false;
+      var images = htmlDocument.DocumentNode.SelectNodes("//img");
+      foreach (var node in images)
+      {
+        var alt = node.GetAttributeValue("alt", string.Empty);
+        if (alt.Equals("Error 404"))
+        {
+          is404 = true;
+          break;
+        }
+      }
+      Assert.IsTrue(is404);
+    }
+    */
+
+    /*
+    [TestMethod]
+    public void TestWebHtml()
+    {
+      var url = "http://www.subscenter.org/he/subtitle/movie/batman-begins/";
+      var web = new HtmlWeb();
+      var htmlDocument = web.Load(url);
+
+      // verify year
+      var year = int.Parse(Regex.Match(htmlDocument.DocumentNode.SelectNodes("//h1")[0].ParentNode.InnerText, "\\d+").Value);
+      Assert.AreEqual(2005, year);
+
+      // verify title
+      var title = htmlDocument.DocumentNode.SelectNodes("//h3")[0].InnerText;
+      Assert.AreEqual("Batman Begins", title);
     }
     */
   }
