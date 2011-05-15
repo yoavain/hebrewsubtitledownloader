@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
+using HtmlAgilityPack;
 using SubtitleDownloader.Core;
 using SubtitleDownloader.Util;
 
@@ -11,9 +11,15 @@ namespace SubsCenterOrg
 {
   public class SubsCenterOrgDownoader : ISubtitleDownloader
   {
-    private const string DownloadPageUrl = "http://www.subscenter.org/he/subtitle/download/";
+    private const string BaseUrl = "http://www.subscenter.org";
+    private const string ExactMovieUrl = "http://www.subscenter.org/he/subtitle/movie/";
+    private const string ExactSeriesUrl = "http://www.subscenter.org/he/subtitle/series/";
     private const string SearchUrlBase = "http://www.subscenter.org/he/subtitle/search/?";
-    private const string BaseUrl = "http://www.subscenter.org/he/subtitle";
+    private const string DownloadPageUrl = "http://www.subscenter.org/he/subtitle/download/";
+    private const string HeSubtitleMovie = "/he/subtitle/movie/";
+    private const string HeSubtitleSeries = "/he/subtitle/series/";
+    private const string Error404 = "Error 404";
+
 
     public int SearchTimeout { get; set; }
 
@@ -24,28 +30,75 @@ namespace SubsCenterOrg
 
     public List<Subtitle> SearchSubtitles(SearchQuery query)
     {
-      var url = SearchUrlBase + "q=" + query.Query;
-      // RegEx to find lyrics page
-      const string findMoviePagePattern = "<a href=\\\"/he/subtitle/movie/(?<movie>.*?)/\\\">";
+      // try guessing exact movie url
+      var exactMovieUrl = ExactMovieUrl + query.Query.Replace(" ", "-") + "/";
 
-      // Get link to video
-      var moviePath = FindPatternInPage(url, findMoviePagePattern).Groups[1].Value;
-      var movieUrl = BaseUrl + "/movie/" + moviePath + "/";
+      //  download "exact" page
+      var web = new HtmlWeb();
+      var moviePage = web.Load(exactMovieUrl);
 
-      return Search(movieUrl, query);
+      // handle "Error 404" - page not found
+      if (IsPageNotFound(moviePage))
+      {
+        // search url
+        var queryUrl = SearchUrlBase + "q=" + query.Query;
+        var queryPage = web.Load(queryUrl);
+        var htmlNodeCollection = queryPage.DocumentNode.SelectNodes("//a");
+        foreach (var node in htmlNodeCollection)
+        {
+          var attributeValue = node.GetAttributeValue("href", string.Empty);
+          if (attributeValue.StartsWith(HeSubtitleMovie))
+          {
+            // download new page
+            moviePage = web.Load(BaseUrl + attributeValue);
+            break;
+          }
+        }
+      }
+
+      // verify year and title
+      if (YearMatch(moviePage, query.Year) && TitleMatch(moviePage, query.Query))
+      {
+        return Search(moviePage, query);
+      }
+      return new List<Subtitle>();
+
     }
 
     public List<Subtitle> SearchSubtitles(EpisodeSearchQuery query)
     {
-      var url = SearchUrlBase + "q=" + query.SerieTitle;
-      // RegEx to find lyrics page
-      const string findSeriesPagePattern = "<a href=\\\"/he/subtitle/series/(?<series>.*?)/\\\">";
+      // try guessing exact episode url
+      var exactEpisodeUrl = ExactSeriesUrl + query.SerieTitle.Replace(" ", "-") + "/" + query.Season + "/" + query.Episode;
 
-      // Get link to series
-      var seriesPath = FindPatternInPage(url, findSeriesPagePattern).Groups[1].Value;
-      var episodeUrl = BaseUrl + "/series/" + seriesPath + "/" + query.Season + "/" + query.Episode;
+      //  download "exact" page
+      var web = new HtmlWeb();
+      var moviePage = web.Load(exactEpisodeUrl);
 
-      return Search(episodeUrl, query);
+      // handle "Error 404" - page not found
+      if (IsPageNotFound(moviePage))
+      {
+        // search url
+        var queryUrl = SearchUrlBase + "q=" + query.SerieTitle;
+        var queryPage = web.Load(queryUrl);
+        var htmlNodeCollection = queryPage.DocumentNode.SelectNodes("//a");
+        foreach (var node in htmlNodeCollection)
+        {
+          var attributeValue = node.GetAttributeValue("href", string.Empty);
+          if (attributeValue.StartsWith(HeSubtitleSeries))
+          {
+            // download new page
+            moviePage = web.Load(BaseUrl + attributeValue + "/" + query.Season + "/" + query.Episode);
+            break;
+          }
+        }
+      }
+
+      // verify
+      if (SeasonAndEpisodeMatch(moviePage, query.Season, query.Episode))
+      {
+        return Search(moviePage, query);
+      }
+      return new List<Subtitle>();
     }
 
     public List<Subtitle> SearchSubtitles(ImdbSearchQuery query)
@@ -61,74 +114,25 @@ namespace SubsCenterOrg
       var client = new WebClient();
       client.DownloadFile(url, archiveFile);
 
-      return FileUtils.ExtractFilesFromZipOrRarFile(archiveFile);
-    }
-
-    private Match FindPatternInPage(string url, string findPagePattern)
-    {
-      Match match = null;
-
-      var request = (HttpWebRequest)WebRequest.Create(url);
-      if (SearchTimeout > 0)
-      {
-        request.Timeout = SearchTimeout * 1000;
-      }
-      var response = (HttpWebResponse)request.GetResponse();
-      var responseStream = response.GetResponseStream();
-      if (responseStream == null)
-      {
-        throw new Exception("Exception: Unable to query site");
-      }
-
-      var reader = new StreamReader(responseStream, Encoding.UTF8);
       try
       {
-        var thisMayBeTheCorrectPage = false;
-
-        while (!thisMayBeTheCorrectPage)
-        {
-          // Read line
-          if (reader.EndOfStream)
-          {
-            break;
-          }
-          var line = reader.ReadLine() ?? "";
-
-          // Try to find match in line
-          match = Regex.Match(line, findPagePattern, RegexOptions.IgnoreCase);
-
-          if (match.Success)
-          {
-            // Found page
-            thisMayBeTheCorrectPage = true;
-          }
-        }
-
-        // Not found
-        if (!thisMayBeTheCorrectPage)
-        {
-          throw new Exception("Cannot find match");
-        }
+        List<FileInfo> extractFilesFromZipOrRarFile = FileUtils.ExtractFilesFromZipOrRarFile(archiveFile);
+        return extractFilesFromZipOrRarFile;
       }
-      catch
+      catch (Exception)
       {
-        throw new Exception("Exception: Cannot find match");
+        return new List<FileInfo>();
       }
-      finally
-      {
-        reader.Close();
-        responseStream.Close();
-      }
-
-      // return match
-      return match;
     }
 
-    private List<Subtitle> Search(string url, SubtitleSearchQuery query)
+
+    /**
+     */
+    private static List<Subtitle> Search(HtmlDocument page, SubtitleSearchQuery query)
     {
       var subtitles = new List<Subtitle>();
 
-      var subtitlesGroups = GetSubtitlesGroups(url);
+      var subtitlesGroups = GetSubtitlesGroups(page);
 
       var parsedSubtitles = ParseSubtitlesGroups(subtitlesGroups);
 
@@ -170,7 +174,11 @@ namespace SubsCenterOrg
               {
                 var version = subtitleVersion.Replace("\"", "");
                 var languageCode = Languages.GetLanguageCode(language.Key.Replace("\"", ""));
-                subtitles.Add(new Subtitle(id, version, version, languageCode));
+
+                if (query.HasLanguageCode(languageCode))
+                {
+                  subtitles.Add(new Subtitle(id, version, version, languageCode));
+                }
               }
             }
           }
@@ -180,16 +188,24 @@ namespace SubsCenterOrg
       return subtitles;
     }
 
-    private string GetSubtitlesGroups(string url)
+    /**
+     * Return the subtitles_groups from java script
+     */
+    private static string GetSubtitlesGroups(HtmlDocument page)
     {
-      const string subtitlesGroupsPattern = "subtitles_groups = (?<subs>.*)";
-
-      var match = FindPatternInPage(url, subtitlesGroupsPattern);
-      if (match.Success)
+      var htmlNodeCollection = page.DocumentNode.SelectNodes("//script");
+      foreach (var node in htmlNodeCollection)
       {
-        return match.Groups[1].Value;
+        if (node.InnerText.Contains("subtitles_groups"))
+        {
+          Match match = Regex.Match(node.InnerText, "subtitles_groups = (?<subs>.*)");
+          if (match.Groups.Count == 2)
+          {
+            return match.Groups[1].Value;
+          }
+        }
       }
-      throw new Exception("cannot find subtitles");
+      throw new Exception("cannot find subtitles.");
     }
 
     /**
@@ -312,14 +328,16 @@ namespace SubsCenterOrg
       return output;
     }
 
+    /**
+     * Return language path name ("en" for English, "he" for Hebrew", etc.)
+     */
     private static string GetLanguagePath(string language)
     {
       if (language != null && language.Length >= 2)
       {
         return language.Substring(0, 2);
       }
-      throw new Exception("Unknow language");
-
+      throw new Exception("Unknow language " + language);
     }
 
     private static Dictionary<string, string> ParseLanguageOptions(SubtitleSearchQuery query)
@@ -376,5 +394,92 @@ namespace SubsCenterOrg
                             { "Vietnamese", "51" },
                        };
     }
+
+    /**
+ * Return true if "Error 404" is found in page
+ */
+    private static bool IsPageNotFound(HtmlDocument moviePage)
+    {
+      // Get all img nodes and search for "Error 404"
+      var images = moviePage.DocumentNode.SelectNodes("//img");
+      foreach (var node in images)
+      {
+        var alt = node.GetAttributeValue("alt", string.Empty);
+        if (alt.Equals(Error404))
+        {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    /**
+     * Return true if year matches
+     */
+    private static bool YearMatch(HtmlDocument moviePage, int? expectedYear)
+    {
+      if (expectedYear == null)
+      {
+        return true;
+      }
+
+      try
+      {
+        var year = int.Parse(Regex.Match(moviePage.DocumentNode.SelectNodes("//h1")[0].ParentNode.InnerText, "\\d+").Value);
+        return (expectedYear == year);
+      }
+      catch
+      {
+        return false;
+      }
+    }
+
+    /**
+     * Return true if title matches
+     */
+    private static bool TitleMatch(HtmlDocument moviePage, string expectedTitle)
+    {
+      try
+      {
+        var title = moviePage.DocumentNode.SelectNodes("//h3")[0].InnerText;
+        return expectedTitle.Equals(title, StringComparison.OrdinalIgnoreCase);
+      }
+      catch
+      {
+        return false;
+      }
+    }
+
+    /**
+     * Return true if Season and Episode match
+     * 
+     */
+    private static bool SeasonAndEpisodeMatch(HtmlDocument moviePage, int expectedSeason, int expectedEpisode)
+    {
+      try
+      {
+        var spanPageName = moviePage.DocumentNode.SelectNodes("//span");
+        foreach (var node in spanPageName)
+        {
+          var atr = node.GetAttributeValue("class", string.Empty);
+          if (atr.Equals("pageName"))
+          {
+            var seasonEpisodeText = node.InnerText;
+            var matches = Regex.Matches(seasonEpisodeText, "\\d+");
+            var season = int.Parse(matches[0].Value);
+            var episode = int.Parse(matches[1].Value);
+
+            return ((season == expectedSeason) && (episode == expectedEpisode));
+          }
+        }
+
+        return false;
+      }
+      catch
+      {
+        return false;
+      }
+    }
+
   }
 }
