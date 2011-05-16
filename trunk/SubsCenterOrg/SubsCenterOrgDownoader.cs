@@ -30,6 +30,9 @@ namespace SubsCenterOrg
 
     public List<Subtitle> SearchSubtitles(SearchQuery query)
     {
+      var gotMatch = false;
+      var retries = 0;
+
       // try guessing exact movie url
       var exactMovieUrl = ExactMovieUrl + query.Query.Replace(" ", "-") + "/";
 
@@ -38,7 +41,7 @@ namespace SubsCenterOrg
       var moviePage = web.Load(exactMovieUrl);
 
       // handle "Error 404" - page not found
-      if (IsPageNotFound(moviePage))
+      if (IsPageNotFound(moviePage) || !YearMatch(moviePage, query.Year) || !TitleMatch(moviePage, query.Query))
       {
         // search url
         var queryUrl = SearchUrlBase + "q=" + query.Query;
@@ -51,13 +54,25 @@ namespace SubsCenterOrg
           {
             // download new page
             moviePage = web.Load(BaseUrl + attributeValue);
-            break;
+            if (YearMatch(moviePage, query.Year) && TitleMatch(moviePage, query.Query))
+            {
+              gotMatch = true;
+              break;
+            }
+            if (++retries >= 3)
+            {
+              break;
+            }
           }
         }
       }
+      else
+      {
+        gotMatch = true;
+      }
 
       // verify year and title
-      if (YearMatch(moviePage, query.Year) && TitleMatch(moviePage, query.Query))
+      if (gotMatch)
       {
         return Search(moviePage, query);
       }
@@ -67,6 +82,9 @@ namespace SubsCenterOrg
 
     public List<Subtitle> SearchSubtitles(EpisodeSearchQuery query)
     {
+      var gotMatch = false;
+      var retries = 0;
+
       // try guessing exact episode url
       var exactEpisodeUrl = ExactSeriesUrl + query.SerieTitle.Replace(" ", "-") + "/" + query.Season + "/" + query.Episode;
 
@@ -75,7 +93,7 @@ namespace SubsCenterOrg
       var moviePage = web.Load(exactEpisodeUrl);
 
       // handle "Error 404" - page not found
-      if (IsPageNotFound(moviePage))
+      if (IsPageNotFound(moviePage) || !SeasonAndEpisodeMatch(moviePage, query.Season, query.Episode))
       {
         // search url
         var queryUrl = SearchUrlBase + "q=" + query.SerieTitle;
@@ -88,13 +106,24 @@ namespace SubsCenterOrg
           {
             // download new page
             moviePage = web.Load(BaseUrl + attributeValue + "/" + query.Season + "/" + query.Episode);
-            break;
+            if (SeasonAndEpisodeMatch(moviePage, query.Season, query.Episode))
+            {
+              break;
+            }
+            if (++retries >= 3)
+            {
+              break;
+            }
           }
         }
       }
+      else
+      {
+        gotMatch = true;
+      }
 
       // verify
-      if (SeasonAndEpisodeMatch(moviePage, query.Season, query.Episode))
+      if (gotMatch)
       {
         return Search(moviePage, query);
       }
@@ -173,7 +202,9 @@ namespace SubsCenterOrg
               if (id != "" && subtitleVersion != "")
               {
                 var version = subtitleVersion.Replace("\"", "");
-                var languageCode = Languages.GetLanguageCode(language.Key.Replace("\"", ""));
+                string languageName;
+                LanguageShortToLongCodeDictionary.TryGetValue(language.Key.Replace("\"", ""), out languageName);
+                var languageCode = Languages.GetLanguageCode(languageName);
 
                 if (query.HasLanguageCode(languageCode))
                 {
@@ -340,61 +371,6 @@ namespace SubsCenterOrg
       throw new Exception("Unknow language " + language);
     }
 
-    private static Dictionary<string, string> ParseLanguageOptions(SubtitleSearchQuery query)
-    {
-      return new Dictionary<string, string>()
-                       {
-                            { "Albanian", "29"},
-                            { "Arabic", "12" },
-                            { "Argentino", "14" },
-                            { "Belarus", "50" },
-                            { "Bosnian", "10" },
-                            { "Brazilian", "48" },
-                            { "Bulgarian", "33" },
-                            { "Catalan", "53" },
-                            { "Chinese", "17" },
-                            { "Croatian", "38" },
-                            { "Czech", "7" },
-                            { "Danish", "24" },
-                            { "Dutch", "23" },
-                            { "English", "2" },
-                            { "Estonian", "20" },
-                            { "Farsi", "52" },
-                            { "Finnish", "31" },
-                            { "French", "8" },
-                            { "German", "5" },
-                            { "Greek", "16" },
-                            { "Hebrew", "22" },
-                            { "Hindi", "42" },
-                            { "Hungarian", "15" },
-                            { "Icelandic", "6" },
-                            { "Indonesian", "54" },
-                            { "Irish", "49" },
-                            { "Italian", "9" },
-                            { "Japanese", "11" },
-                            { "Korean", "4" },
-                            { "Latvian", "21" },
-                            { "Lithuanian", "19" },
-                            { "Macedonian", "35" },
-                            { "Malay", "55" },
-                            { "Mandarin", "40" },
-                            { "Norwegian", "3" },
-                            { "Polish", "26" },
-                            { "Portuguese", "32" },
-                            { "Romanian", "13" },
-                            { "Russian", "27" },
-                            { "Serbian", "36" },
-                            { "Slovak", "37" },
-                            { "Slovenian", "1" },
-                            { "Spanish", "28" },
-                            { "Swedish", "25" },
-                            { "Thai", "44" },
-                            { "Turkish", "30" },
-                            { "Ukrainian", "46" },
-                            { "Vietnamese", "51" },
-                       };
-    }
-
     /**
  * Return true if "Error 404" is found in page
  */
@@ -480,6 +456,55 @@ namespace SubsCenterOrg
         return false;
       }
     }
+
+
+    private static readonly Dictionary<string, string> LanguageShortToLongCodeDictionary = new Dictionary<string, string>
+                                                                              {
+                                                                                {"ar", "Arabic"},
+                                                                                {"be", "Belarus"},
+                                                                                {"bg", "Bulgarian"},
+                                                                                {"br", "Brazilian"},
+                                                                                {"bs", "Bosnian"},
+                                                                                {"ca", "Catalan"},
+                                                                                {"cs", "Czech"},
+                                                                                {"da", "Danish"},
+                                                                                {"de", "German"},
+                                                                                {"en", "English"},
+                                                                                {"es", "Spanish"},
+                                                                                {"et", "Estonian"},
+                                                                                {"fi", "Finnish"},
+                                                                                {"fr", "French"},
+                                                                                {"ga", "Irish"},
+                                                                                {"gr", "Greek"},
+                                                                                {"he", "Hebrew"},
+                                                                                {"hi", "Hindi"},
+                                                                                {"hu", "Hungarian"},
+                                                                                {"hr", "Croatian"},
+                                                                                {"is", "Icelandic"},
+                                                                                {"id", "Indonesian"},
+                                                                                {"it", "Italian"},
+                                                                                {"ja", "Japanese"},
+                                                                                {"ko", "Korean"},
+                                                                                {"lv", "Latvian"},
+                                                                                {"lt", "Lithuanian"},
+                                                                                {"mk", "Macedonian"},
+                                                                                {"ms", "Malay"},
+                                                                                {"nl", "Dutch"},
+                                                                                {"no", "Norwegian"},
+                                                                                {"pl", "Polish"},
+                                                                                {"pt", "Portuguese"},
+                                                                                {"ro", "Romanian"},
+                                                                                {"ru", "Russian"},
+                                                                                {"sr", "Serbian"},
+                                                                                {"sk", "Slovak"},
+                                                                                {"sl", "Slovenian"},
+                                                                                {"sv", "Swedish"},
+                                                                                {"th", "Thai"},
+                                                                                {"tr", "Turkish"},
+                                                                                {"uk", "Ukrainian"},
+                                                                                {"vi", "Vietnamese"},
+                                                                                {"zh", "Chinese"}
+                                                                              };
 
   }
 }
