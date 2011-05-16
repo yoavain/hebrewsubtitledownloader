@@ -25,27 +25,22 @@ namespace SubsCenterOrgTest
     }
 
     [TestMethod]
-    public void TestNotExactMovieSearch()
+    public void TestNoMatchMovieSearch()
     {
       var downloader = new SubsCenterOrgDownoader();
-      var query = new SearchQuery("batman") { Year = 2005, LanguageCodes = new[] { "heb"} };
+      var query = new SearchQuery("batman ends") { Year = 2015, LanguageCodes = new[] { "eng"} };
       var results = downloader.SearchSubtitles(query);
 
-      // make sure there are resuts
+      // make sure there are no resuts
       Assert.IsNotNull(results);
-      Assert.IsTrue(results.Count > 0);
-
-      // check first result
-      var subtitleFiles = downloader.SaveSubtitle(results[10]);
-      Assert.AreNotEqual(null, subtitleFiles);
-      Assert.AreNotEqual(0, subtitleFiles.Count);
+      Assert.IsTrue(results.Count == 0);
     }
 
     [TestMethod]
     public void TestSeriesSearch()
     {
       var downloader = new SubsCenterOrgDownoader();
-      var query = new EpisodeSearchQuery("house md", 3, 5) { LanguageCodes = new[] { "heb", "eng" } };
+      var query = new EpisodeSearchQuery("house md", 6, 15) { LanguageCodes = new[] { "heb", "eng" } };
       var results = downloader.SearchSubtitles(query);
 
       // make sure there are resuts
