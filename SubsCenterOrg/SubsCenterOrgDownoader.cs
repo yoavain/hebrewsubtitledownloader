@@ -34,7 +34,7 @@ namespace SubsCenterOrg
       var retries = 0;
 
       // try guessing exact movie url
-      var exactMovieUrl = ExactMovieUrl + query.Query.Replace(" ", "-") + "/";
+      var exactMovieUrl = ExactMovieUrl + query.Query.Replace(" ", "-").ToLower() + "/";
 
       //  download "exact" page
       var web = new HtmlWeb();
@@ -86,7 +86,7 @@ namespace SubsCenterOrg
       var retries = 0;
 
       // try guessing exact episode url
-      var exactEpisodeUrl = ExactSeriesUrl + query.SerieTitle.Replace(" ", "-") + "/" + query.Season + "/" + query.Episode;
+      var exactEpisodeUrl = ExactSeriesUrl + query.SerieTitle.Replace(" ", "-").ToLower() + "/" + query.Season + "/" + query.Episode;
 
       //  download "exact" page
       var web = new HtmlWeb();
@@ -108,6 +108,7 @@ namespace SubsCenterOrg
             moviePage = web.Load(BaseUrl + attributeValue + "/" + query.Season + "/" + query.Episode);
             if (SeasonAndEpisodeMatch(moviePage, query.Season, query.Episode))
             {
+              gotMatch = true;
               break;
             }
             if (++retries >= 3)
