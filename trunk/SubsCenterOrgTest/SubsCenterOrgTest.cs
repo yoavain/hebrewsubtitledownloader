@@ -40,7 +40,7 @@ namespace SubsCenterOrgTest
     public void TestSeriesSearch()
     {
       var downloader = new SubsCenterOrgDownoader();
-      var query = new EpisodeSearchQuery("house md", 6, 15) { LanguageCodes = new[] { "heb", "eng" } };
+      var query = new EpisodeSearchQuery("house md", 6, 15) { LanguageCodes = new[] { "heb"} };
       var results = downloader.SearchSubtitles(query);
 
       // make sure there are resuts
