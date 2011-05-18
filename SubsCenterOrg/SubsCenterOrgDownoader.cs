@@ -25,7 +25,7 @@ namespace SubsCenterOrg
 
     public string GetName()
     {
-      return "SubCenterOrg";
+      return "SubCenter.Org";
     }
 
     public List<Subtitle> SearchSubtitles(SearchQuery query)
@@ -403,7 +403,7 @@ namespace SubsCenterOrg
       try
       {
         var year = int.Parse(Regex.Match(moviePage.DocumentNode.SelectNodes("//h1")[0].ParentNode.InnerText, "\\d+").Value);
-        return (expectedYear == year);
+        return Math.Abs((int) (expectedYear - year)) <= 1;
       }
       catch
       {
@@ -418,7 +418,7 @@ namespace SubsCenterOrg
     {
       try
       {
-        var title = moviePage.DocumentNode.SelectNodes("//h3")[0].InnerText;
+        var title = moviePage.DocumentNode.SelectNodes("//h3")[0].InnerText.Trim();
         return expectedTitle.Equals(title, StringComparison.OrdinalIgnoreCase);
       }
       catch
@@ -441,7 +441,7 @@ namespace SubsCenterOrg
           var atr = node.GetAttributeValue("class", string.Empty);
           if (atr.Equals("pageName"))
           {
-            var seasonEpisodeText = node.InnerText;
+            var seasonEpisodeText = node.InnerText.Trim();
             var matches = Regex.Matches(seasonEpisodeText, "\\d+");
             var season = int.Parse(matches[0].Value);
             var episode = int.Parse(matches[1].Value);
