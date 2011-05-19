@@ -53,6 +53,40 @@ namespace SubsCenterOrgTest
       Assert.AreNotEqual(0, subtitleFiles.Count);
     }
 
+    [TestMethod]
+    public void TestSeriesSearch2()
+    {
+      var downloader = new SubsCenterOrgDownoader();
+      var query = new EpisodeSearchQuery("The Office (us)", 5, 6) { LanguageCodes = new[] { "heb" } };
+      var results = downloader.SearchSubtitles(query);
+
+      // make sure there are resuts
+      Assert.IsNotNull(results);
+      Assert.IsTrue(results.Count > 0);
+
+      // check first result
+      var subtitleFiles = downloader.SaveSubtitle(results[0]);
+      Assert.AreNotEqual(null, subtitleFiles);
+      Assert.AreNotEqual(0, subtitleFiles.Count);
+    }
+
+    [TestMethod]
+    public void TestSeriesSearch3()
+    {
+      var downloader = new SubsCenterOrgDownoader();
+      var query = new EpisodeSearchQuery("Castle (2009)", 2, 7) { LanguageCodes = new[] { "heb" } };
+      var results = downloader.SearchSubtitles(query);
+
+      // make sure there are resuts
+      Assert.IsNotNull(results);
+      Assert.IsTrue(results.Count > 0);
+
+      // check first result
+      var subtitleFiles = downloader.SaveSubtitle(results[0]);
+      Assert.AreNotEqual(null, subtitleFiles);
+      Assert.AreNotEqual(0, subtitleFiles.Count);
+    }
+
     /*
     [TestMethod]
     public void TestUnzip()
