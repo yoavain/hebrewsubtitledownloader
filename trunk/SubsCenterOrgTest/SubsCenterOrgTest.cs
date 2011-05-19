@@ -10,7 +10,7 @@ namespace SubsCenterOrgTest
     [TestMethod]
     public void TestExactMovieSearch()
     {
-      var downloader = new SubsCenterOrgDownoader();
+      var downloader = new SubsCenterOrgDownloader();
       var query = new SearchQuery("batman begins") { Year = 2005, LanguageCodes = new[] { "heb"} };
       var results = downloader.SearchSubtitles(query);
 
@@ -27,7 +27,7 @@ namespace SubsCenterOrgTest
     [TestMethod]
     public void TestNoMatchMovieSearch()
     {
-      var downloader = new SubsCenterOrgDownoader();
+      var downloader = new SubsCenterOrgDownloader();
       var query = new SearchQuery("batman ends") { Year = 2015, LanguageCodes = new[] { "eng"} };
       var results = downloader.SearchSubtitles(query);
 
@@ -39,7 +39,7 @@ namespace SubsCenterOrgTest
     [TestMethod]
     public void TestSeriesSearch()
     {
-      var downloader = new SubsCenterOrgDownoader();
+      var downloader = new SubsCenterOrgDownloader();
       var query = new EpisodeSearchQuery("house md", 6, 15) { LanguageCodes = new[] { "heb"} };
       var results = downloader.SearchSubtitles(query);
 
@@ -56,7 +56,7 @@ namespace SubsCenterOrgTest
     [TestMethod]
     public void TestSeriesSearch2()
     {
-      var downloader = new SubsCenterOrgDownoader();
+      var downloader = new SubsCenterOrgDownloader();
       var query = new EpisodeSearchQuery("The Office (us)", 5, 6) { LanguageCodes = new[] { "heb" } };
       var results = downloader.SearchSubtitles(query);
 
@@ -73,7 +73,7 @@ namespace SubsCenterOrgTest
     [TestMethod]
     public void TestSeriesSearch3()
     {
-      var downloader = new SubsCenterOrgDownoader();
+      var downloader = new SubsCenterOrgDownloader();
       var query = new EpisodeSearchQuery("Castle (2009)", 2, 7) { LanguageCodes = new[] { "heb" } };
       var results = downloader.SearchSubtitles(query);
 
