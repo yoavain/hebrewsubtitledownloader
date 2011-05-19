@@ -47,24 +47,28 @@ namespace SubsCenterOrg
         // search url
         var queryUrl = SearchUrlBase + "q=" + query.Query;
         var queryPage = web.Load(queryUrl);
-        var htmlNodeCollection = queryPage.DocumentNode.SelectNodes("//a");
-        foreach (var node in htmlNodeCollection)
+
+        if (!IsNoResults(queryPage))
         {
-          var attributeValue = node.GetAttributeValue("href", string.Empty);
-          if (attributeValue.StartsWith(MovieSubtitlePath))
+          var htmlNodeCollection = queryPage.DocumentNode.SelectNodes("//a");
+          foreach (var node in htmlNodeCollection)
           {
-            // download new page
-            moviePage = web.Load(BaseUrl + attributeValue);
-            if (YearMatch(moviePage, query.Year) && TitleMatch(moviePage, query.Query))
+            var attributeValue = node.GetAttributeValue("href", string.Empty);
+            if (attributeValue.StartsWith(MovieSubtitlePath))
             {
-              gotMatch = true;
-              break;
+              // download new page
+              moviePage = web.Load(BaseUrl + attributeValue);
+              if (YearMatch(moviePage, query.Year) && TitleMatch(moviePage, query.Query))
+              {
+                gotMatch = true;
+                break;
+              }
+              if (++retries >= 3)
+              {
+                break;
+              }
             }
-            if (++retries >= 3)
-            {
-              break;
-            }
-          }
+          } 
         }
       }
       else
@@ -112,6 +116,7 @@ namespace SubsCenterOrg
       // handle "Error 404" - page not found
       if (IsPageNotFound(episodePage) || !TitleSeasonEpisodeMatch(mainSeriesPage, episodePage, title, cleanTitle, query.Season, query.Episode))
       {
+        // todo - get number of result pages and loop
         // search url
         var queryUrl = SearchUrlBase + "q=" + cleanTitle;
         var queryPage = web.Load(queryUrl);
@@ -122,6 +127,7 @@ namespace SubsCenterOrg
           var attributeValue = node.GetAttributeValue("href", string.Empty);
           if (attributeValue.StartsWith(SeriesSubtitlePath))
           {
+            // todo - before downloading page - check title from attribute
             // download new pages
             mainSeriesPage = web.Load(BaseUrl + attributeValue + "/" + query.Season + "/" + query.Episode);
             episodePage = web.Load(BaseUrl + attributeValue + "/" + query.Season + "/" + query.Episode);
@@ -218,7 +224,7 @@ namespace SubsCenterOrg
                 }
               }
 
-              // Add subtitles - todo - add only if language is in query
+              // Add subtitles
               if (id != "" && subtitleVersion != "")
               {
                 var version = subtitleVersion.Replace("\"", "");
@@ -226,6 +232,7 @@ namespace SubsCenterOrg
                 LanguageShortToLongCodeDictionary.TryGetValue(language.Key.Replace("\"", ""), out languageName);
                 var languageCode = Languages.GetLanguageCode(languageName);
 
+                // Check language
                 if (query.HasLanguageCode(languageCode))
                 {
                   subtitles.Add(new Subtitle(id, version, version, languageCode));
