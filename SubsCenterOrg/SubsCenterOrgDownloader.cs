@@ -9,7 +9,7 @@ using SubtitleDownloader.Util;
 
 namespace SubsCenterOrg
 {
-  public class SubsCenterOrgDownoader : ISubtitleDownloader
+  public class SubsCenterOrgDownloader : ISubtitleDownloader
   {
     private const string BaseUrl = "http://www.subscenter.org";
     private const string ExactMovieUrl = "http://www.subscenter.org/he/subtitle/movie/";
