@@ -16,9 +16,10 @@ namespace SubsCenterOrg
     private const string ExactSeriesUrl = "http://www.subscenter.org/he/subtitle/series/";
     private const string SearchUrlBase = "http://www.subscenter.org/he/subtitle/search/?";
     private const string DownloadPageUrl = "http://www.subscenter.org/he/subtitle/download/";
-    private const string HeSubtitleMovie = "/he/subtitle/movie/";
-    private const string HeSubtitleSeries = "/he/subtitle/series/";
-    private const string Error404 = "Error 404";
+    private const string MovieSubtitlePath = "/he/subtitle/movie/";
+    private const string SeriesSubtitlePath = "/he/subtitle/series/";
+    private const string Error404String = "Error 404";
+    private const string NoResultsString = "processesDescription";
 
 
     public int SearchTimeout { get; set; }
@@ -50,7 +51,7 @@ namespace SubsCenterOrg
         foreach (var node in htmlNodeCollection)
         {
           var attributeValue = node.GetAttributeValue("href", string.Empty);
-          if (attributeValue.StartsWith(HeSubtitleMovie))
+          if (attributeValue.StartsWith(MovieSubtitlePath))
           {
             // download new page
             moviePage = web.Load(BaseUrl + attributeValue);
@@ -84,29 +85,47 @@ namespace SubsCenterOrg
     {
       var gotMatch = false;
       var retries = 0;
+      var web = new HtmlWeb();
+
+      var title = query.SerieTitle.ToLower();
+      var cleanTitle = CleanTitleName(title);
 
       // try guessing exact episode url
-      var exactEpisodeUrl = ExactSeriesUrl + query.SerieTitle.Replace(" ", "-").ToLower() + "/" + query.Season + "/" + query.Episode;
+      var exactSeriesUrl = ExactSeriesUrl + title.Replace(" ", "-");
+      var exactEpisodeUrl = exactSeriesUrl + "/" + query.Season + "/" + query.Episode;
 
-      //  download "exact" page
-      var web = new HtmlWeb();
-      var moviePage = web.Load(exactEpisodeUrl);
+      //  download "exact" pages
+      var mainSeriesPage = web.Load(exactSeriesUrl);
+      var episodePage = web.Load(exactEpisodeUrl);
+
+      // if page not found and can clean title name - use clean name
+      if (IsPageNotFound(mainSeriesPage) && !cleanTitle.Equals(title))
+      {
+        // try guessing exact episode url again
+        exactSeriesUrl = ExactSeriesUrl + cleanTitle.Replace(" ", "-");
+        exactEpisodeUrl = exactSeriesUrl  + "/" + query.Season + "/" + query.Episode;
+        //  download "exact" pages again
+        mainSeriesPage = web.Load(exactSeriesUrl);
+        episodePage = web.Load(exactEpisodeUrl);
+      }
 
       // handle "Error 404" - page not found
-      if (IsPageNotFound(moviePage) || !SeasonAndEpisodeMatch(moviePage, query.Season, query.Episode))
+      if (IsPageNotFound(episodePage) || !TitleSeasonEpisodeMatch(mainSeriesPage, episodePage, title, cleanTitle, query.Season, query.Episode))
       {
         // search url
-        var queryUrl = SearchUrlBase + "q=" + query.SerieTitle;
+        var queryUrl = SearchUrlBase + "q=" + cleanTitle;
         var queryPage = web.Load(queryUrl);
+
         var htmlNodeCollection = queryPage.DocumentNode.SelectNodes("//a");
         foreach (var node in htmlNodeCollection)
         {
           var attributeValue = node.GetAttributeValue("href", string.Empty);
-          if (attributeValue.StartsWith(HeSubtitleSeries))
+          if (attributeValue.StartsWith(SeriesSubtitlePath))
           {
-            // download new page
-            moviePage = web.Load(BaseUrl + attributeValue + "/" + query.Season + "/" + query.Episode);
-            if (SeasonAndEpisodeMatch(moviePage, query.Season, query.Episode))
+            // download new pages
+            mainSeriesPage = web.Load(BaseUrl + attributeValue + "/" + query.Season + "/" + query.Episode);
+            episodePage = web.Load(BaseUrl + attributeValue + "/" + query.Season + "/" + query.Episode);
+            if (TitleSeasonEpisodeMatch(mainSeriesPage, episodePage, title, cleanTitle, query.Season, query.Episode))
             {
               gotMatch = true;
               break;
@@ -126,7 +145,7 @@ namespace SubsCenterOrg
       // verify
       if (gotMatch)
       {
-        return Search(moviePage, query);
+        return Search(episodePage, query);
       }
       return new List<Subtitle>();
     }
@@ -373,8 +392,8 @@ namespace SubsCenterOrg
     }
 
     /**
- * Return true if "Error 404" is found in page
- */
+     * Return true if "Error 404" is found in page
+     */
     private static bool IsPageNotFound(HtmlDocument moviePage)
     {
       // Get all img nodes and search for "Error 404"
@@ -382,7 +401,25 @@ namespace SubsCenterOrg
       foreach (var node in images)
       {
         var alt = node.GetAttributeValue("alt", string.Empty);
-        if (alt.Equals(Error404))
+        if (alt.Equals(Error404String))
+        {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    /**
+     * Return true if query had no results
+     */
+    private static bool IsNoResults(HtmlDocument moviePage)
+    {
+      // Get all img nodes and search for indicator of no results
+      var images = moviePage.DocumentNode.SelectNodes("//div");
+      foreach (var node in images)
+      {
+        var alt = node.GetAttributeValue("id", string.Empty);
+        if (alt.Equals(NoResultsString))
         {
           return true;
         }
@@ -431,11 +468,13 @@ namespace SubsCenterOrg
      * Return true if Season and Episode match
      * 
      */
-    private static bool SeasonAndEpisodeMatch(HtmlDocument moviePage, int expectedSeason, int expectedEpisode)
+    private static bool TitleSeasonEpisodeMatch(HtmlDocument mainSeriesPage, HtmlDocument episodePage, string expectedTitle, string expectedCleanTitle, int expectedSeason, int expectedEpisode)
     {
       try
       {
-        var spanPageName = moviePage.DocumentNode.SelectNodes("//span");
+        var title = mainSeriesPage.DocumentNode.SelectNodes("//h3")[0].InnerText.Replace(".", "").ToLower().Trim();
+
+        var spanPageName = episodePage.DocumentNode.SelectNodes("//span");
         foreach (var node in spanPageName)
         {
           var atr = node.GetAttributeValue("class", string.Empty);
@@ -446,7 +485,7 @@ namespace SubsCenterOrg
             var season = int.Parse(matches[0].Value);
             var episode = int.Parse(matches[1].Value);
 
-            return ((season == expectedSeason) && (episode == expectedEpisode));
+            return ((title.Equals(expectedTitle) || (title.Equals(expectedCleanTitle))) && (season == expectedSeason) && (episode == expectedEpisode));
           }
         }
 
@@ -458,6 +497,14 @@ namespace SubsCenterOrg
       }
     }
 
+    private static string CleanTitleName(string title)
+    {
+      if (title == null)
+      {
+        return null;
+      }
+      return !title.Contains("(") ? title.ToLower().Trim() : title.Substring(0, title.IndexOf("(")).ToLower().Trim();
+    }
 
     private static readonly Dictionary<string, string> LanguageShortToLongCodeDictionary = new Dictionary<string, string>
                                                                               {
