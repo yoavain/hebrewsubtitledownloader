@@ -91,7 +91,10 @@ namespace SubsCenterOrg
       var retries = 0;
       var web = new HtmlWeb();
 
-      var title = query.SerieTitle.ToLower();
+      // If needed - use configuration XML file to replace received title with a different value
+      var title = SubsCenterOrgDownloaderConfiguration.Instance.OverrideTitleFromConfiguration(query.SerieTitle.ToLower());
+
+      // clean title
       var cleanTitle = CleanTitleName(title);
 
       // try guessing exact episode url
@@ -169,15 +172,8 @@ namespace SubsCenterOrg
       var client = new WebClient();
       client.DownloadFile(url, archiveFile);
 
-      try
-      {
-        List<FileInfo> extractFilesFromZipOrRarFile = FileUtils.ExtractFilesFromZipOrRarFile(archiveFile);
-        return extractFilesFromZipOrRarFile;
-      }
-      catch (Exception)
-      {
-        return new List<FileInfo>();
-      }
+      var extractFilesFromZipOrRarFile = FileUtils.ExtractFilesFromZipOrRarFile(archiveFile);
+      return extractFilesFromZipOrRarFile;
     }
 
 
@@ -441,7 +437,7 @@ namespace SubsCenterOrg
     {
       if (expectedYear == null)
       {
-        return true;
+        return true; // no year in query
       }
 
       try
@@ -451,7 +447,7 @@ namespace SubsCenterOrg
       }
       catch
       {
-        return false;
+        return false; // page does not contain year
       }
     }
 

@@ -37,7 +37,8 @@ namespace SubsCenterOrgTest
     }
 
     [TestMethod]
-    public void TestSeriesSearch()
+    [DeploymentItem("Settings")]
+    public void TestExactSeriesSearch()
     {
       var downloader = new SubsCenterOrgDownloader();
       var query = new EpisodeSearchQuery("house md", 6, 15) { LanguageCodes = new[] { "heb"} };
@@ -54,7 +55,8 @@ namespace SubsCenterOrgTest
     }
 
     [TestMethod]
-    public void TestSeriesSearch2()
+    [DeploymentItem("Settings")]
+    public void TestSeriesSearchWithCleanName()
     {
       var downloader = new SubsCenterOrgDownloader();
       var query = new EpisodeSearchQuery("The Office (us)", 5, 6) { LanguageCodes = new[] { "heb" } };
@@ -71,7 +73,27 @@ namespace SubsCenterOrgTest
     }
 
     [TestMethod]
-    public void TestSeriesSearch3()
+    public void TestSeriesSearchWithCleanNameNoConfFile()
+    {
+      var downloader = new SubsCenterOrgDownloader();
+      var query = new EpisodeSearchQuery("house", 6, 16) { LanguageCodes = new[] { "heb" } };
+      var results = downloader.SearchSubtitles(query);
+
+      // todo - after implementing loop over all result pages, this test should work without comments
+
+      // make sure there are resuts
+//    Assert.IsNotNull(results);
+//    Assert.IsTrue(results.Count > 0);
+
+      // check first result
+//    var subtitleFiles = downloader.SaveSubtitle(results[0]);
+//    Assert.AreNotEqual(null, subtitleFiles);
+//    Assert.AreNotEqual(0, subtitleFiles.Count);
+    }
+
+    [TestMethod]
+    [DeploymentItem("Settings")]
+    public void TestSeriesSearchWithCleanName2()
     {
       var downloader = new SubsCenterOrgDownloader();
       var query = new EpisodeSearchQuery("Castle (2009)", 2, 7) { LanguageCodes = new[] { "heb" } };
@@ -85,6 +107,34 @@ namespace SubsCenterOrgTest
       var subtitleFiles = downloader.SaveSubtitle(results[0]);
       Assert.AreNotEqual(null, subtitleFiles);
       Assert.AreNotEqual(0, subtitleFiles.Count);
+    }
+
+    [TestMethod]
+    [DeploymentItem("Settings")]
+    public void TestSeriesSearchWithWithOverridingConf()
+    {
+      var downloader = new SubsCenterOrgDownloader();
+      var query = new EpisodeSearchQuery("House", 7, 8) { LanguageCodes = new[] { "heb" } };
+      var results = downloader.SearchSubtitles(query);
+
+      // make sure there are resuts
+      Assert.IsNotNull(results);
+      Assert.IsTrue(results.Count > 0);
+
+      // check first result
+      var subtitleFiles = downloader.SaveSubtitle(results[0]);
+      Assert.AreNotEqual(null, subtitleFiles);
+      Assert.AreNotEqual(0, subtitleFiles.Count);
+    }
+
+    [TestMethod]
+    [DeploymentItem("Settings")]
+    public void TestConfiguration()
+    {
+      var house = SubsCenterOrgDownloaderConfiguration.Instance.OverrideTitleFromConfiguration("house");
+      Assert.AreEqual("house md", house);
+      var psych = SubsCenterOrgDownloaderConfiguration.Instance.OverrideTitleFromConfiguration("psych");
+      Assert.AreEqual("psych", psych);
     }
 
     /*
