@@ -30,7 +30,12 @@ namespace SubsCenterOrg
         }
         foreach (XmlElement e in seriesNames)
         {
-          _seriesNameOverride.Add(e.GetAttribute("query"), e.InnerText);
+          var key = e.GetAttribute("query").ToLower();
+          var value = e.InnerText.ToLower();
+          if (!_seriesNameOverride.ContainsKey(key))
+          {
+            _seriesNameOverride.Add(key, value); 
+          }
         }
       }
       catch(FileNotFoundException)
@@ -62,7 +67,7 @@ namespace SubsCenterOrg
     public string OverrideTitleFromConfiguration(string queryTitle)
     {
       string value;
-      _seriesNameOverride.TryGetValue(queryTitle, out value);
+      _seriesNameOverride.TryGetValue(queryTitle.ToLower(), out value);
       return value ?? queryTitle;
     }
   }

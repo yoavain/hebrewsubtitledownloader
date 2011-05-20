@@ -92,7 +92,7 @@ namespace SubsCenterOrg
       var web = new HtmlWeb();
 
       // If needed - use configuration XML file to replace received title with a different value
-      var title = SubsCenterOrgDownloaderConfiguration.Instance.OverrideTitleFromConfiguration(query.SerieTitle.ToLower());
+      var title = SubsCenterOrgDownloaderConfiguration.Instance.OverrideTitleFromConfiguration(query.SerieTitle);
 
       // clean title
       var cleanTitle = CleanTitleName(title);
