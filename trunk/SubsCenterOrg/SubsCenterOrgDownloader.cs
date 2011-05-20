@@ -26,7 +26,7 @@ namespace SubsCenterOrg
 
     public string GetName()
     {
-      return "SubCenter.Org";
+      return "SubsCenter.Org";
     }
 
     public List<Subtitle> SearchSubtitles(SearchQuery query)
