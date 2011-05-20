@@ -7,9 +7,9 @@
  Extract files to the folder "SubtitleDownloaders" under your MediaPortal program folder.
   Located by default in:
   <br>32-bit:
-  C:\Program Files\Team MediaPortal\MediaPortal\SubtitleDownloaders\
+  `C:\Program Files\Team MediaPortal\MediaPortal\SubtitleDownloaders\`
   <br>64-bit:
-  C:\Program Files (x86)\Team MediaPortal\MediaPortal\SubtitleDownloaders\
+  `C:\Program Files (x86)\Team MediaPortal\MediaPortal\SubtitleDownloaders\`
 
 = Configuration =
 
