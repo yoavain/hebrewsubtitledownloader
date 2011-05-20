@@ -1,5 +1,4 @@
-#summary One-sentence summary of this page.
-Installation and Configuration
+#summary Installation and Configuration
 
 = Prerequisite =
   [http://code.google.com/p/subcentral SubCentral] plugin
