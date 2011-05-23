@@ -11,6 +11,12 @@ namespace SubsCenterOrg
 {
   public class SubsCenterOrgDownloader : ISubtitleDownloader
   {
+    private static readonly List<string> SubtitleExtensions = new List<string> { ".aqt", ".asc", ".ass", ".dat", ".dks", ".js", ".jss",
+                                                                                ".lrc", ".mpl", ".ovr", ".pan", ".pjs", ".psb", ".rt",
+                                                                                ".rtf", ".s2k", ".sbt", ".scr", ".smi", ".son", ".srt",
+                                                                                ".ssa", ".sst", ".ssts", ".stl", ".sub", ".txt", ".vkt",
+                                                                                ".vsf", ".zeg" };
+
     private const string BaseUrl = "http://www.subscenter.org";
     private const string ExactMovieUrl = "http://www.subscenter.org/he/subtitle/movie/";
     private const string ExactSeriesUrl = "http://www.subscenter.org/he/subtitle/series/";
@@ -68,7 +74,7 @@ namespace SubsCenterOrg
                 break;
               }
             }
-          } 
+          }
         }
       }
       else
@@ -110,7 +116,7 @@ namespace SubsCenterOrg
       {
         // try guessing exact episode url again
         exactSeriesUrl = ExactSeriesUrl + cleanTitle.Replace(" ", "-");
-        exactEpisodeUrl = exactSeriesUrl  + "/" + query.Season + "/" + query.Episode;
+        exactEpisodeUrl = exactSeriesUrl + "/" + query.Season + "/" + query.Episode;
         //  download "exact" pages again
         mainSeriesPage = web.Load(exactSeriesUrl);
         episodePage = web.Load(exactEpisodeUrl);
@@ -173,12 +179,26 @@ namespace SubsCenterOrg
       client.DownloadFile(url, archiveFile);
 
       var extractFilesFromZipOrRarFile = FileUtils.ExtractFilesFromZipOrRarFile(archiveFile);
-      return extractFilesFromZipOrRarFile;
+      var fileFist = new List<FileInfo>();
+
+      foreach (var fileInfo in extractFilesFromZipOrRarFile)
+      {
+        if (HasSubtitleExtension(fileInfo))
+        {
+          fileFist.Add(fileInfo);
+        }
+      }
+
+      return fileFist;
     }
 
 
-    /**
-     */
+    /// <summary>
+    /// Search subtitles in page
+    /// </summary>
+    /// <param name="page">html page</param>
+    /// <param name="query">the search query</param>
+    /// <returns>List of subtitles</returns>
     private static List<Subtitle> Search(HtmlDocument page, SubtitleSearchQuery query)
     {
       var subtitles = new List<Subtitle>();
@@ -241,10 +261,12 @@ namespace SubsCenterOrg
 
       return subtitles;
     }
-
-    /**
-     * Return the subtitles_groups from java script
-     */
+    
+    /// <summary>
+    /// Return the subtitles_groups from java script
+    /// </summary>
+    /// <param name="page">html page</param>
+    /// <returns>subtitles_groups</returns>
     private static string GetSubtitlesGroups(HtmlDocument page)
     {
       var htmlNodeCollection = page.DocumentNode.SelectNodes("//script");
@@ -252,7 +274,7 @@ namespace SubsCenterOrg
       {
         if (node.InnerText.Contains("subtitles_groups"))
         {
-          Match match = Regex.Match(node.InnerText, "subtitles_groups = (?<subs>.*)");
+          var match = Regex.Match(node.InnerText, "subtitles_groups = (?<subs>.*)");
           if (match.Groups.Count == 2)
           {
             return match.Groups[1].Value;
@@ -262,10 +284,11 @@ namespace SubsCenterOrg
       throw new Exception("cannot find subtitles.");
     }
 
-    /**
-     * Returns subtitles as a map of:
-     * Dictionary<language, Dictionary<group, Dictionary<quality, Dictionary<index, Dictionary<name, value>>>>>
-     */
+    /// <summary>
+    /// Returns map of subtitles
+    /// </summary>
+    /// <param name="subtitlesGroup">the subtitles_groups from java script</param>
+    /// <returns>Dictionary&lt;language, Dictionary&lt;group, Dictionary&lt;quality, Dictionary&lt;index, Dictionary&lt;name, value&gt;&gt;&gt;&gt;&gt;</returns>
     private static Dictionary<string, Dictionary<string, Dictionary<string, Dictionary<string, Dictionary<string, string>>>>> ParseSubtitlesGroups(string subtitlesGroup)
     {
       // tokens
@@ -382,9 +405,11 @@ namespace SubsCenterOrg
       return output;
     }
 
-    /**
-     * Return language path name ("en" for English, "he" for Hebrew", etc.)
-     */
+    /// <summary>
+    /// Return language path name
+    /// </summary>
+    /// <param name="language">full language name</param>
+    /// <returns>language path name ("en" for English, "he" for Hebrew", etc.)</returns>
     private static string GetLanguagePath(string language)
     {
       if (language != null && language.Length >= 2)
@@ -394,13 +419,15 @@ namespace SubsCenterOrg
       throw new Exception("Unknow language " + language);
     }
 
-    /**
-     * Return true if "Error 404" is found in page
-     */
-    private static bool IsPageNotFound(HtmlDocument moviePage)
+    /// <summary>
+    /// Checks if page is site's "Error 404"
+    /// </summary>
+    /// <param name="page">html page</param>
+    /// <returns>true if "Error 404" is found in page</returns>
+    private static bool IsPageNotFound(HtmlDocument page)
     {
       // Get all img nodes and search for "Error 404"
-      var images = moviePage.DocumentNode.SelectNodes("//img");
+      var images = page.DocumentNode.SelectNodes("//img");
       foreach (var node in images)
       {
         var alt = node.GetAttributeValue("alt", string.Empty);
@@ -412,13 +439,15 @@ namespace SubsCenterOrg
       return false;
     }
 
-    /**
-     * Return true if query had no results
-     */
-    private static bool IsNoResults(HtmlDocument moviePage)
+    /// <summary>
+    /// Checks if query has no results
+    /// </summary>
+    /// <param name="page">html page</param>
+    /// <returns>true if query had no result</returns>
+    private static bool IsNoResults(HtmlDocument page)
     {
       // Get all img nodes and search for indicator of no results
-      var images = moviePage.DocumentNode.SelectNodes("//div");
+      var images = page.DocumentNode.SelectNodes("//div");
       foreach (var node in images)
       {
         var alt = node.GetAttributeValue("id", string.Empty);
@@ -430,9 +459,12 @@ namespace SubsCenterOrg
       return false;
     }
 
-    /**
-     * Return true if year matches
-     */
+    /// <summary>
+    /// Checks if year matches
+    /// </summary>
+    /// <param name="moviePage">movie html page</param>
+    /// <param name="expectedYear">expected year</param>
+    /// <returns>true if year matches</returns>
     private static bool YearMatch(HtmlDocument moviePage, int? expectedYear)
     {
       if (expectedYear == null)
@@ -443,7 +475,7 @@ namespace SubsCenterOrg
       try
       {
         var year = int.Parse(Regex.Match(moviePage.DocumentNode.SelectNodes("//h1")[0].ParentNode.InnerText, "\\d+").Value);
-        return Math.Abs((int) (expectedYear - year)) <= 1;
+        return Math.Abs((int)(expectedYear - year)) <= 1;
       }
       catch
       {
@@ -451,9 +483,12 @@ namespace SubsCenterOrg
       }
     }
 
-    /**
-     * Return true if title matches
-     */
+    /// <summary>
+    /// Checks if title matches
+    /// </summary>
+    /// <param name="moviePage">movie page</param>
+    /// <param name="expectedTitle">expected title</param>
+    /// <returns>true if title matches</returns>
     private static bool TitleMatch(HtmlDocument moviePage, string expectedTitle)
     {
       try
@@ -467,10 +502,16 @@ namespace SubsCenterOrg
       }
     }
 
-    /**
-     * Return true if Season and Episode match
-     * 
-     */
+    /// <summary>
+    /// Checks if series title, season & episode match
+    /// </summary>
+    /// <param name="mainSeriesPage">main series html page</param>
+    /// <param name="episodePage">episode html page</param>
+    /// <param name="expectedTitle">expected title</param>
+    /// <param name="expectedCleanTitle">expected clean title</param>
+    /// <param name="expectedSeason">expected season</param>
+    /// <param name="expectedEpisode">expected episode</param>
+    /// <returns>true if Title, Season & Episode match</returns>
     private static bool TitleSeasonEpisodeMatch(HtmlDocument mainSeriesPage, HtmlDocument episodePage, string expectedTitle, string expectedCleanTitle, int expectedSeason, int expectedEpisode)
     {
       try
@@ -500,6 +541,11 @@ namespace SubsCenterOrg
       }
     }
 
+    /// <summary>
+    /// Clean title name. Removes anything in parenthesis, change to lower case and trims.
+    /// </summary>
+    /// <param name="title">title</param>
+    /// <returns>clean title name</returns>
     private static string CleanTitleName(string title)
     {
       if (title == null)
@@ -509,6 +555,19 @@ namespace SubsCenterOrg
       return !title.Contains("(") ? title.ToLower().Trim() : title.Substring(0, title.IndexOf("(")).ToLower().Trim();
     }
 
+    /// <summary>
+    /// Checks if file has subtitle extension
+    /// </summary>
+    /// <param name="fileInfo">file info</param>
+    /// <returns>true if file has subtitle extension</returns>
+    private static bool HasSubtitleExtension(FileSystemInfo fileInfo)
+    {
+      return SubtitleExtensions.Contains(fileInfo.Extension.ToLowerInvariant());
+    }
+
+    /// <summary>
+    /// Translate 2 letters language code to language full name
+    /// </summary>
     private static readonly Dictionary<string, string> LanguageShortToLongCodeDictionary = new Dictionary<string, string>
                                                                               {
                                                                                 {"ar", "Arabic"},
