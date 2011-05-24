@@ -13,7 +13,7 @@
 
 = Configuration =
 
- Enable `_"SubsCenter.Org"_` provider via [http://code.google.com/p/subcentral SubCentral] configuration.
+ Enable `_"SubsCenter.Org"_` provider via `SubCentral` configuration.
 
  == Fine Tuning ==
  In case you find a series that the site supports, but the provider fails to find, edit the `_*SubsCenterOrg.xml*_` in the installation folder according to this example:
