@@ -13,12 +13,12 @@
 
 = Configuration =
 
- Enable `_"SubsCenter.Org"_` provider via `SubCentral` configuration.
+ Enable _`"SubsCenter.Org"`_ provider via `SubCentral` configuration.
 
  == Fine Tuning ==
- In case you find a series that the site supports, but the provider fails to find, edit the `_*SubsCenterOrg.xml*_` in the installation folder according to this example:
+ In case you find a series that the site supports, but the provider fails to find, edit the _`*SubsCenterOrg.xml*`_ in the installation folder according to this example:
  <br>
- <br>If _*House M.D.*_ appears in your `MediaPortal` as _*House*_, and the plugin does not find a match since there are too many series names with "House" in it, you can add specific parameter in the  `_SubsCenterOrg.xml_`
+ <br>If _*House M.D.*_ appears in your `MediaPortal` as _*House*_, and the plugin does not find a match since there are too many series names with "House" in it, you can add specific parameter in the  _`SubsCenterOrg.xml`_
  <br> the line_*`<series query="house">house md</series>`*_
  <br> means that the local series name _*"house"*_ will be changed to _*"house md"*_.
  <br> You can find the correct value from the url of the series page in SubsCenter.org site. In this case it's:
