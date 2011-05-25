@@ -11,11 +11,10 @@ namespace SubsCenterOrg
 {
   public class SubsCenterOrgDownloader : ISubtitleDownloader
   {
-    private static readonly List<string> SubtitleExtensions = new List<string> { ".aqt", ".asc", ".ass", ".dat", ".dks", ".js", ".jss",
-                                                                                ".lrc", ".mpl", ".ovr", ".pan", ".pjs", ".psb", ".rt",
-                                                                                ".rtf", ".s2k", ".sbt", ".scr", ".smi", ".son", ".srt",
-                                                                                ".ssa", ".sst", ".ssts", ".stl", ".sub", ".txt", ".vkt",
-                                                                                ".vsf", ".zeg" };
+    private static readonly List<string> SubtitleExtensions = new List<string> { ".aqt", ".asc", ".ass", ".dat", ".dks", "idx", ".js", ".jss",
+                                                                                 ".lrc", ".mpl", ".ovr", ".pan", ".pjs", ".psb", ".rt", ".rtf",
+                                                                                 ".s2k", ".sbt", ".scr", ".smi", ".son", ".srt", ".ssa", ".sst",
+                                                                                 ".ssts", ".stl", ".sub", ".vkt", ".vsf", ".zeg" };
 
     private const string BaseUrl = "http://www.subscenter.org";
     private const string ExactMovieUrl = "http://www.subscenter.org/he/subtitle/movie/";
