@@ -172,7 +172,7 @@ namespace SubsCenterOrg
     public List<FileInfo> SaveSubtitle(Subtitle subtitle)
     {
       var url = DownloadPageUrl + GetLanguagePath(subtitle.LanguageCode) + "/" + subtitle.Id + "/?v=" + subtitle.FileName;
-      var archiveFile = Path.GetTempFileName() + ".zip";
+      var archiveFile = Path.GetTempFileName();
 
       var client = new WebClient();
       client.DownloadFile(url, archiveFile);
