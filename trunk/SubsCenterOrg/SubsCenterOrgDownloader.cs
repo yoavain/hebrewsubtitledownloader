@@ -111,7 +111,7 @@ namespace SubsCenterOrg
       var episodePage = web.Load(exactEpisodeUrl);
 
       // if page not found and can clean title name - use clean name
-      if (IsPageNotFound(mainSeriesPage) && !cleanTitle.Equals(title))
+      if (!cleanTitle.Equals(title) && (IsPageNotFound(mainSeriesPage) || IsPageNotFound(episodePage)))
       {
         // try guessing exact episode url again
         exactSeriesUrl = ExactSeriesUrl + cleanTitle.Replace(" ", "-");
@@ -172,7 +172,7 @@ namespace SubsCenterOrg
     public List<FileInfo> SaveSubtitle(Subtitle subtitle)
     {
       var url = DownloadPageUrl + GetLanguagePath(subtitle.LanguageCode) + "/" + subtitle.Id + "/?v=" + subtitle.FileName;
-      var archiveFile = Path.GetTempFileName();
+      var archiveFile = Path.GetTempFileName().Replace(".tmp", ".zip");
 
       var client = new WebClient();
       client.DownloadFile(url, archiveFile);
