@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
-using HtmlAgilityPack;
 using SubtitleDownloader.Core;
 using SubtitleDownloader.Util;
 
@@ -23,9 +19,9 @@ namespace Sratim
 
     private const string TvSearchResultsPattern = @"<div style=""""><a href=""viewseries.php\?id=(\d+)";
     private const string SearchResultsPattern = @"<div style=""""><a href=""view.php\?id=(\d+)";
-    private const string SubtitleListPattern = @"downloadsubtitle\.php\?id=(?P<fid>\d*).*?subt_lang.*?title=""(?P<language>.*?)"".*?subtitle_title.*?title=""(?P<title>.*?)""";
-    private const string TvSeasonPattern = @"seasonlink_(?P<slink>\d+).*?>(?P<snum>\d+)</a>";
-    private const string TvEpisodePattern = @"episodelink_(?P<elink>\d+).*?>(?P<enum>\d+)</a>";
+    private const string SubtitleListPattern = @"downloadsubtitle.php\?id=(?<fid>\d*).*?subt_lang.*?title=\""(?<language>.*?)\"".*?subtitle_title.*?title=\""(?<title>.*?)\""";
+    private const string TvSeasonPattern = @"seasonlink_(?<season_link>\d+).*?>(?<season_num>\d+)</a>";
+    private const string TvEpisodePattern = @"episodelink_(?<episode_link>\d+).*?>(?<episode_num>\d+)</a>";
 
     public string GetName()
     {
@@ -84,14 +80,14 @@ namespace Sratim
     
 
     /// <summary>
-    /// Returns the content of the given URL. Used for both html and subtitle files. 
+    /// Returns the content of the given URL
     /// </summary>
     /// <param name="url">the url</param>
-    /// <returns>the HtmlDocument</returns>
-    private static HtmlDocument GetUrl(string url)
+    /// <returns>the content of the page</returns>
+    private static string GetUrl(string url)
     {
-      var web = new HtmlWeb();
-      return web.Load(url);
+      var client = new WebClient();
+      return client.DownloadString(url);
     }
 
     /// <summary>
@@ -114,7 +110,7 @@ namespace Sratim
       var subtitleListRegex = new Regex(SubtitleListPattern);
 
       // Create a list of all subtitles found on page
-      var foundSubtitles = subtitleListRegex.Matches(subtitlePage.ToString());
+      var foundSubtitles = subtitleListRegex.Matches(subtitlePage);
 
       // Subtitles
       foreach (var foundSubtitle in foundSubtitles)
@@ -164,7 +160,7 @@ namespace Sratim
       var subtitleListRegex = new Regex(SubtitleListPattern);
 
       // Retrieve the requested season
-      var foundSeasons = tvSeasonRegex.Matches(subtitlePage.ToString());
+      var foundSeasons = tvSeasonRegex.Matches(subtitlePage);
 
       // Seaosons
       foreach (var foundSeason in foundSeasons)
@@ -177,7 +173,7 @@ namespace Sratim
         {
           // Retrieve the requested episode
           subtitlePage = GetUrl(BaseUrl + "viewseries.php?id=" + subtitlePageId + "&m=subtitles&s=" + seasonLink);
-          var foundEpisodes = tvEpisodeRegex.Matches(subtitlePage.ToString());
+          var foundEpisodes = tvEpisodeRegex.Matches(subtitlePage);
 
           // Episodes
           foreach(var foundEpisode in foundEpisodes)
@@ -191,7 +187,7 @@ namespace Sratim
               subtitlePage = GetUrl(BaseUrl + "viewseries.php?id=" + subtitlePageId + "&m=subtitles&s=" + seasonLink + "&e=" + episodeLink);
 
               // Create a list of all subtitles found on page
-              var foundSubtitles = subtitleListRegex.Matches(subtitlePage.ToString());
+              var foundSubtitles = subtitleListRegex.Matches(subtitlePage);
 
               // Subtitles
               foreach (var foundSubtitle in foundSubtitles)
@@ -248,7 +244,7 @@ namespace Sratim
     /// <param name="rar">True iff video is inside a rar archive</param>
     /// <param name="languageList">List of languages selected by the user</param>
     /// <param name="stack"></param>
-    private static List<SubtitleData> SearchSubtitles(string fileOriginalPath, string title, string tvshow, string year, string season, string episode, bool setTemp, bool rar,
+    private static IEnumerable<SubtitleData> SearchSubtitles(string fileOriginalPath, string title, string tvshow, string year, string season, string episode, bool setTemp, bool rar,
       ICollection<string> languageList, string stack)
     {
       var subtitlesList = new List<SubtitleData>();
@@ -271,24 +267,30 @@ namespace Sratim
       {
         // Find sratim's subtitle page IDs
         var tvSearchResultRegex = new Regex(TvSearchResultsPattern);
-        var subtitleIDs = tvSearchResultRegex.Matches(searchResults.ToString());
+        var subtitleIDs = tvSearchResultRegex.Matches(searchResults);
 
         // Go over all the subtitle pages and add results to our list if season and episode match
-        foreach (var sid in subtitleIDs)
+        foreach (var subtitleId in subtitleIDs)
         {
-          subtitlesList = GetAllTvSubtitles(sid.ToString(), languageList, season, episode);
+          var groups = tvSearchResultRegex.Match(subtitleId.ToString()).Groups;
+          var sid = groups[1].Value;
+
+          subtitlesList = GetAllTvSubtitles(sid, languageList, season, episode);
         }
       }
       else
       {
         // Find sratim's subtitle page IDs
         var searchResultsRegex = new Regex(SearchResultsPattern);
-        var subtitleIDs = searchResultsRegex.Matches(searchResults.ToString());
+        var subtitleIDs = searchResultsRegex.Matches(searchResults);
 
         // Go over all the subtitle pages and add results to our list
-        foreach(var sid in subtitleIDs)
+        foreach(var subtitleId in subtitleIDs)
         {
-          subtitlesList = GetAllSubtitles(sid.ToString(), languageList);
+          var groups = searchResultsRegex.Match(subtitleId.ToString()).Groups;
+          var sid = groups[1].Value;
+
+          subtitlesList = GetAllSubtitles(sid, languageList);
         }
       }
 
