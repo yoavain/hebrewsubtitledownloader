@@ -31,10 +31,12 @@ namespace Sratim
     public List<Subtitle> SearchSubtitles(SearchQuery query)
     {
       var subsList = new List<Subtitle>();
-      var subtitles = SearchSubtitles("", query.Query, null, query.Year.ToString(), null, null, false, false, query.LanguageCodes, "");
+      var languageList = ConvertThreeLetterToTwoLetterLanguageCodes(query.LanguageCodes);
+
+      var subtitles = SearchSubtitles("", query.Query, null, query.Year.ToString(), null, null, false, false, languageList, "");
       foreach (var subtitle in subtitles)
       {
-        subsList.Add(new Subtitle(subtitle.SubtitleId, query.Query, subtitle.Filename, subtitle.LanguageFlag));
+        subsList.Add(new Subtitle(subtitle.SubtitleId, query.Query, subtitle.Filename, Languages.GetLanguageCode(subtitle.LanguageName)));
       }
       return subsList;
     }
@@ -42,10 +44,12 @@ namespace Sratim
     public List<Subtitle> SearchSubtitles(EpisodeSearchQuery query)
     {
       var subsList = new List<Subtitle>();
-      var subtitles = SearchSubtitles("", null, query.SerieTitle, "" , query.Season.ToString(), query.Episode.ToString(), false, false, query.LanguageCodes, "");
+      var languageList = ConvertThreeLetterToTwoLetterLanguageCodes(query.LanguageCodes);
+
+      var subtitles = SearchSubtitles("", null, query.SerieTitle, "" , query.Season.ToString(), query.Episode.ToString(), false, false, languageList, "");
       foreach (var subtitle in subtitles)
       {
-        subsList.Add(new Subtitle(subtitle.SubtitleId, query.SerieTitle, subtitle.Filename, subtitle.LanguageName));
+        subsList.Add(new Subtitle(subtitle.SubtitleId, query.SerieTitle, subtitle.Filename, Languages.GetLanguageCode(subtitle.LanguageName)));
       }
       return subsList;
     }
@@ -87,6 +91,7 @@ namespace Sratim
     private static string GetUrl(string url)
     {
       var client = new WebClient();
+      client.Encoding = System.Text.Encoding.UTF8;
       return client.DownloadString(url);
     }
 
@@ -125,7 +130,7 @@ namespace Sratim
         SratimToScript.TryGetValue(language, out languageName);
         string languageTwoLetter;
         ToOpenSubtitlesTwoLetters.TryGetValue(languageName, out languageTwoLetter);
-        if (languageList.Contains(languageName))
+        if (languageList.Contains(languageTwoLetter))
         {
           subtitlesList.Add(new SubtitleData("0", false, title, fid, "flags" + languageTwoLetter + ".gif", languageName));
         }
@@ -198,7 +203,7 @@ namespace Sratim
                 SratimToScript.TryGetValue(language, out languageName);
                 string languageTwoLetter;
                 ToOpenSubtitlesTwoLetters.TryGetValue(languageName, out languageTwoLetter);
-                if (languageList.Contains(languageName))
+                if (languageList.Contains(languageTwoLetter))
                 {
                   subtitlesList.Add(new SubtitleData("0", false, title, fid, "flags" + languageTwoLetter + ".gif", languageName));
                 }
@@ -500,6 +505,21 @@ namespace Sratim
                                                                                         {"Portuguese-BR", "pb"},
                                                                                         {"All", "all"}
                                                                                       };
+
+    /// <summary>
+    /// Convert 3 letters language code list to 2 letters language code list
+    /// </summary>
+    /// <param name="languageCodes">3 letters language code list</param>
+    /// <returns>2 letters language code list</returns>
+    private static List<string> ConvertThreeLetterToTwoLetterLanguageCodes(IEnumerable<string> languageCodes)
+    {
+      var languageList = new List<string>();
+      foreach (var language in languageCodes)
+      {
+        languageList.Add(language.Substring(0, 2));
+      }
+      return languageList;
+    }
 
   }
 }
