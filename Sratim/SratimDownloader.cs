@@ -120,10 +120,6 @@ namespace Sratim
         var language = groupCollection["language"].Value;
         var title = groupCollection["title"].Value;
 
-        Console.Write("fid = " + fid);
-        Console.Write("language = " + language);
-        Console.Write("title = " + title);
-
         // Check if the subtitles found match one of our languages was selected by the user
         string languageName;
         SratimToScript.TryGetValue(language, out languageName);
