@@ -12,5 +12,6 @@ if "%programfiles(x86)%XXX"=="XXX" goto 32BIT
 :CONT
 
 copy /y SubsCenterOrg\bin\Debug\SubsCenterOrg.* "%PROGS%\Team MediaPortal\MediaPortal\SubtitleDownloaders\"
+copy /y Sratim\bin\Debug\Sratim.* "%PROGS%\Team MediaPortal\MediaPortal\SubtitleDownloaders\"
 
 cd Build

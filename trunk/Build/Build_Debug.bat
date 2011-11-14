@@ -5,6 +5,7 @@ cd ..
 
 cd SubsCenterOrg
 "%WINDIR%\Microsoft.NET\Framework\v3.5\MSBUILD.exe" /target:Rebuild /property:Configuration=DEBUG SubsCenterOrg.csproj
+"%WINDIR%\Microsoft.NET\Framework\v3.5\MSBUILD.exe" /target:Rebuild /property:Configuration=DEBUG Sratim.csproj
 cd ..
 
 cd Build
