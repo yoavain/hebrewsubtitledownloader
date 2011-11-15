@@ -34,7 +34,7 @@ namespace Sratim
       var subsList = new List<Subtitle>();
       var languageList = ConvertThreeLetterToTwoLetterLanguageCodes(query.LanguageCodes);
 
-      var subtitles = SearchSubtitles("", query.Query, null, query.Year.ToString(), null, null, false, false, languageList, "");
+      var subtitles = SearchSubtitles(query.Query, null, null, null, languageList);
       foreach (var subtitle in subtitles)
       {
         subsList.Add(new Subtitle(subtitle.SubtitleId, query.Query, subtitle.Filename, Languages.GetLanguageCode(subtitle.LanguageName)));
@@ -47,7 +47,7 @@ namespace Sratim
       var subsList = new List<Subtitle>();
       var languageList = ConvertThreeLetterToTwoLetterLanguageCodes(query.LanguageCodes);
 
-      var subtitles = SearchSubtitles("", null, query.SerieTitle, "" , query.Season.ToString(), query.Episode.ToString(), false, false, languageList, "");
+      var subtitles = SearchSubtitles(null, query.SerieTitle, query.Season.ToString(), query.Episode.ToString(), languageList);
       foreach (var subtitle in subtitles)
       {
         subsList.Add(new Subtitle(subtitle.SubtitleId, query.SerieTitle, subtitle.Filename, Languages.GetLanguageCode(subtitle.LanguageName)));
@@ -68,10 +68,10 @@ namespace Sratim
       string languageCode;
       ToOpenSubtitlesTwoLetters.TryGetValue(languageName, out languageCode);
 
-      var subtitleData = new SubtitleData("", false, fileName, subtitleId, languageCode, languageName);
+      var subtitleData = new SubtitleData(fileName, subtitleId, languageName);
       var subtitles = new List<SubtitleData>(1) {subtitleData};
 
-      var savedSubtitle = DownloadSubtitles(subtitles, 0, "", "", "", "");
+      var savedSubtitle = DownloadSubtitles(subtitles, 0);
 
       return savedSubtitle;
     }
@@ -143,7 +143,7 @@ namespace Sratim
         ToOpenSubtitlesTwoLetters.TryGetValue(languageName, out languageTwoLetter);
         if (languageList.Contains(languageTwoLetter))
         {
-          subtitlesList.Add(new SubtitleData("0", false, title, fid, "flags" + languageTwoLetter + ".gif", languageName));
+          subtitlesList.Add(new SubtitleData(title, fid, languageName));
         }
       }
 
@@ -229,7 +229,7 @@ namespace Sratim
                 ToOpenSubtitlesTwoLetters.TryGetValue(languageName, out languageTwoLetter);
                 if (languageList.Contains(languageTwoLetter))
                 {
-                  subtitlesList.Add(new SubtitleData("0", false, title, fid, "flags" + languageTwoLetter + ".gif", languageName));
+                  subtitlesList.Add(new SubtitleData(title, fid, languageName));
                 }
               }
             }
@@ -240,18 +240,6 @@ namespace Sratim
       return subtitlesList;
     }
 
-    /// <summary>
-    /// Extracts the downloaded file and find a new sub/srt file to return.
-    /// Sratim.co.il currently isn't hosting subtitles in .txt format but
-    /// is adding txt info files in their zips, hence not looking for txt.
-    /// </summary>
-    /// <param name="tempSubDir">temporary subtitle directory</param>
-    /// <param name="tempZipFile">tmep zip file</param>
-    private static void ExtractAndFindSub(string tempSubDir,string tempZipFile)
-    {
-      throw new NotImplementedException();
-    }
-
     // ===============================================================================
     // Public interface functions
     // ===============================================================================
@@ -259,18 +247,12 @@ namespace Sratim
     /// <summary>
     /// This function is called when the service is selected through the subtitles addon OSD.
     /// </summary>
-    /// <param name="fileOriginalPath">Original system path of the file playing</param>
     /// <param name="title">Title of the movie or episode name</param>
     /// <param name="tvshow">Name of a tv show. Empty if video isn't a tv show (as are season and episode)</param>
-    /// <param name="year">Year</param>
     /// <param name="season">Season number</param>
     /// <param name="episode">Episode number</param>
-    /// <param name="setTemp">True iff video is http:// stream</param>
-    /// <param name="rar">True iff video is inside a rar archive</param>
     /// <param name="languageList">List of languages selected by the user</param>
-    /// <param name="stack"></param>
-    private static IEnumerable<SubtitleData> SearchSubtitles(string fileOriginalPath, string title, string tvshow, string year, string season, string episode, bool setTemp, bool rar,
-      ICollection<string> languageList, string stack)
+    private static IEnumerable<SubtitleData> SearchSubtitles(string title, string tvshow, string season, string episode, ICollection<string> languageList)
     {
       var subtitlesList = new List<SubtitleData>();
 
@@ -327,14 +309,9 @@ namespace Sratim
     /// </summary>
     /// <param name="subtitlesList">Same list returned in search function</param>
     /// <param name="pos">The selected item's number in subtitles_list</param>
-    /// <param name="zipSubs">Full path of zipsubs.zip located in tmp location, if automatic extraction is used (see return values for details)</param>
-    /// <param name="tmpSubDir">Temp folder used for both automatic and manual extraction</param>
-    /// <param name="subFolder">Folder where the sub will be saved</param>
-    /// <param name="sessionId">Same session_id returned in search function</param>
-    private static List<FileInfo> DownloadSubtitles(IList<SubtitleData> subtitlesList, int pos, string zipSubs, string tmpSubDir, string subFolder, string sessionId)
+    private static List<FileInfo> DownloadSubtitles(IList<SubtitleData> subtitlesList, int pos)
     {
       var subtitleId = subtitlesList[pos].SubtitleId;
-      var language = subtitlesList[pos].LanguageName;
 
       var url = BaseUrl + "downloadsubtitle.php?id=" + subtitleId;
       
@@ -382,31 +359,15 @@ namespace Sratim
     /// </summary>
     private class SubtitleData
     {
-      private readonly string _rating;
-      private readonly bool _sync;
       private readonly string _filename;
       private readonly string _subtitleId;
-      private readonly string _languageFlag;
       private readonly string _languageName;
 
-      public SubtitleData(string rating, bool sync, string filename, string subtitleId, string languageFlag, string languageName)
+      public SubtitleData(string filename, string subtitleId, string languageName)
       {
-        this._rating = rating;
-        this._sync = sync;
-        this._filename = filename;
+        _filename = filename;
         _subtitleId = subtitleId;
-        _languageFlag = languageFlag;
         _languageName = languageName;
-      }
-
-      public string Rating
-      {
-        get { return _rating; }
-      }
-
-      public bool Sync
-      {
-        get { return _sync; }
       }
 
       public string Filename
@@ -417,11 +378,6 @@ namespace Sratim
       public string SubtitleId
       {
         get { return _subtitleId; }
-      }
-
-      public string LanguageFlag
-      {
-        get { return _languageFlag; }
       }
 
       public string LanguageName
