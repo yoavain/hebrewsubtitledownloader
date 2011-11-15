@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Text;
 using System.Text.RegularExpressions;
 using SubtitleDownloader.Core;
 using SubtitleDownloader.Util;
@@ -90,9 +91,15 @@ namespace Sratim
     /// <returns>the content of the page</returns>
     private static string GetUrl(string url)
     {
-      var client = new WebClient();
-      client.Encoding = System.Text.Encoding.UTF8;
-      return client.DownloadString(url);
+      try
+      {
+        var client = new WebClient {Encoding = Encoding.UTF8};
+        return client.DownloadString(url);
+      }
+      catch (Exception)
+      {
+        return null;
+      }
     }
 
     /// <summary>
@@ -110,6 +117,10 @@ namespace Sratim
 
       // Retrieve the subtitles page (html)
       var subtitlePage = GetUrl(BaseUrl + "view.php?id=" + subtitlePageId + "&m=subtitles#");
+      if (subtitlePage == null)
+      {
+        return subtitlesList;
+      }
 
       // Compile the RegEx string
       var subtitleListRegex = new Regex(SubtitleListPattern);
@@ -154,6 +165,10 @@ namespace Sratim
 
       // Retrieve the subtitles page (html)
       var subtitlePage = GetUrl(BaseUrl + "viewseries.php?id=" + subtitlePageId + "&m=subtitles#");
+      if (subtitlePage == null)
+      {
+        return subtitlesList;
+      }
 
       // Compile the RegEx string
       var tvSeasonRegex = new Regex(TvSeasonPattern);
@@ -174,6 +189,11 @@ namespace Sratim
         {
           // Retrieve the requested episode
           subtitlePage = GetUrl(BaseUrl + "viewseries.php?id=" + subtitlePageId + "&m=subtitles&s=" + seasonLink);
+          if (subtitlePage == null)
+          {
+            break;
+          }
+
           var foundEpisodes = tvEpisodeRegex.Matches(subtitlePage);
 
           // Episodes
@@ -186,6 +206,10 @@ namespace Sratim
             if (episodeNum.Equals(episode))
             {
               subtitlePage = GetUrl(BaseUrl + "viewseries.php?id=" + subtitlePageId + "&m=subtitles&s=" + seasonLink + "&e=" + episodeLink);
+              if (subtitlePage == null)
+              {
+                break;
+              }
 
               // Create a list of all subtitles found on page
               var foundSubtitles = subtitleListRegex.Matches(subtitlePage);
@@ -255,7 +279,6 @@ namespace Sratim
 
       // Retrieve the search results (html)
       var searchResults = GetUrl(BaseUrl + @"browse.php\?q=" + searchString);
-    
       if (searchResults == null)
       {
         throw new Exception("Search timed out, please try again later.");
