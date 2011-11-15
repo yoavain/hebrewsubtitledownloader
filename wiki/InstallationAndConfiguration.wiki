@@ -1,7 +1,7 @@
 #summary Installation and Configuration
 
 = Prerequisite =
-  [http://code.google.com/p/subcentral SubCentral] plugin
+  Latest [http://code.google.com/p/subcentral SubCentral] plugin
 
 = Installation =
  Extract files to the folder `"SubtitleDownloaders"` under your `MediaPortal` program folder.
@@ -13,10 +13,18 @@
 
 = Configuration =
 
- Enable _`"Sratim.co.il"`_ and _`"SubsCenter.Org"`_ provider via `SubCentral` configuration.
+ Enable _`"Sratim.co.il"`_ and _`"SubsCenter.Org"`_ providers via `SubCentral` configuration. Prioritize.
+ Enable Hebrew language. Prioritize.
+ You can also create different groups for Movies and TV shows.
+
+ Configuration I use (you can do the same, or not...):
+|| *General* || *Languages* ||
+|| [https://hebrewsubtitledownloader.googlecode.com/svn/wiki/configuration/General.png] || [https://hebrewsubtitledownloader.googlecode.com/svn/wiki/configuration/Languages.png] ||
+|| *Folders* || *Advanced* ||
+|| [https://hebrewsubtitledownloader.googlecode.com/svn/wiki/configuration/Folders.png] || [https://hebrewsubtitledownloader.googlecode.com/svn/wiki/configuration/Advanced.png] ||
 
 
- == Fine Tuning ==
+ == Fine Tuning for SubsCenter.Org ==
  In case you find a series that the site supports, but the provider fails to find, edit the _*`SubsCenterOrg.xml`*_ in the installation folder according to this example:
  <br>
  <br>If _*House M.D.*_ appears in your `MediaPortal` as _*House*_, and the plugin does not find a match since there are too many series names with "House" in it, you can add specific parameter in the  _`SubsCenterOrg.xml`_
