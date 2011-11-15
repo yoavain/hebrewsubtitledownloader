@@ -13,7 +13,8 @@
 
 = Configuration =
 
- Enable _`"SubsCenter.Org"`_ provider via `SubCentral` configuration.
+ Enable _`"Sratim.co.il"`_ and _`"SubsCenter.Org"`_ provider via `SubCentral` configuration.
+
 
  == Fine Tuning ==
  In case you find a series that the site supports, but the provider fails to find, edit the _*`SubsCenterOrg.xml`*_ in the installation folder according to this example:
