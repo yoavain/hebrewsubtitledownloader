@@ -9,6 +9,12 @@ using SubtitleDownloader.Util;
 
 namespace Sratim
 {
+  /// <summary>
+  /// This class is an implementation of SubtitleDownloader API (http://www.assembla.com/spaces/subtitledownloader/wiki)
+  /// For the site Sratim (http://www.sratim.co.il)
+  /// Code is inspired by the XBMC implementaion by orivar (https://github.com/orivar)
+  /// Original Python code can be found here: https://github.com/amet/script.xbmc.subtitles/tree/master/script.xbmc.subtitles/resources/lib/services/Sratim
+  /// </summary>
   public class SratimDownloader : ISubtitleDownloader
   {
 
