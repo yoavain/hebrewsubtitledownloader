@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -25,10 +26,14 @@ namespace Sratim
     // ===============================================================================
 
     private const string TvSearchResultsPattern = @"<div style=""""><a href=""viewseries.php\?id=(\d+)";
-    private const string SearchResultsPattern = @"<div style=""""><a href=""view.php\?id=(\d+)";
+    private const string SearchResultsPattern = @"(<div style=\""[^\""]*?\""><a href=\""view.php\?id=(?<movie_id>\d+)[^""]*?\""\stitle=\""(?<movie_hebrew>[^|""]*)\|(?<movie_english>[^|""]*)\|(?<movie_year>[^""]*)\""|<div style=\""[^\""]*?\""><a href=\""view.php\?id=(?<movie_id>\d+)[^""]*?\""\stitle=\""(?<movie_english>[^|""]*)\|(?<movie_year>[^|""]*)\"")";
     private const string SubtitleListPattern = @"downloadsubtitle.php\?id=(?<fid>\d*).*?subt_lang.*?title=\""(?<language>.*?)\"".*?subtitle_title.*?title=\""(?<title>.*?)\""";
     private const string TvSeasonPattern = @"seasonlink_(?<season_link>\d+).*?>(?<season_num>\d+)</a>";
     private const string TvEpisodePattern = @"episodelink_(?<episode_link>\d+).*?>(?<episode_num>\d+)</a>";
+    
+
+    // Maximum number of movie pages to look at (when exact match is not found)
+    private const int MaxMoviePagesToFollow = 5;
 
     public string GetName()
     {
@@ -40,7 +45,7 @@ namespace Sratim
       var subsList = new List<Subtitle>();
       var languageList = ConvertThreeLetterToTwoLetterLanguageCodes(query.LanguageCodes);
 
-      var subtitles = SearchSubtitles(query.Query, null, null, null, languageList);
+      var subtitles = SearchSubtitles(query.Query, query.Year, null, null, null, languageList);
       foreach (var subtitle in subtitles)
       {
         subsList.Add(new Subtitle(subtitle.SubtitleId, query.Query, subtitle.Filename, Languages.GetLanguageCode(subtitle.LanguageName)));
@@ -53,7 +58,7 @@ namespace Sratim
       var subsList = new List<Subtitle>();
       var languageList = ConvertThreeLetterToTwoLetterLanguageCodes(query.LanguageCodes);
 
-      var subtitles = SearchSubtitles(null, query.SerieTitle, query.Season.ToString(), query.Episode.ToString(), languageList);
+      var subtitles = SearchSubtitles(null, 0, query.SerieTitle, query.Season.ToString(), query.Episode.ToString(), languageList);
       foreach (var subtitle in subtitles)
       {
         subsList.Add(new Subtitle(subtitle.SubtitleId, query.SerieTitle, subtitle.Filename, Languages.GetLanguageCode(subtitle.LanguageName)));
@@ -116,7 +121,7 @@ namespace Sratim
     /// <param name="subtitlePageId">subtitle page id</param>
     /// <param name="languageList">list of languages</param>
     /// <returns></returns>
-    private static List<SubtitleData> GetAllSubtitles(string subtitlePageId, ICollection<string> languageList)
+    private static IEnumerable<SubtitleData> GetAllSubtitles(string subtitlePageId, ICollection<string> languageList)
     {
       // return object
       var subtitlesList = new List<SubtitleData>();
@@ -142,6 +147,12 @@ namespace Sratim
         var language = groupCollection["language"].Value;
         var title = groupCollection["title"].Value;
 
+        // skip 0 length titles
+        if (title.Length == 0)
+        {
+          break;
+        }
+
         // Check if the subtitles found match one of our languages was selected by the user
         string languageName;
         SratimToScript.TryGetValue(language, out languageName);
@@ -164,7 +175,7 @@ namespace Sratim
     /// <param name="season">season number</param>
     /// <param name="episode">episode number</param>
     /// <returns></returns>
-    private static List<SubtitleData>  GetAllTvSubtitles(string subtitlePageId, ICollection<string> languageList, string season,string episode)
+    private static IEnumerable<SubtitleData> GetAllTvSubtitles(string subtitlePageId, ICollection<string> languageList, string season,string episode)
     {
       // return object
       var subtitlesList = new List<SubtitleData>();
@@ -228,6 +239,12 @@ namespace Sratim
                 var language = subtitleGroups["language"].Value;
                 var title = subtitleGroups["title"].Value;
 
+                // skip 0 length titles
+                if (title.Length == 0)
+                {
+                  break;
+                }
+
                 // Check if the subtitles found match one of our languages was selected by the user
                 string languageName;
                 SratimToScript.TryGetValue(language, out languageName);
@@ -254,11 +271,12 @@ namespace Sratim
     /// This function is called when the service is selected through the subtitles addon OSD.
     /// </summary>
     /// <param name="title">Title of the movie or episode name</param>
+    /// <param name="year">Query year</param>
     /// <param name="tvshow">Name of a tv show. Empty if video isn't a tv show (as are season and episode)</param>
     /// <param name="season">Season number</param>
     /// <param name="episode">Episode number</param>
     /// <param name="languageList">List of languages selected by the user</param>
-    private static IEnumerable<SubtitleData> SearchSubtitles(string title, string tvshow, string season, string episode, ICollection<string> languageList)
+    private static IEnumerable<SubtitleData> SearchSubtitles(string title, int? year, string tvshow, string season, string episode, ICollection<string> languageList)
     {
       var subtitlesList = new List<SubtitleData>();
 
@@ -287,22 +305,78 @@ namespace Sratim
           var groups = tvSearchResultRegex.Match(subtitleId.ToString()).Groups;
           var sid = groups[1].Value;
 
-          subtitlesList = GetAllTvSubtitles(sid, languageList, season, episode);
+          // Get Subtitles
+          var tvSubtitles = GetAllTvSubtitles(sid, languageList, season, episode);
+          subtitlesList.AddRange(tvSubtitles);
         }
       }
-      else
+      else // movie
       {
+        // Lower case title for comparison
+        var lowTitle = title.ToLower();
+        // parse movie year from query for comparison
+        var queryYear = (year != null) ? year.Value : 0;
+
         // Find sratim's subtitle page IDs
         var searchResultsRegex = new Regex(SearchResultsPattern);
         var subtitleIDs = searchResultsRegex.Matches(searchResults);
 
-        // Go over all the subtitle pages and add results to our list
+        // Maps sid --> title distance from query * year distance from query
+        var moviesMatchDistance = new Dictionary<string, int>();
+
+        // Go over all the results to find exact match or closest matches
         foreach(var subtitleId in subtitleIDs)
         {
           var groups = searchResultsRegex.Match(subtitleId.ToString()).Groups;
-          var sid = groups[1].Value;
+          
+          // parse movie data from page
+          var sid = groups["movie_id"].Value;
+          var movieEnglishTitile = groups["movie_english"].Value.Trim().ToLower();
+          int movieYear;
+          if (!int.TryParse(groups["movie_year"].Value, out movieYear))
+          {
+            movieYear = 0;
+          }
 
-          subtitlesList = GetAllSubtitles(sid, languageList);
+          // calculate distance
+          var titleDistance = LevenshteinDistance(movieEnglishTitile, lowTitle);
+
+          // if exact match (both title and year) search for subtitles and stop if found
+          if ((titleDistance == 0) && (YearsMatch(queryYear, movieYear)))
+          {
+            // Get exact match subtitles
+            var subtitles = GetAllSubtitles(sid, languageList);
+            var exactMatchSubtitles = new List<SubtitleData>(subtitles);
+            if (exactMatchSubtitles.Count > 0)
+            {
+              // exact match got results
+              return exactMatchSubtitles;
+            }
+          }
+          else // add not exact match to list
+          {
+            moviesMatchDistance.Add(sid, titleDistance);
+          }
+        }
+
+        // sort list
+        var sortedMatches = (from entry in moviesMatchDistance orderby entry.Value ascending select entry).ToDictionary(pair => pair.Key, pair => pair.Value);
+
+        // Try to find from closest 5 matches
+        for (var i = 0; i < Math.Min(MaxMoviePagesToFollow, sortedMatches.Count); i++)
+        {
+          var sid = sortedMatches.ElementAt(i).Key;
+          var distance = sortedMatches.ElementAt(i).Value;
+
+          // Get Subtitles
+          var subtitles = GetAllSubtitles(sid, languageList);
+          subtitlesList.AddRange(subtitles);
+
+          // break if exact match and there are some results
+          if ((distance == 1) && (subtitlesList.Count > 0))
+          {
+            break;
+          }
         }
       }
 
@@ -506,5 +580,51 @@ namespace Sratim
       return languageList;
     }
 
+    /// <summary>
+    /// Compute the distance between two strings.
+    /// </summary>
+    private static int LevenshteinDistance(string s, string t)
+    {
+      var n = s.Length;
+      var m = t.Length;
+      var d = new int[n + 1, m + 1];
+
+      // Step 1
+      if (n == 0){return m;}
+
+      if (m == 0){return n;}
+
+      // Step 2
+      for (var i = 0; i <= n; d[i, 0] = i++){}
+      for (var j = 0; j <= m; d[0, j] = j++){}
+
+      // Step 3
+      for (var i = 1; i <= n; i++)
+      {
+        //Step 4
+        for (var j = 1; j <= m; j++)
+        {
+          // Step 5
+          var cost = (t[j - 1] == s[i - 1]) ? 0 : 1;
+
+          // Step 6
+          d[i, j] = Math.Min(Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1), d[i - 1, j - 1] + cost);
+        }
+      }
+      // Step 7
+      return d[n, m];
+    }
+
+    /// <summary>
+    /// Returns true if movie year match query year ±1
+    /// </summary>
+    /// <param name="queryYear">query year</param>
+    /// <param name="movieYear">movie year</param>
+    /// <returns>true if a match</returns>
+    private static bool YearsMatch(int queryYear, int movieYear)
+    {
+      // ignore 1 year distance
+      return ((queryYear != 0) && (movieYear != 0) && (Math.Abs(queryYear - movieYear) <= 1));
+    }
   }
 }
