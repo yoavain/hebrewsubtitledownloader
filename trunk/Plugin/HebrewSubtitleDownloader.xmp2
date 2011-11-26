@@ -203,24 +203,106 @@ Click Next to continue or Cancel to exit Setup.</Value>
     <Id>95732da5-2c37-42aa-b2cd-1640ec5ccd8c</Id>
     <Author>yoavain</Author>
     <HomePage>http://code.google.com/p/hebrewsubtitledownloader</HomePage>
-    <ForumPage />
-    <UpdateUrl />
+    <ForumPage>http://forum.team-mediaportal.com/mediaportal-plugins-47/hebrew-subtitle-downloader-subcentral-addition-102994</ForumPage>
+    <UpdateUrl>https://hebrewsubtitledownloader.googlecode.com/svn/trunk/Plugin/update.xml</UpdateUrl>
     <Version>
       <Major>2</Major>
       <Minor>0</Minor>
       <Build>2</Build>
       <Revision>67</Revision>
     </Version>
-    <ExtensionDescription>This plugin is an implementation of the SubtitleDownloader API for Hebrew subtitle sites. it adds Hebrew sites to the MediaPortal SubCentral plugin and updates separately.
-
-Supported sites:
-www.sratim.co.il (Thanks orivar from xbmc)
-www.subscenter.org
+    <ExtensionDescription>This plugin is an implementation of the SubtitleDownloader API for Hebrew subtitle sites. it adds Hebrew sites to the MediaPortal SubCentral plugin and updates separately.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Supported sites:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+www.sratim.co.il (Thanks orivar from xbmc)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+www.subscenter.org
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 You must install SubCentral plugin before installing this plugin.</ExtensionDescription>
     <VersionDescription />
     <DevelopmentStatus>Beta</DevelopmentStatus>
-    <OnlineLocation>http://code.google.com/p/hebrewsubtitledownloader/</OnlineLocation>
+    <OnlineLocation>http://www.team-mediaportal.com/index.php?option=com_mtree&amp;task=att_download&amp;link_id=183&amp;cf_id=24</OnlineLocation>
     <ReleaseDate>2011-11-26T18:50:52.3211+02:00</ReleaseDate>
     <Tags>subtitle, hebrew</Tags>
     <Location>C:\Dev\Plugins\HebrewSubtitleDownloader\Plugin\HebrewSubtitleDownloader.mpe1</Location>
@@ -283,7 +365,7 @@ You must install SubCentral plugin before installing this plugin.</ExtensionDesc
         <Param1 />
         <UpdateOption>OverwriteIfOlder</UpdateOption>
         <LocalFileName>HebrewSubtitleDownloader.png</LocalFileName>
-        <ZipFileName>Installer{CopyFile}\{6ba5d454-b984-48a8-9f34-140999481229}-HebrewSubtitleDownloader.png</ZipFileName>
+        <ZipFileName>Installer{CopyFile}\{91fbb048-6722-4d8a-8d56-9902407a3da9}-HebrewSubtitleDownloader.png</ZipFileName>
         <DestinationFilename />
       </FileItem>
     </Items>
@@ -291,7 +373,7 @@ You must install SubCentral plugin before installing this plugin.</ExtensionDesc
   <ProjectSettings>
     <FolderGroups />
     <ProjectFilename>HebrewSubtitleDownloader.xmp2</ProjectFilename>
-    <UpdatePath1 />
+    <UpdatePath1>https://hebrewsubtitledownloader.googlecode.com/svn/trunk/Plugin/update.xml</UpdatePath1>
     <UpdatePath2 />
     <UpdatePath3 />
   </ProjectSettings>
