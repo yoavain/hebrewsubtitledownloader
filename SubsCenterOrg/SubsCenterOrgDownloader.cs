@@ -171,7 +171,13 @@ namespace SubsCenterOrg
 
     public List<FileInfo> SaveSubtitle(Subtitle subtitle)
     {
-      var url = DownloadPageUrl + GetLanguagePath(subtitle.LanguageCode) + "/" + subtitle.Id + "/?v=" + subtitle.FileName;
+      var idAndKey = subtitle.Id.Split(' ');
+      if (idAndKey.Length != 2)
+      {
+        throw new FileNotFoundException("Cannot find file");
+      }
+
+      var url = DownloadPageUrl + GetLanguagePath(subtitle.LanguageCode) + "/" + idAndKey[0] + "/?v=" + subtitle.FileName + "&key=" + idAndKey[1];
       var archiveFile = Path.GetTempFileName().Replace(".tmp", ".zip");
 
       var client = new WebClient();
@@ -218,6 +224,7 @@ namespace SubsCenterOrg
               // mandatory fields: id, subtitle_version, 
               var id = "";
               var subtitleVersion = "";
+              var key = "";
               foreach (var param in index.Value)
               {
                 switch (param.Key)
@@ -232,6 +239,11 @@ namespace SubsCenterOrg
                       subtitleVersion = param.Value;
                       break;
                     }
+                  case "\"key\"":
+                    {
+                      key = param.Value;
+                      break;
+                    }
                   default:
                     {
                       break;
@@ -240,9 +252,10 @@ namespace SubsCenterOrg
               }
 
               // Add subtitles
-              if (id != "" && subtitleVersion != "")
+              if (id != "" && subtitleVersion != "" && key != "")
               {
                 var version = subtitleVersion.Replace("\"", "");
+                var cleanKey = key.Replace("\"", "");
                 string languageName;
                 LanguageShortToLongCodeDictionary.TryGetValue(language.Key.Replace("\"", ""), out languageName);
                 var languageCode = Languages.GetLanguageCode(languageName);
@@ -250,7 +263,7 @@ namespace SubsCenterOrg
                 // Check language
                 if (query.HasLanguageCode(languageCode))
                 {
-                  subtitles.Add(new Subtitle(id, version, version, languageCode));
+                  subtitles.Add(new Subtitle(id + " " + cleanKey, version, version, languageCode));
                 }
               }
             }
