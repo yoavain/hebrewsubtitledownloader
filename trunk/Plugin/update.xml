@@ -85,35 +85,17 @@
           <Revision>67</Revision>
         </Version>
         <ExtensionDescription>This plugin is an implementation of the SubtitleDownloader API for Hebrew subtitle sites. it adds Hebrew sites to the MediaPortal SubCentral plugin and updates separately.
-
-
-
-
-
 Supported sites:
-
-
-
-
-
 * www.sratim.co.il (Thanks orivar from xbmc)
-
-
-* 
-www.subscenter.org
-
-
-
-
-
+* www.subscenter.org
 
 You must install SubCentral plugin before installing this plugin.</ExtensionDescription>
         <VersionDescription />
         <DevelopmentStatus>Beta</DevelopmentStatus>
-        <OnlineLocation>https://hebrewsubtitledownloader.googlecode.com/svn/trunk/Plugin/HebrewSubtitleDownloader.mpe1</OnlineLocation>
+        <OnlineLocation>http://hebrewsubtitledownloader.googlecode.com/files/HebrewSubtitleDownloader_2.0.2.67.mpe1</OnlineLocation>
         <ReleaseDate>2011-11-26T18:50:52.3211+02:00</ReleaseDate>
         <Tags>subtitle, hebrew</Tags>
-        <Location>https://hebrewsubtitledownloader.googlecode.com/svn/trunk/Plugin/HebrewSubtitleDownloader.mpe1</Location>
+        <Location>http://hebrewsubtitledownloader.googlecode.com/files/HebrewSubtitleDownloader_2.0.2.67.mpe1</Location>
         <Params>
           <Items>
             <SectionParam Name="Online Icon">
@@ -232,20 +214,19 @@ You must install SubCentral plugin before installing this plugin.</ExtensionDesc
           <Build>0</Build>
           <Revision>80</Revision>
         </Version>
-        <ExtensionDescription>This plugin is an implementation of the SubtitleDownloader API for Hebrew subtitle sites. it adds Hebrew sites to the MediaPortal SubCentral plugin and updates separately.
-
-Supported sites:
-
-* www.sratim.co.il (Thanks orivar from xbmc)
-* www.subscenter.org
-
-You must install SubCentral plugin before installing this plugin.</ExtensionDescription>
+        <ExtensionDescription>This plugin is an implementation of the SubtitleDownloader API for Hebrew subtitle sites. it adds Hebrew sites to the MediaPortal SubCentral plugin and updates separately.
+Supported sites:
+
+* www.sratim.co.il (Thanks orivar from xbmc)
+* www.subscenter.org
+
+Yo must install SubCentral plugin before installing this plugin.</ExtensionDescription>
         <VersionDescription>First stable version</VersionDescription>
         <DevelopmentStatus>Stable</DevelopmentStatus>
-        <OnlineLocation>https://hebrewsubtitledownloader.googlecode.com/svn/trunk/Plugin/HebrewSubtitleDownloader.mpe1</OnlineLocation>
+        <OnlineLocation>http://hebrewsubtitledownloader.googlecode.com/files/HebrewSubtitleDownloader_2.1.0.80.mpe1</OnlineLocation>
         <ReleaseDate>2011-11-26T18:50:52.3211+02:00</ReleaseDate>
         <Tags>subtitle, hebrew</Tags>
-        <Location>https://hebrewsubtitledownloader.googlecode.com/svn/trunk/Plugin/HebrewSubtitleDownloader.mpe1</Location>
+        <Location>http://hebrewsubtitledownloader.googlecode.com/files/HebrewSubtitleDownloader_2.1.0.80.mpe1</Location>
         <Params>
           <Items>
             <SectionParam Name="Online Icon">
