@@ -207,17 +207,33 @@ Click Next to continue or Cancel to exit Setup.</Value>
     <UpdateUrl>https://hebrewsubtitledownloader.googlecode.com/svn/trunk/Plugin/update.xml</UpdateUrl>
     <Version>
       <Major>2</Major>
-      <Minor>1</Minor>
+      <Minor>2</Minor>
       <Build>0</Build>
-      <Revision>80</Revision>
+      <Revision>84</Revision>
     </Version>
-    <ExtensionDescription>This plugin is an implementation of the SubtitleDownloader API for Hebrew subtitle sites. it adds Hebrew sites to the MediaPortal SubCentral plugin and updates separately.
-
-Supported sites:
-
-* www.sratim.co.il (Thanks orivar from xbmc)
-* www.subscenter.org
-
+    <ExtensionDescription>This plugin is an implementation of the SubtitleDownloader API for Hebrew subtitle sites. it adds Hebrew sites to the MediaPortal SubCentral plugin and updates separately.
+
+
+
+
+
+Supported sites:
+
+
+
+
+
+* www.sratim.co.il (Thanks orivar from xbmc)
+
+
+* 
+www.subscenter.org
+
+
+
+
+
+
 You must install SubCentral plugin before installing this plugin.</ExtensionDescription>
     <VersionDescription>First stable version</VersionDescription>
     <DevelopmentStatus>Stable</DevelopmentStatus>
@@ -284,7 +300,7 @@ You must install SubCentral plugin before installing this plugin.</ExtensionDesc
         <Param1 />
         <UpdateOption>OverwriteIfOlder</UpdateOption>
         <LocalFileName>HebrewSubtitleDownloader.png</LocalFileName>
-        <ZipFileName>Installer{CopyFile}\{5ec1eeb0-b6c8-4e90-944f-69dcfa06b58e}-HebrewSubtitleDownloader.png</ZipFileName>
+        <ZipFileName>Installer{CopyFile}\{c41e7276-687e-453a-957f-43c8215aba55}-HebrewSubtitleDownloader.png</ZipFileName>
         <DestinationFilename />
       </FileItem>
     </Items>
