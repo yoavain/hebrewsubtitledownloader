@@ -19,8 +19,9 @@ namespace Sratim
   public class SratimDownloader : ISubtitleDownloader
   {
 
-    private const string BaseUrl = "http://www.sratim.co.il/";
-
+    // private const string BaseUrl = "http://www.sratim.co.il/"; old URL
+    private const string BaseUrl = "http://www.subtitle.co.il/";
+        
     // ===============================================================================
     // Regular expression patterns
     // ===============================================================================
