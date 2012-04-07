@@ -208,34 +208,17 @@ Click Next to continue or Cancel to exit Setup.</Value>
     <Version>
       <Major>2</Major>
       <Minor>2</Minor>
-      <Build>0</Build>
-      <Revision>84</Revision>
+      <Build>1</Build>
+      <Revision>87</Revision>
     </Version>
     <ExtensionDescription>This plugin is an implementation of the SubtitleDownloader API for Hebrew subtitle sites. it adds Hebrew sites to the MediaPortal SubCentral plugin and updates separately.
 
-
-
-
-
 Supported sites:
-
-
-
-
-
 * www.sratim.co.il (Thanks orivar from xbmc)
-
-
-* 
-www.subscenter.org
-
-
-
-
-
+* www.subscenter.org
 
 You must install SubCentral plugin before installing this plugin.</ExtensionDescription>
-    <VersionDescription>First stable version</VersionDescription>
+    <VersionDescription>Fixed sratim.co.il for TV Series</VersionDescription>
     <DevelopmentStatus>Stable</DevelopmentStatus>
     <OnlineLocation>https://hebrewsubtitledownloader.googlecode.com/svn/trunk/Plugin/HebrewSubtitleDownloader.mpe1</OnlineLocation>
     <ReleaseDate>2011-11-26T18:50:52.3211+02:00</ReleaseDate>
