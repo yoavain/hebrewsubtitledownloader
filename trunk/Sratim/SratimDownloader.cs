@@ -26,7 +26,7 @@ namespace Sratim
     // Regular expression patterns
     // ===============================================================================
 
-    private const string TvSearchResultsPattern = @"<div style=""""><a href=""viewseries.php\?id=(\d+)";
+    private const string TvSearchResultsPattern = @"<a href=""viewseries.php\?id=(\d+)";
     private const string SearchResultsPattern = @"(<div style=\""[^\""]*?\""><a href=\""view.php\?id=(?<movie_id>\d+)[^""]*?\""\stitle=\""(?<movie_hebrew>[^|""]*)\|(?<movie_english>[^|""]*)\|(?<movie_year>[^""]*)\""|<div style=\""[^\""]*?\""><a href=\""view.php\?id=(?<movie_id>\d+)[^""]*?\""\stitle=\""(?<movie_english>[^|""]*)\|(?<movie_year>[^|""]*)\"")";
     private const string SubtitleListPattern = @"downloadsubtitle.php\?id=(?<fid>\d*).*?subt_lang.*?title=\""(?<language>.*?)\"".*?subtitle_title.*?title=\""(?<title>.*?)\""";
     private const string TvSeasonPattern = @"seasonlink_(?<season_link>\d+).*?>(?<season_num>\d+)</a>";
@@ -300,12 +300,17 @@ namespace Sratim
         var tvSearchResultRegex = new Regex(TvSearchResultsPattern);
         var subtitleIDs = tvSearchResultRegex.Matches(searchResults);
 
-        // Go over all the subtitle pages and add results to our list if season and episode match
+        // Get a set of subtitle ids (this is to avoid searching the same id twice)
+        var subtitleIDsSet = new HashSet<String>();
         foreach (var subtitleId in subtitleIDs)
         {
           var groups = tvSearchResultRegex.Match(subtitleId.ToString()).Groups;
-          var sid = groups[1].Value;
+          subtitleIDsSet.Add(groups[1].Value);
+        }
 
+        // Go over all the subtitle id and add results to our list if season and episode match
+        foreach (var sid in subtitleIDsSet)
+        {
           // Get Subtitles
           var tvSubtitles = GetAllTvSubtitles(sid, languageList, season, episode);
           subtitlesList.AddRange(tvSubtitles);
