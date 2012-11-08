@@ -5,13 +5,14 @@ using SubtitleDownloader.Core;
 namespace SubsCenterOrgTest
 {
   [TestClass]
+  [DeploymentItem("Settings")]
   public class SubsCenterOrgTest
   {
     [TestMethod]
     public void TestExactMovieSearch()
     {
       var downloader = new SubsCenterOrgDownloader();
-      var query = new SearchQuery("batman begins") { Year = 2005, LanguageCodes = new[] { "heb"} };
+      var query = new SearchQuery("batman begins") { Year = 2005, LanguageCodes = new[] {"heb"} };
       var results = downloader.SearchSubtitles(query);
 
       // make sure there are resuts
@@ -28,7 +29,7 @@ namespace SubsCenterOrgTest
     public void TestNoMatchMovieSearch()
     {
       var downloader = new SubsCenterOrgDownloader();
-      var query = new SearchQuery("batman ends") { Year = 2015, LanguageCodes = new[] { "eng"} };
+      var query = new SearchQuery("batman ends") { Year = 2015, LanguageCodes = new[] {"eng"} };
       var results = downloader.SearchSubtitles(query);
 
       // make sure there are no resuts
@@ -37,11 +38,10 @@ namespace SubsCenterOrgTest
     }
 
     [TestMethod]
-    [DeploymentItem("Settings")]
     public void TestExactSeriesSearch()
     {
       var downloader = new SubsCenterOrgDownloader();
-      var query = new EpisodeSearchQuery("house md", 6, 15) { LanguageCodes = new[] { "heb"} };
+      var query = new EpisodeSearchQuery("house md", 6, 15, null) { LanguageCodes = new[] {"heb"} };
       var results = downloader.SearchSubtitles(query);
 
       // make sure there are resuts
@@ -55,11 +55,10 @@ namespace SubsCenterOrgTest
     }
 
     [TestMethod]
-    [DeploymentItem("Settings")]
     public void TestSeriesSearchWithCleanName()
     {
       var downloader = new SubsCenterOrgDownloader();
-      var query = new EpisodeSearchQuery("The Office (us)", 5, 6) { LanguageCodes = new[] { "heb" } };
+      var query = new EpisodeSearchQuery("The Office (us)", 5, 6, null) { LanguageCodes = new[] { "heb" } };
       var results = downloader.SearchSubtitles(query);
 
       // make sure there are resuts
@@ -76,7 +75,7 @@ namespace SubsCenterOrgTest
     public void TestSeriesSearchWithCleanNameNoConfFile()
     {
       var downloader = new SubsCenterOrgDownloader();
-      var query = new EpisodeSearchQuery("house", 6, 16) { LanguageCodes = new[] { "heb" } };
+      var query = new EpisodeSearchQuery("house", 6, 16, null) { LanguageCodes = new[] { "heb" } };
       var results = downloader.SearchSubtitles(query);
 
       // todo - after implementing loop over all result pages, this test should work without comments
@@ -92,11 +91,10 @@ namespace SubsCenterOrgTest
     }
 
     [TestMethod]
-    [DeploymentItem("Settings")]
     public void TestSeriesSearchWithCleanName2()
     {
       var downloader = new SubsCenterOrgDownloader();
-      var query = new EpisodeSearchQuery("Castle (2009)", 2, 7) { LanguageCodes = new[] { "heb" } };
+      var query = new EpisodeSearchQuery("Castle (2009)", 2, 7, null) { LanguageCodes = new[] { "heb" } };
       var results = downloader.SearchSubtitles(query);
 
       // make sure there are resuts
@@ -110,11 +108,10 @@ namespace SubsCenterOrgTest
     }
 
     [TestMethod]
-    [DeploymentItem("Settings")]
     public void TestSeriesSearchWithWithOverridingConf()
     {
       var downloader = new SubsCenterOrgDownloader();
-      var query = new EpisodeSearchQuery("House", 7, 8) { LanguageCodes = new[] { "heb" } };
+      var query = new EpisodeSearchQuery("House", 7, 8, null) { LanguageCodes = new[] { "heb" } };
       var results = downloader.SearchSubtitles(query);
 
       // make sure there are resuts
@@ -128,7 +125,6 @@ namespace SubsCenterOrgTest
     }
 
     [TestMethod]
-    [DeploymentItem("Settings")]
     public void TestConfiguration()
     {
       var house = SubsCenterOrgDownloaderConfiguration.Instance.OverrideTitleFromConfiguration("house");
