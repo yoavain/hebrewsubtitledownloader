@@ -27,11 +27,11 @@ namespace Sratim
     // ===============================================================================
 
     private const string TvSearchResultsPattern = @"<a href=""viewseries.php\?id=(\d+)";
-    private const string SearchResultsPattern = @"(<div style=\""[^\""]*?\""><a href=\""view.php\?id=(?<movie_id>\d+)[^""]*?\""\stitle=\""(?<movie_hebrew>[^|""]*)\|(?<movie_english>[^|""]*)\|(?<movie_year>[^""]*)\""|<div style=\""[^\""]*?\""><a href=\""view.php\?id=(?<movie_id>\d+)[^""]*?\""\stitle=\""(?<movie_english>[^|""]*)\|(?<movie_year>[^|""]*)\"")";
+    private const string SearchResultsPattern = @"<div style=\""[^>]*?>\s*?<a href=\"".*view.php\?id=(?<movie_id>\d+)&amp;q=(?<movie_query>[^\""]*)\""\s*?title=\""(?<movie_hebrew>[^(]*)\((?<movie_year>[^\\)]*)\)\""\>";
     private const string SubtitleListPattern = @"downloadsubtitle.php\?id=(?<fid>\d*).*?subt_lang.*?title=\""(?<language>.*?)\"".*?subtitle_title.*?title=\""(?<title>.*?)\""";
     private const string TvSeasonPattern = @"seasonlink_(?<season_link>\d+).*?>(?<season_num>\d+)</a>";
     private const string TvEpisodePattern = @"episodelink_(?<episode_link>\d+).*?>(?<episode_num>\d+)</a>";
-    
+
 
     // Maximum number of movie pages to look at (when exact match is not found)
     private const int MaxMoviePagesToFollow = 5;
