@@ -1,14 +1,15 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Sratim")]
-[assembly: AssemblyDescription("Sratim.co.il implemetation of SubtitleDownloader API")]
+[assembly: AssemblyTitle("SratimTest")]
+[assembly: AssemblyDescription("Test for Sratim.co.il implemetation of SubtitleDownloader API")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Sratim")]
+[assembly: AssemblyProduct("SratimTest")]
 [assembly: AssemblyCopyright("Copyright © 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("b8f97cb7-4630-4f7a-a1ee-c80608d3a178")]
+[assembly: Guid("28192ec8-8f98-4687-a78d-7d6865ddbb46")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -30,6 +31,6 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("2.2.4.$WCREV$")]
 [assembly: AssemblyFileVersion("2.2.4.$WCREV$")]
+
