@@ -298,9 +298,9 @@ namespace Sratim
                 }
 
                 // Check all fields
-                if (string.IsNullOrEmpty(slcooUserId) &&
-                    string.IsNullOrEmpty(slcooUserPass) &&
-                    string.IsNullOrEmpty(slcooUserName))
+                if (!string.IsNullOrEmpty(slcooUserId) &&
+                    !string.IsNullOrEmpty(slcooUserPass) &&
+                    !string.IsNullOrEmpty(slcooUserName))
                 {
                     return new CookieData(slcooUserId, slcooUserPass, slcooUserName);
                 }
