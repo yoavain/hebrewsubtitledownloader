@@ -131,6 +131,30 @@ namespace Sratim
         }
 
         /// <summary>
+        /// Downloads a file of the given URL to the given download filename
+        /// </summary>
+        /// <param name="url">the url</param>
+        /// <param name="downloadFile">filename to download</param>
+        private static void DownloadFile(string url, string downloadFile)
+        {
+            var sratimCookieContainer = SratimDownloaderConfiguration.Instance.GetSratimCookieContainer();
+            if (sratimCookieContainer == null)
+            {
+                return; // todo - yoav - message
+            }
+
+            try
+            {
+                var client = new WebClientEx(sratimCookieContainer) { Encoding = Encoding.UTF8 };
+                client.DownloadFile(url, downloadFile);
+            }
+            catch (Exception)
+            {
+                return;
+            }
+        }
+
+        /// <summary>
         /// WebClient with cookies
         /// </summary>
         public class WebClientEx : WebClient
@@ -456,8 +480,8 @@ namespace Sratim
             // Going to write them to standrad zip file (always zips in sratim)
             var archiveFile = Path.GetTempFileName().Replace(".tmp", ".zip");
 
-            var client = new WebClient();
-            client.DownloadFile(url, archiveFile);
+            // Download the file, use cookie
+            DownloadFile(url, archiveFile);
 
             // Extract the zip file and find the new sub/srt file
             var extractFilesFromZipOrRarFile = FileUtils.ExtractFilesFromZipOrRarFile(archiveFile);
