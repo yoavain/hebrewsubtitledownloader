@@ -564,7 +564,7 @@ namespace SubsCenterOrg
       {
         return null;
       }
-      return !title.Contains("(") ? title.ToLower().Trim() : title.Substring(0, title.IndexOf("(")).ToLower().Trim();
+      return !title.Contains("(") ? title.ToLower().Trim() : title.Substring(0, title.IndexOf("(", StringComparison.Ordinal)).ToLower().Trim();
     }
 
     /// <summary>

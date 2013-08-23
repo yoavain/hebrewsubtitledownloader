@@ -54,7 +54,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Sratim\Sratim.csproj">
       <Project>{91835CD4-3039-4218-8B51-F3E71E629DC8}</Project>
-      <Name>Sratim</Name>
+      <Name>Sratim %28Sratim\Sratim%29</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -62,7 +62,8 @@
     <PreBuildEvent>subwcrev ..\..\.. ..\..\Properties\AssemblyInfo.cs ..\..\Properties\AssemblyInfo.cs</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>svn revert ..\..\Properties\AssemblyInfo.cs</PostBuildEvent>
+    <PostBuildEvent>svn revert ..\..\Properties\AssemblyInfo.cs
+copy $(SolutionDir)External\7z.dll $(TargetDir)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
