@@ -41,6 +41,13 @@
               <ZipFileName>Installer{CopyFile}\{280f542b-ef19-4d17-a27a-842a45cc7205}-Sratim.dll</ZipFileName>
               <DestinationFilename>%Base%\SubtitleDownloaders\Sratim.dll</DestinationFilename>
             </FileItem>
+            <FileItem InstallType="CopyFile" SystemFile="false" Modified="true">
+              <Param1 />
+              <UpdateOption>OverwriteIfOlder</UpdateOption>
+              <LocalFileName>..\Sratim\bin\Release\Sratim.xml</LocalFileName>
+              <ZipFileName>Installer{CopyFile}\{ff05f60f-aea4-45ef-977b-989077397fe2}-Sratim.xml</ZipFileName>
+              <DestinationFilename>%Base%\SubtitleDownloaders\Sratim.xml</DestinationFilename>
+            </FileItem>
           </Items>
         </Files>
       </GroupItem>
@@ -179,7 +186,7 @@ Click Next to continue or Cancel to exit Setup.</Value>
         <Id>f8f30e5e-cc8a-44a0-91a9-1175fe55732f</Id>
         <MinVersion>
           <Major>1</Major>
-          <Minor>1</Minor>
+          <Minor>2</Minor>
           <Build>2</Build>
           <Revision>0</Revision>
         </MinVersion>
@@ -207,9 +214,9 @@ Click Next to continue or Cancel to exit Setup.</Value>
     <UpdateUrl>https://hebrewsubtitledownloader.googlecode.com/svn/trunk/Plugin/update.xml</UpdateUrl>
     <Version>
       <Major>2</Major>
-      <Minor>2</Minor>
-      <Build>2</Build>
-      <Revision>100</Revision>
+      <Minor>3</Minor>
+      <Build>0</Build>
+      <Revision>0</Revision>
     </Version>
     <ExtensionDescription>This plugin is an implementation of the SubtitleDownloader API for Hebrew subtitle sites. it adds Hebrew sites to the MediaPortal SubCentral plugin and updates separately.
 
@@ -220,10 +227,10 @@ Supported sites:
 You must install SubCentral plugin before installing this plugin.</ExtensionDescription>
     <VersionDescription>Fixed sratim.co.il for Movies</VersionDescription>
     <DevelopmentStatus>Stable</DevelopmentStatus>
-    <OnlineLocation>https://hebrewsubtitledownloader.googlecode.com/svn/trunk/Plugin/HebrewSubtitleDownloader.mpe1</OnlineLocation>
+    <OnlineLocation>https://hebrewsubtitledownloader.googlecode.com/files/HebrewSubtitleDownloader-{VERSION}.MPE1</OnlineLocation>
     <ReleaseDate>2013-01-04T18:50:52</ReleaseDate>
     <Tags>subtitle, hebrew</Tags>
-    <Location>C:\Dev\Plugins\HebrewSubtitleDownloader\Plugin\HebrewSubtitleDownloader.mpe1</Location>
+    <Location>builds\HebrewSubtitleDownloader-MAJOR.MINOR.BUILD.REVISION.MPE1</Location>
     <Params>
       <Items>
         <SectionParam Name="Icon">
@@ -279,6 +286,13 @@ You must install SubCentral plugin before installing this plugin.</ExtensionDesc
         <ZipFileName>Installer{CopyFile}\{280f542b-ef19-4d17-a27a-842a45cc7205}-Sratim.dll</ZipFileName>
         <DestinationFilename>%Base%\SubtitleDownloaders\Sratim.dll</DestinationFilename>
       </FileItem>
+      <FileItem InstallType="CopyFile" SystemFile="false" Modified="true">
+        <Param1 />
+        <UpdateOption>OverwriteIfOlder</UpdateOption>
+        <LocalFileName>..\Sratim\bin\Release\Sratim.xml</LocalFileName>
+        <ZipFileName>Installer{CopyFile}\{ff05f60f-aea4-45ef-977b-989077397fe2}-Sratim.xml</ZipFileName>
+        <DestinationFilename>%Base%\SubtitleDownloaders\Sratim.xml</DestinationFilename>
+      </FileItem>
       <FileItem InstallType="CopyFile" SystemFile="true" Modified="true">
         <Param1 />
         <UpdateOption>OverwriteIfOlder</UpdateOption>
@@ -291,7 +305,7 @@ You must install SubCentral plugin before installing this plugin.</ExtensionDesc
   <ProjectSettings>
     <FolderGroups />
     <ProjectFilename>HebrewSubtitleDownloader.xmp2</ProjectFilename>
-    <UpdatePath1>https://hebrewsubtitledownloader.googlecode.com/svn/trunk/Plugin/update.xml</UpdatePath1>
+    <UpdatePath1>update-{VERSION}.xml</UpdatePath1>
     <UpdatePath2 />
     <UpdatePath3 />
   </ProjectSettings>
