@@ -116,7 +116,7 @@ namespace Sratim
             var sratimCookieContainer = SratimDownloaderConfiguration.Instance.GetSratimCookieContainer();
             if (sratimCookieContainer == null)
             {
-                return null; // todo - yoav - message
+                throw new Exception("Could not login to site. Please make sure to fill your email and password into Sratim.xml");
             }
 
             try
@@ -126,7 +126,7 @@ namespace Sratim
             }
             catch (Exception)
             {
-                return null;
+                throw new Exception("Could not retrieve URL: " + url);
             }
         }
 
