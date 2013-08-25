@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using MediaPortal.UserInterface.Controls;
 
 namespace HebrewSubtitleDownloader
 {
