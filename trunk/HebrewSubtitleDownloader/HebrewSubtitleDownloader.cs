@@ -32,7 +32,8 @@ namespace HebrewSubtitleDownloader
 
         public void ShowPlugin()
         {
-            MessageBox.Show("Nothing to configure, this is just an example");
+            var setupForm = new SetupForm();
+            setupForm.Show();
         }
 
         public bool CanEnable()

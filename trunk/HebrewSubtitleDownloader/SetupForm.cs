@@ -13,8 +13,13 @@ namespace HebrewSubtitleDownloader
 
         private void updateLoginInfo_Click(object sender, EventArgs e)
         {
-            Form loginForm = new MPConfigForm();
+            var loginForm = new LoginForm();
             loginForm.Show();
+        }
+
+        private void exitButton_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }
