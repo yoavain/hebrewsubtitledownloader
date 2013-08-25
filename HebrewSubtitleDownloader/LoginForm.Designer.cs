@@ -38,7 +38,7 @@
             // 
             // emailTextBox1
             // 
-            this.emailTextBox1.Location = new System.Drawing.Point(68, 80);
+            this.emailTextBox1.Location = new System.Drawing.Point(96, 80);
             this.emailTextBox1.Name = "emailTextBox1";
             this.emailTextBox1.Size = new System.Drawing.Size(134, 20);
             this.emailTextBox1.TabIndex = 0;
@@ -48,7 +48,7 @@
             // 
             this.emailLabel.AutoSize = true;
             this.emailLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.emailLabel.Location = new System.Drawing.Point(65, 61);
+            this.emailLabel.Location = new System.Drawing.Point(93, 61);
             this.emailLabel.Name = "emailLabel";
             this.emailLabel.Size = new System.Drawing.Size(45, 16);
             this.emailLabel.TabIndex = 1;
@@ -56,7 +56,7 @@
             // 
             // maskedTextBox1
             // 
-            this.maskedTextBox1.Location = new System.Drawing.Point(68, 147);
+            this.maskedTextBox1.Location = new System.Drawing.Point(96, 147);
             this.maskedTextBox1.Name = "maskedTextBox1";
             this.maskedTextBox1.Size = new System.Drawing.Size(134, 20);
             this.maskedTextBox1.TabIndex = 2;
@@ -66,7 +66,7 @@
             // 
             this.passwordLabel.AutoSize = true;
             this.passwordLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.passwordLabel.Location = new System.Drawing.Point(65, 128);
+            this.passwordLabel.Location = new System.Drawing.Point(93, 128);
             this.passwordLabel.Name = "passwordLabel";
             this.passwordLabel.Size = new System.Drawing.Size(71, 16);
             this.passwordLabel.TabIndex = 3;
@@ -75,7 +75,7 @@
             // saveButton
             // 
             this.saveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.saveButton.Location = new System.Drawing.Point(106, 204);
+            this.saveButton.Location = new System.Drawing.Point(129, 215);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(75, 23);
             this.saveButton.TabIndex = 4;
@@ -87,7 +87,7 @@
             // 
             this.titleLabel.AutoSize = true;
             this.titleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.titleLabel.Location = new System.Drawing.Point(39, 20);
+            this.titleLabel.Location = new System.Drawing.Point(65, 9);
             this.titleLabel.Name = "titleLabel";
             this.titleLabel.Size = new System.Drawing.Size(213, 16);
             this.titleLabel.TabIndex = 5;
@@ -97,7 +97,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 239);
+            this.ClientSize = new System.Drawing.Size(344, 262);
             this.Controls.Add(this.titleLabel);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.passwordLabel);

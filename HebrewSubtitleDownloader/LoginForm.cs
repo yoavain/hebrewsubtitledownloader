@@ -22,7 +22,7 @@ namespace HebrewSubtitleDownloader
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-
+            Close();
         }
     }
 }
