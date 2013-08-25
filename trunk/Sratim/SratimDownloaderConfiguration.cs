@@ -81,7 +81,9 @@ namespace Sratim
                     lock (SyncObject)
                     {
                         if (_instance == null)
+                        {
                             _instance = new SratimDownloaderConfiguration();
+                        }
                     }
                 }
                 return _instance;

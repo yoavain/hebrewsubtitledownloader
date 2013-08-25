@@ -30,7 +30,7 @@
         {
             this.emailTextBox1 = new System.Windows.Forms.TextBox();
             this.emailLabel = new System.Windows.Forms.Label();
-            this.maskedTextBox1 = new System.Windows.Forms.MaskedTextBox();
+            this.maskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.passwordLabel = new System.Windows.Forms.Label();
             this.saveButton = new System.Windows.Forms.Button();
             this.titleLabel = new System.Windows.Forms.Label();
@@ -54,13 +54,15 @@
             this.emailLabel.TabIndex = 1;
             this.emailLabel.Text = "Email:";
             // 
-            // maskedTextBox1
+            // maskedTextBox
             // 
-            this.maskedTextBox1.Location = new System.Drawing.Point(96, 147);
-            this.maskedTextBox1.Name = "maskedTextBox1";
-            this.maskedTextBox1.Size = new System.Drawing.Size(134, 20);
-            this.maskedTextBox1.TabIndex = 2;
-            this.maskedTextBox1.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.maskedTextBox1_MaskInputRejected);
+            this.maskedTextBox.Location = new System.Drawing.Point(96, 147);
+            this.maskedTextBox.Name = "maskedTextBox";
+            this.maskedTextBox.PasswordChar = '*';
+            this.maskedTextBox.Size = new System.Drawing.Size(134, 20);
+            this.maskedTextBox.TabIndex = 2;
+            this.maskedTextBox.UseSystemPasswordChar = true;
+            this.maskedTextBox.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.maskedTextBox1_MaskInputRejected);
             // 
             // passwordLabel
             // 
@@ -101,7 +103,7 @@
             this.Controls.Add(this.titleLabel);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.passwordLabel);
-            this.Controls.Add(this.maskedTextBox1);
+            this.Controls.Add(this.maskedTextBox);
             this.Controls.Add(this.emailLabel);
             this.Controls.Add(this.emailTextBox1);
             this.Name = "LoginForm";
@@ -115,7 +117,7 @@
 
         private System.Windows.Forms.TextBox emailTextBox1;
         private System.Windows.Forms.Label emailLabel;
-        private System.Windows.Forms.MaskedTextBox maskedTextBox1;
+        private System.Windows.Forms.MaskedTextBox maskedTextBox;
         private System.Windows.Forms.Label passwordLabel;
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Label titleLabel;
