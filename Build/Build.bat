@@ -9,5 +9,8 @@ cd ..
 cd Sratim
 "%WINDIR%\Microsoft.NET\Framework\v3.5\MSBUILD.exe" /target:Rebuild /property:Configuration=RELEASE Sratim.csproj
 cd ..
+cd HebrewSubtitleDownloader
+"%WINDIR%\Microsoft.NET\Framework\v3.5\MSBUILD.exe" /target:Rebuild /property:Configuration=RELEASE HebrewSubtitleDownloader.csproj
+cd ..
 
 cd Build
