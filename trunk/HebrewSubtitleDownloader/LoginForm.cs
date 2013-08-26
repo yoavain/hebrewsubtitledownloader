@@ -22,6 +22,16 @@ namespace HebrewSubtitleDownloader
 
         private void saveButton_Click(object sender, EventArgs e)
         {
+            // Save
+            // todo
+
+            // Close
+            Close();
+        }
+
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+            // Close
             Close();
         }
     }
