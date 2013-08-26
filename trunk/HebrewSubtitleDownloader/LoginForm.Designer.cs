@@ -51,7 +51,7 @@
             // 
             this.emailLabel.AutoSize = true;
             this.emailLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.emailLabel.Location = new System.Drawing.Point(9, 47);
+            this.emailLabel.Location = new System.Drawing.Point(9, 45);
             this.emailLabel.Name = "emailLabel";
             this.emailLabel.Size = new System.Drawing.Size(45, 16);
             this.emailLabel.TabIndex = 1;
@@ -71,7 +71,7 @@
             // 
             this.passwordLabel.AutoSize = true;
             this.passwordLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.passwordLabel.Location = new System.Drawing.Point(9, 105);
+            this.passwordLabel.Location = new System.Drawing.Point(9, 103);
             this.passwordLabel.Name = "passwordLabel";
             this.passwordLabel.Size = new System.Drawing.Size(71, 16);
             this.passwordLabel.TabIndex = 3;
