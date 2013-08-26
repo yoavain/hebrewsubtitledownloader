@@ -1,73 +1,46 @@
 ﻿using System;
-using System.IO;
 using System.Security.Cryptography;
 
 namespace Sratim
 {
-    internal class PasswordUtility
+    public class PasswordUtility
     {
         private static readonly byte[] Entropy = System.Text.Encoding.Unicode.GetBytes("Your password is incorrect");
 
-        public static int EncryptDataToStream(byte[] buffer, DataProtectionScope scope, Stream stream)
+        public static byte[] EncryptData(byte[] decryptedData, DataProtectionScope scope)
         {
-            if (buffer.Length <= 0)
+            if (decryptedData == null)
             {
-                throw new ArgumentException("buffer");
+                throw new ArgumentNullException("decryptedData");
             }
-            if (buffer == null)
+            if (decryptedData.Length <= 0)
             {
-                throw new ArgumentNullException("buffer");
-            }
-            if (stream == null)
-            {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentException("decryptedData");
             }
 
-            var length = 0;
+            // Encrypt the data
+            var encrptedData = ProtectedData.Protect(decryptedData, Entropy, scope);
 
-            // Encrypt the data in memory. The result is stored in the same same array as the original data. 
-            var encrptedData = ProtectedData.Protect(buffer, Entropy, scope);
-
-            // Write the encrypted data to a stream. 
-            if (stream.CanWrite)
-            {
-                stream.Write(encrptedData, 0, encrptedData.Length);
-
-                length = encrptedData.Length;
-            }
-
-            // Return the length that was written to the stream.  
-            return length;
+            // Return encyrpted data
+            return encrptedData;
         }
 
-        public static byte[] DecryptDataFromStream(DataProtectionScope scope, Stream stream, int length)
+        public static byte[] DecryptData(byte[] encrptedData, DataProtectionScope scope)
         {
-            if (stream == null)
+            if (encrptedData == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException("encrptedData");
             }
-            if (length <= 0)
+            if (encrptedData.Length <= 0)
             {
-                throw new ArgumentException("length");
-            }
-
-            var inBuffer = new byte[length];
-            byte[] outBuffer;
-
-            // Read the encrypted data from a stream. 
-            if (stream.CanRead)
-            {
-                stream.Read(inBuffer, 0, length);
-
-                outBuffer = ProtectedData.Unprotect(inBuffer, Entropy, scope);
-            }
-            else
-            {
-                throw new IOException("Could not read the stream.");
+                throw new ArgumentException("encrptedData");
             }
 
-            // Return the length that was written to the stream.  
-            return outBuffer;
+            // Decrypt the data
+            byte[] decryptedData = ProtectedData.Unprotect(encrptedData, Entropy, scope);
+
+            // Return decrypted data
+            return decryptedData;
         }
     }
 }
