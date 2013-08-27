@@ -41,17 +41,11 @@
               <ZipFileName>Installer{CopyFile}\{280f542b-ef19-4d17-a27a-842a45cc7205}-Sratim.dll</ZipFileName>
               <DestinationFilename>%Base%\SubtitleDownloaders\Sratim.dll</DestinationFilename>
             </FileItem>
-            <FileItem InstallType="CopyFile" SystemFile="false" Modified="true">
-              <Param1 />
-              <UpdateOption>OverwriteIfOlder</UpdateOption>
-              <LocalFileName>..\Sratim\bin\Release\Sratim.xml</LocalFileName>
-              <ZipFileName>Installer{CopyFile}\{ff05f60f-aea4-45ef-977b-989077397fe2}-Sratim.xml</ZipFileName>
-              <DestinationFilename>%Base%\SubtitleDownloaders\Sratim.xml</DestinationFilename>
-            </FileItem>
           </Items>
         </Files>
       </GroupItem>
       <GroupItem Name="HebrewSubtitleDownloader">
+        <ParentGroup />
         <DisplayName>HebrewSubtitleDownloader</DisplayName>
         <DefaulChecked>true</DefaulChecked>
         <Description>HebrewSubtitleDownloader</Description>
@@ -62,7 +56,7 @@
               <UpdateOption>OverwriteIfOlder</UpdateOption>
               <LocalFileName>..\HebrewSubtitleDownloader\bin\Release\HebrewSubtitleDownloader.dll</LocalFileName>
               <ZipFileName>Installer{CopyFile}\{d81cd803-d922-48af-8381-e22981e88e7d}-HebrewSubtitleDownloader.dll</ZipFileName>
-              <DestinationFilename>%Base%\HebrewSubtitleDownloader.dll</DestinationFilename>
+              <DestinationFilename>%Plugins%\Windows\HebrewSubtitleDownloader.dll</DestinationFilename>
             </FileItem>
           </Items>
         </Files>
@@ -219,7 +213,23 @@ Click Next to continue or Cancel to exit Setup.</Value>
     </Items>
   </Dependencies>
   <PluginDependencies>
-    <Items />
+    <Items>
+      <PluginDependencyItem AssemblyName="HebrewSubtitleDownloader.dll">
+        <CompatibleVersion>
+          <Items>
+            <CompatibleVersionItem>
+              <MinRequiredVersion>1.3.100.0</MinRequiredVersion>
+              <DesignedForVersion>1.3.100.0</DesignedForVersion>
+            </CompatibleVersionItem>
+          </Items>
+        </CompatibleVersion>
+        <SubSystemsUsed>
+          <Items>
+            <SubSystemItem Name="MP.Config" />
+          </Items>
+        </SubSystemsUsed>
+      </PluginDependencyItem>
+    </Items>
   </PluginDependencies>
   <GeneralInfo>
     <Name>Hebrew Subtitle Downloader</Name>
@@ -305,22 +315,15 @@ You must install SubCentral plugin before installing this plugin.</ExtensionDesc
       <FileItem InstallType="CopyFile" SystemFile="false" Modified="true">
         <Param1 />
         <UpdateOption>OverwriteIfOlder</UpdateOption>
-        <LocalFileName>..\Sratim\bin\Release\Sratim.xml</LocalFileName>
-        <ZipFileName>Installer{CopyFile}\{ff05f60f-aea4-45ef-977b-989077397fe2}-Sratim.xml</ZipFileName>
-        <DestinationFilename>%Base%\SubtitleDownloaders\Sratim.xml</DestinationFilename>
-      </FileItem>
-      <FileItem InstallType="CopyFile" SystemFile="false" Modified="true">
-        <Param1 />
-        <UpdateOption>OverwriteIfOlder</UpdateOption>
         <LocalFileName>..\HebrewSubtitleDownloader\bin\Release\HebrewSubtitleDownloader.dll</LocalFileName>
         <ZipFileName>Installer{CopyFile}\{d81cd803-d922-48af-8381-e22981e88e7d}-HebrewSubtitleDownloader.dll</ZipFileName>
-        <DestinationFilename>%Base%\HebrewSubtitleDownloader.dll</DestinationFilename>
+        <DestinationFilename>%Plugins%\Windows\HebrewSubtitleDownloader.dll</DestinationFilename>
       </FileItem>
       <FileItem InstallType="CopyFile" SystemFile="true" Modified="true">
         <Param1 />
         <UpdateOption>OverwriteIfOlder</UpdateOption>
         <LocalFileName>HebrewSubtitleDownloader.png</LocalFileName>
-        <ZipFileName>Installer{CopyFile}\{c41e7276-687e-453a-957f-43c8215aba55}-HebrewSubtitleDownloader.png</ZipFileName>
+        <ZipFileName>Installer{CopyFile}\{43fcd089-9e6a-4198-9f8b-c2d53db1c7c0}-HebrewSubtitleDownloader.png</ZipFileName>
         <DestinationFilename />
       </FileItem>
     </Items>
