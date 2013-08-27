@@ -56,8 +56,7 @@
     <PreBuildEvent>subwcrev ..\..\.. ..\..\Properties\AssemblyInfo.cs ..\..\Properties\AssemblyInfo.cs</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>svn revert ..\..\Properties\AssemblyInfo.cs
-copy /y ..\..\Settings\SubtitleDownloaders\Sratim.xml $(TargetDir)</PostBuildEvent>
+    <PostBuildEvent>svn revert ..\..\Properties\AssemblyInfo.cs</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
