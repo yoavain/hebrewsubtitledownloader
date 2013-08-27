@@ -117,7 +117,7 @@ namespace Sratim
             var sratimCookieContainer = SratimDownloaderConfiguration.GetInstance().GetSratimCookieContainer();
             if (sratimCookieContainer == null)
             {
-                throw new Exception("Could not login to site. Please make sure to fill your email and password into Sratim.xml");
+                throw new Exception("Could not login to site. Please install HebrewSubtitleDownloader extension to config your email and password");
             }
 
             try
