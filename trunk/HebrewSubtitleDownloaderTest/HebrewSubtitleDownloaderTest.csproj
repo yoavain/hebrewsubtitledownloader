@@ -35,7 +35,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\ReferenceAssemblies\v4.0\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
@@ -46,10 +45,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HebrewSubtitleDownloader\HebrewSubtitleDownloader.csproj">
-      <Project>{04537D75-B33D-4048-9CBF-5ED495D36E44}</Project>
-      <Name>HebrewSubtitleDownloader %28HebrewSubtitleDownloader\HebrewSubtitleDownloader%29</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SratimUtils\SratimUtils.csproj">
       <Project>{46F65228-9484-444C-85C7-643226F90EFC}</Project>
       <Name>SratimUtils %28SratimUtils\SratimUtils%29</Name>
