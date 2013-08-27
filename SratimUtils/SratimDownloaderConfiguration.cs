@@ -83,7 +83,7 @@ namespace SratimUtils
         /// </summary>
         /// <param name="loginData">the login data (user/password)</param>
         /// <returns>cookie data</returns>
-        private CookieData GetCookieDataFromLoginData (LoginData loginData)
+        private CookieData GetCookieDataFromLoginData(LoginData loginData)
         {
             const string url = SratimBaseUrl + SraitmLoginPath;
             var postData = loginData.ToString();

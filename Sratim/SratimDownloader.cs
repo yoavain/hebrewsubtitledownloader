@@ -43,6 +43,8 @@ namespace Sratim
         // Maximum number of movie pages to look at (when exact match is not found)
         private const int MaxMoviePagesToFollow = 5;
 
+        private static CookieContainer _sratimCookieContainer;
+
         public string GetName()
         {
             return "Sratim.co.il";
@@ -106,6 +108,23 @@ namespace Sratim
         // Private utility functions
         // ===============================================================================
 
+        public SratimDownloader(int searchTimeout)
+        {
+            SearchTimeout = searchTimeout;
+            Init();
+        }
+
+        public SratimDownloader()
+        {
+            Init();
+        }
+
+        private static void Init()
+        {
+            Settings.GetInstance().LoadSettings();
+            SratimDownloaderConfiguration.GetInstance().ValidateCredentials(Settings.GetInstance().SratimEmail, Settings.GetInstance().SratimPassword);
+            _sratimCookieContainer = SratimDownloaderConfiguration.GetInstance().GetSratimCookieContainer();
+        }
 
         /// <summary>
         /// Returns the content of the given URL
@@ -114,15 +133,14 @@ namespace Sratim
         /// <returns>the content of the page</returns>
         private static string GetUrl(string url)
         {
-            var sratimCookieContainer = SratimDownloaderConfiguration.GetInstance().GetSratimCookieContainer();
-            if (sratimCookieContainer == null)
+            if (_sratimCookieContainer == null)
             {
                 throw new Exception("Could not login to site. Please install HebrewSubtitleDownloader extension to config your email and password");
             }
 
             try
             {
-                var client = new WebClientEx(sratimCookieContainer) {Encoding = Encoding.UTF8};
+                var client = new WebClientEx(_sratimCookieContainer) { Encoding = Encoding.UTF8 };
                 return client.DownloadString(url);
             }
             catch (Exception)

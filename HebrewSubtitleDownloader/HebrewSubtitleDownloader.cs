@@ -17,7 +17,7 @@ namespace HebrewSubtitleDownloader
 
         public string Description()
         {
-            return "Plugin to add Hebrew subtitle providers for SubCentral plugin";
+            return "Plugin that adds Hebrew subtitle providers for SubCentral plugin";
         }
 
         public string Author()
