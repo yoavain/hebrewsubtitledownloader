@@ -1,19 +1,36 @@
 ﻿using System;
 using System.IO;
 using System.Net;
-using System.Xml;
 
-namespace Sratim
+namespace SratimUtils
 {
     public sealed class SratimDownloaderConfiguration
     {
-        private static volatile SratimDownloaderConfiguration _instance;
-        private static readonly object SyncObject = new Object();
+        #region Singleton
 
-        private const string SettingsFilename = "SubtitleDownloaders\\Sratim.xml";
+        private SratimDownloaderConfiguration()
+        {
+        }
 
-        // xml
-        private const string LoginPath = "login";
+        private static class SratimDownloaderConfigurationHolder
+        {
+            public static readonly SratimDownloaderConfiguration Instance = new SratimDownloaderConfiguration();
+        }
+
+        public static SratimDownloaderConfiguration GetInstance()
+        {
+            return SratimDownloaderConfigurationHolder.Instance;
+        }
+
+        #endregion Singleton
+
+        #region const
+
+        // Sratim url
+        public const string SratimBaseUrl = "http://www.subtitle.co.il/";
+        public const string SraitmLoginPath = "login.php";
+
+        // login
         private const string EmailString = "email";
         private const string PasswordString = "password";
         private const string LoginString = "Login";
@@ -23,71 +40,33 @@ namespace Sratim
         private const string UserPassString = "slcoo_user_pass";
         private const string UserNameString = "slcoo_user_name";
 
+        private const string LoginValue = "%D7%94%D7%AA%D7%97%D7%91%D7%A8";
+
+        #endregion const
+
+        #region private
         // Cookie container
         private CookieContainer _sratimCookieContainer;
 
+        #endregion private
 
-        private SratimDownloaderConfiguration()
+        #region public methods
+
+        public Boolean ValidateCredentials(string email, string password)
         {
-            try
+            // Already have cookie
+            if (_sratimCookieContainer != null)
             {
-                var xml = new XmlDocument();
-                xml.Load(SettingsFilename);
-                
-                // Get the cookie
-                var loginNode = xml.SelectNodes("/settings/" + LoginPath);
-                if (loginNode != null)
-                {
-                    // Check for login data in settings/login
-                    var loginData = ReadLoginDataFromConfigurationFile(loginNode);
-                    if (loginData != null)
-                    {
-                        // Fetch for cookie
-                        var cookieData = GetCookieDataFromLoginData(loginData);
+                return true;
+            }
+            
+            // Prepare login data
+            var loginData = new LoginData(email, password, LoginValue);
 
-                        if (cookieData != null)
-                        {
-                            return;
-                        }
+            // Fetch for cookie
+            var cookieData = GetCookieDataFromLoginData(loginData);
 
-                        // No cookie & no login data
-                        throw new InvalidDataException("Could not get cookie. Please check you user/password in configruation file");
-                    }
-                }
-                else
-                {
-                    // No cookie & no login data
-                    throw new InvalidDataException("Missing cookie data & missing login data");
-                }
-            }
-            catch (FileNotFoundException)
-            {
-                // no file --> blank list
-                throw new InvalidDataException("Missing configuration file");
-            }
-            catch (XmlException)
-            {
-                // invalid file --> blank list
-                throw new InvalidDataException("Invalid configuration file");
-            }
-        }
-
-        public static SratimDownloaderConfiguration Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    lock (SyncObject)
-                    {
-                        if (_instance == null)
-                        {
-                            _instance = new SratimDownloaderConfiguration();
-                        }
-                    }
-                }
-                return _instance;
-            }
+            return cookieData != null;
         }
 
         public CookieContainer GetSratimCookieContainer()
@@ -95,57 +74,24 @@ namespace Sratim
             return _sratimCookieContainer;
         }
 
-        /// <summary>
-        /// Reads LoginData from configuration file
-        /// </summary>
-        /// <param name="loginNodeList">xml node</param>
-        /// <returns>Login data. (null if missing or fails)</returns>
-        private static LoginData ReadLoginDataFromConfigurationFile(XmlNodeList loginNodeList)
-        {
-            string email = null;
-            string password = null;
-            string login = null;
+        #endregion public methods
 
-            foreach (XmlElement element in loginNodeList)
-            {
-                var emailNode = element.SelectSingleNode(EmailString);
-                if (emailNode == null || string.IsNullOrEmpty(emailNode.InnerText))
-                {
-                    return null;
-                }
-                email = emailNode.InnerText;
-
-                var passwordNode = element.SelectSingleNode(PasswordString);
-                if (passwordNode == null || string.IsNullOrEmpty(passwordNode.InnerText))
-                {
-                    return null;
-                }
-                password = passwordNode.InnerText;
-
-                var loginNode = element.SelectSingleNode(LoginString);
-                if (loginNode == null || string.IsNullOrEmpty(loginNode.InnerText))
-                {
-                    return null;
-                }
-                login = loginNode.InnerText;
-            }
-            return new LoginData(email, password, login);
-        }
+        #region private methods
 
         /// <summary>
         /// Get cookie data
         /// </summary>
         /// <param name="loginData">the login data (user/password)</param>
         /// <returns>cookie data</returns>
-        private CookieData GetCookieDataFromLoginData(LoginData loginData)
+        private CookieData GetCookieDataFromLoginData (LoginData loginData)
         {
-            const string url = SratimDownloader.BaseUrl + SratimDownloader.LoginPath;
+            const string url = SratimBaseUrl + SraitmLoginPath;
             var postData = loginData.ToString();
             var cookieContainer = new CookieContainer();
 
             // ReSharper disable once UnusedVariable
             var response = DoWebRequest(url, postData, cookieContainer);
-            
+
             if (cookieContainer.Count > 0)
             {
                 var cookieData = CookieData.CreateFromCookieContainer(cookieContainer);
@@ -220,6 +166,10 @@ namespace Sratim
             return responseData;
         }
 
+        #endregion private methods
+
+        #region inner classes
+
         /// <summary>
         /// Login data
         /// 1. email
@@ -242,9 +192,9 @@ namespace Sratim
             public override string ToString()
             {
                 return string.Format("{0}={1}&{2}={3}&{4}={5}",
-                EmailString, _email.Replace("@", "%40"),
-                PasswordString, _password,
-                LoginString, _login);
+                    EmailString, _email.Replace("@", "%40"),
+                    PasswordString, _password,
+                    LoginString, _login);
             }
         }
 
@@ -269,20 +219,20 @@ namespace Sratim
 
             public override string ToString()
             {
-                return string.Format("{0}={1}; {2}={3}; {4}={5};", 
+                return string.Format("{0}={1}; {2}={3}; {4}={5};",
                     UserIdString, _slcooUserId,
                     UserPassString, _slcooUserPass,
                     UserNameString, _slcooUserName);
             }
 
-            public static CookieData CreateFromCookieContainer(CookieContainer cookieContainer)
+            public static CookieData CreateFromCookieContainer (CookieContainer cookieContainer)
             {
                 string slcooUserId = null;
                 string slcooUserPass = null;
                 string slcooUserName = null;
 
                 // Parse cookie container
-                var cookieCollection = cookieContainer.GetCookies(new Uri(SratimDownloader.BaseUrl));
+                var cookieCollection = cookieContainer.GetCookies(new Uri(SratimBaseUrl));
                 foreach (Cookie cookie in cookieCollection)
                 {
                     if (UserIdString.Equals(cookie.Name))
@@ -310,5 +260,7 @@ namespace Sratim
                 return null;
             }
         }
+
+        #endregion inner classes
     }
 }

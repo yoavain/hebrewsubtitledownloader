@@ -3,9 +3,9 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Sratim;
+using SratimUtils;
 
-namespace SratimTest
+namespace HebrewSubtitleDownloaderTest
 {
     [TestClass]
     public class PasswordUtilityTest

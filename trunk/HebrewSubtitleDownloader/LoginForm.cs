@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Windows.Forms;
+using SratimUtils;
 
 namespace HebrewSubtitleDownloader
 {
     public partial class LoginForm : Form
     {
-        public LoginForm()
+
+        private readonly SetupForm _setupForm;
+
+        public LoginForm(SetupForm setupForm)
         {
+            _setupForm = setupForm;
             InitializeComponent();
         }
 
@@ -23,7 +28,8 @@ namespace HebrewSubtitleDownloader
         private void saveButton_Click(object sender, EventArgs e)
         {
             // Save
-            // todo
+            var validated = SratimDownloaderConfiguration.GetInstance().ValidateCredentials(emailTextBox.Text, passwordMaskedTextBox.Text);
+            _setupForm.UpdateStatus(validated);
 
             // Close
             Close();
@@ -33,6 +39,13 @@ namespace HebrewSubtitleDownloader
         {
             // Close
             Close();
+        }
+
+        private void showPasswordCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            passwordMaskedTextBox.PasswordChar = showPasswordCheckBox.Checked ? '\0' : '*';
+            passwordMaskedTextBox.UseSystemPasswordChar = !showPasswordCheckBox.Checked;
+            Refresh();
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 
-namespace Sratim
+namespace SratimUtils
 {
     public class PasswordUtility
     {
