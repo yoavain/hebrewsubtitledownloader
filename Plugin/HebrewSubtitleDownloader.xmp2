@@ -236,7 +236,7 @@ Click Next to continue or Cancel to exit Setup.</Value>
     <Id>95732da5-2c37-42aa-b2cd-1640ec5ccd8c</Id>
     <Author>yoavain</Author>
     <HomePage>http://code.google.com/p/hebrewsubtitledownloader</HomePage>
-    <ForumPage>http://forum.team-mediaportal.com/mediaportal-plugins-47/hebrew-subtitle-downloader-subcentral-addition-102994</ForumPage>
+    <ForumPage>http://forum.team-mediaportal.com/threads/hebrew-subtitle-downloader-subcentral-addition.102994/</ForumPage>
     <UpdateUrl>https://hebrewsubtitledownloader.googlecode.com/svn/trunk/Plugin/update.xml</UpdateUrl>
     <Version>
       <Major>2</Major>
@@ -251,7 +251,9 @@ Supported sites:
 * www.subscenter.org
 
 You must install SubCentral plugin before installing this plugin.</ExtensionDescription>
-    <VersionDescription>Fixed sratim.co.il for Movies</VersionDescription>
+    <VersionDescription>Created from scrach:
+* Added plugin configuration
+* Added login setting for Sratim.co.il</VersionDescription>
     <DevelopmentStatus>Stable</DevelopmentStatus>
     <OnlineLocation>https://hebrewsubtitledownloader.googlecode.com/files/HebrewSubtitleDownloader-{VERSION}.MPE1</OnlineLocation>
     <ReleaseDate>2013-01-04T18:50:52</ReleaseDate>
