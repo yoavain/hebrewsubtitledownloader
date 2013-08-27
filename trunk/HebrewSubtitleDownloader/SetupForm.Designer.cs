@@ -49,13 +49,13 @@
             // 
             // status
             // 
-            this.status.AutoSize = true;
             this.status.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
-            this.status.Location = new System.Drawing.Point(80, 19);
+            this.status.Location = new System.Drawing.Point(3, 16);
             this.status.Name = "status";
-            this.status.Size = new System.Drawing.Size(157, 17);
+            this.status.Size = new System.Drawing.Size(313, 17);
             this.status.TabIndex = 1;
             this.status.Text = "Sratim.co.il login status:";
+            this.status.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // exitButton
             // 
@@ -82,12 +82,12 @@
             // 
             // statusLabel
             // 
-            this.statusLabel.AutoSize = true;
             this.statusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
-            this.statusLabel.Location = new System.Drawing.Point(123, 47);
+            this.statusLabel.Location = new System.Drawing.Point(3, 41);
             this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(0, 17);
+            this.statusLabel.Size = new System.Drawing.Size(313, 26);
             this.statusLabel.TabIndex = 3;
+            this.statusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // SetupForm
             // 
@@ -99,7 +99,6 @@
             this.Text = "SetupForm";
             this.Load += new System.EventHandler(this.SetupForm_Load);
             this.setupFormPanel.ResumeLayout(false);
-            this.setupFormPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }

@@ -40,6 +40,13 @@
             SettingManager.SetEncryptedParam(SettingManager.SratimPasswordParam, SratimPassword);
         }
 
+        public void SaveSettings(string email, string password)
+        {
+            SratimEmail = email;
+            SratimPassword = password;
+            SaveSettings();
+        }
+
         #endregion Settings
     }
 }

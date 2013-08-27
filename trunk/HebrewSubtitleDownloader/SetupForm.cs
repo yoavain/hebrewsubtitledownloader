@@ -7,6 +7,8 @@ namespace HebrewSubtitleDownloader
 {
     public partial class SetupForm : Form
     {
+        private LoginForm _loginForm = null;
+
         public SetupForm()
         {
             InitializeComponent();
@@ -23,6 +25,7 @@ namespace HebrewSubtitleDownloader
             {
                 statusLabel.Text = "Acount validated";
                 statusLabel.ForeColor = Color.Green;
+                SaveCredentials();
             }
             else
             {
@@ -33,10 +36,18 @@ namespace HebrewSubtitleDownloader
             Refresh();
         }
 
+        private void SaveCredentials()
+        {
+            if (_loginForm != null)
+            {
+                Settings.GetInstance().SaveSettings(_loginForm.GetEmail(), _loginForm.GetPassword());
+            }
+        }
+
         private void updateLoginInfo_Click(object sender, EventArgs e)
         {
-            var loginForm = new LoginForm(this);
-            loginForm.Show();
+            _loginForm = new LoginForm(this);
+            _loginForm.Show();
         }
 
         private void exitButton_Click(object sender, EventArgs e)
