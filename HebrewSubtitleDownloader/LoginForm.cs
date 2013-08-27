@@ -15,6 +15,16 @@ namespace HebrewSubtitleDownloader
             InitializeComponent();
         }
 
+        public string GetEmail()
+        {
+            return emailTextBox.Text;
+        }
+
+        public string GetPassword()
+        {
+            return passwordMaskedTextBox.Text;
+        }
+
         private void emailTextBox1_TextChanged(object sender, EventArgs e)
         {
 
