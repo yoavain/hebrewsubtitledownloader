@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Security.Cryptography;
-using System.Text;
 using MediaPortal.Configuration;
 
 namespace SratimUtils
@@ -55,13 +54,15 @@ namespace SratimUtils
             string decryptedString = null;
             try
             {
-                var decryptString = PasswordUtility.DecryptData(encriptedString, DataProtectionScope.LocalMachine);
+                if (!string.IsNullOrEmpty(encriptedString))
+                {
+                    decryptedString = PasswordUtility.DecryptData(encriptedString, DataProtectionScope.LocalMachine);
+                }
             }
             catch (Exception)
             {
                 ;
             }
-            
 
             return decryptedString;
         }

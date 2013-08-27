@@ -7,10 +7,6 @@ namespace HebrewSubtitleDownloader
     [PluginIcons("HebrewSubtitleDownloader.Resources.HebrewSubtitleDownloader_icon_enabled.png", "HebrewSubtitleDownloader.Resources.HebrewSubtitleDownloader_icon_disabled.png")]
     public class HebrewSubtitleDownloader : GUIWindow, ISetupForm
     {
-        public HebrewSubtitleDownloader()
-        {
-            
-        }
 
         #region ISetupForm Members
 
