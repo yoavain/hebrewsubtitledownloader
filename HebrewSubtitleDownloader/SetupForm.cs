@@ -23,7 +23,7 @@ namespace HebrewSubtitleDownloader
         {
             if (validate)
             {
-                statusLabel.Text = "Acount validated";
+                statusLabel.Text = "User account validated";
                 statusLabel.ForeColor = Color.Green;
                 SaveCredentials();
             }
