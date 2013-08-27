@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
+using System.Text;
+
 
 namespace SratimUtils
 {
@@ -7,40 +9,38 @@ namespace SratimUtils
     {
         private static readonly byte[] Entropy = System.Text.Encoding.Unicode.GetBytes("Your password is incorrect");
 
-        public static byte[] EncryptData(byte[] decryptedData, DataProtectionScope scope)
+        public static string EncryptData(string decryptedString, DataProtectionScope scope)
         {
-            if (decryptedData == null)
+            if (string.IsNullOrEmpty(decryptedString))
             {
-                throw new ArgumentNullException("decryptedData");
+                throw new ArgumentException("decryptedString");
             }
-            if (decryptedData.Length <= 0)
-            {
-                throw new ArgumentException("decryptedData");
-            }
+
+            // To byte array
+            var decryptedBytes = Encoding.ASCII.GetBytes(decryptedString);
 
             // Encrypt the data
-            var encrptedData = ProtectedData.Protect(decryptedData, Entropy, scope);
+            var encrptedBytes = ProtectedData.Protect(decryptedBytes, Entropy, scope);
 
-            // Return encyrpted data
-            return encrptedData;
+            // Return as base64 string
+            return Convert.ToBase64String(encrptedBytes);
         }
 
-        public static byte[] DecryptData(byte[] encrptedData, DataProtectionScope scope)
+        public static string DecryptData(string encrptedPassword, DataProtectionScope scope)
         {
-            if (encrptedData == null)
+            if (string.IsNullOrEmpty(encrptedPassword))
             {
-                throw new ArgumentNullException("encrptedData");
+                throw new ArgumentException("encrptedPassword");
             }
-            if (encrptedData.Length <= 0)
-            {
-                throw new ArgumentException("encrptedData");
-            }
+
+            // From base64
+            byte[] encryptedBytes = Convert.FromBase64String(encrptedPassword);
 
             // Decrypt the data
-            byte[] decryptedData = ProtectedData.Unprotect(encrptedData, Entropy, scope);
+            byte[] decryptedData = ProtectedData.Unprotect(encryptedBytes, Entropy, scope);
 
-            // Return decrypted data
-            return decryptedData;
+            // Convert to string
+            return Encoding.Default.GetString(decryptedData);
         }
     }
 }

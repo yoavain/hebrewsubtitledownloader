@@ -15,15 +15,14 @@ namespace HebrewSubtitleDownloaderTest
         {
             // Generate password
             var generatedPassword = Membership.GeneratePassword(12, 0);
-            var passwordBytes = Encoding.ASCII.GetBytes(generatedPassword);
 
             // Encript
-            var encryptedData = PasswordUtility.EncryptData(passwordBytes, DataProtectionScope.LocalMachine);
+            var encryptedPassword = PasswordUtility.EncryptData(generatedPassword, DataProtectionScope.LocalMachine);
 
             // Decript
-            var decryptedData = PasswordUtility.DecryptData(encryptedData, DataProtectionScope.LocalMachine);
+            var decryptedPassword = PasswordUtility.DecryptData(encryptedPassword, DataProtectionScope.LocalMachine);
 
-            Assert.IsTrue(passwordBytes.SequenceEqual(decryptedData));
+            Assert.Equals(generatedPassword, decryptedPassword);
         }
     }
 }

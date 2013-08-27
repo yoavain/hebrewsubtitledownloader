@@ -55,9 +55,7 @@ namespace SratimUtils
             string decryptedString = null;
             try
             {
-                var encrptedBytes = Encoding.ASCII.GetBytes(encriptedString);
-                var decryptBytes = PasswordUtility.DecryptData(encrptedBytes, DataProtectionScope.LocalMachine);
-                decryptedString = Encoding.Default.GetString(decryptBytes);
+                var decryptString = PasswordUtility.DecryptData(encriptedString, DataProtectionScope.LocalMachine);
             }
             catch (Exception)
             {
@@ -112,9 +110,7 @@ namespace SratimUtils
         public static void SetEncryptedParam(string paramName, string decryptedString)
         {
             // Encrypt
-            var decryptedBytes = Encoding.ASCII.GetBytes(decryptedString);
-            var encryptedBytes = PasswordUtility.EncryptData(decryptedBytes, DataProtectionScope.LocalMachine);
-            var encyptedString = Encoding.Default.GetString(encryptedBytes);
+            var encyptedString = PasswordUtility.EncryptData(decryptedString, DataProtectionScope.LocalMachine);
 
             MediaPortalSettings.SetValue(Prefix, paramName, encyptedString);
         }
