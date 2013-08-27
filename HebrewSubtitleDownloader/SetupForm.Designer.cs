@@ -31,9 +31,9 @@
             this.updateLoginInfo = new System.Windows.Forms.Button();
             this.status = new System.Windows.Forms.Label();
             this.exitButton = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.setupFormPanel = new System.Windows.Forms.Panel();
             this.statusLabel = new System.Windows.Forms.Label();
-            this.panel1.SuspendLayout();
+            this.setupFormPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // updateLoginInfo
@@ -68,16 +68,17 @@
             this.exitButton.UseVisualStyleBackColor = true;
             this.exitButton.Click += new System.EventHandler(this.exitButton_Click);
             // 
-            // panel1
+            // setupFormPanel
             // 
-            this.panel1.Controls.Add(this.statusLabel);
-            this.panel1.Controls.Add(this.status);
-            this.panel1.Controls.Add(this.exitButton);
-            this.panel1.Controls.Add(this.updateLoginInfo);
-            this.panel1.Location = new System.Drawing.Point(13, 13);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(319, 237);
-            this.panel1.TabIndex = 3;
+            this.setupFormPanel.Controls.Add(this.statusLabel);
+            this.setupFormPanel.Controls.Add(this.status);
+            this.setupFormPanel.Controls.Add(this.exitButton);
+            this.setupFormPanel.Controls.Add(this.updateLoginInfo);
+            this.setupFormPanel.Location = new System.Drawing.Point(13, 13);
+            this.setupFormPanel.Name = "setupFormPanel";
+            this.setupFormPanel.Size = new System.Drawing.Size(319, 237);
+            this.setupFormPanel.TabIndex = 3;
+            this.setupFormPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.setupFormPanel_Paint);
             // 
             // statusLabel
             // 
@@ -93,11 +94,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(344, 262);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.setupFormPanel);
             this.Name = "SetupForm";
             this.Text = "SetupForm";
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.Load += new System.EventHandler(this.SetupForm_Load);
+            this.setupFormPanel.ResumeLayout(false);
+            this.setupFormPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -107,7 +109,7 @@
         private System.Windows.Forms.Button updateLoginInfo;
         private System.Windows.Forms.Label status;
         private System.Windows.Forms.Button exitButton;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel setupFormPanel;
         private System.Windows.Forms.Label statusLabel;
     }
 }

@@ -28,24 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.emailTextBox1 = new System.Windows.Forms.TextBox();
+            this.emailTextBox = new System.Windows.Forms.TextBox();
             this.emailLabel = new System.Windows.Forms.Label();
-            this.maskedTextBox = new System.Windows.Forms.MaskedTextBox();
+            this.passwordMaskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.passwordLabel = new System.Windows.Forms.Label();
             this.saveButton = new System.Windows.Forms.Button();
             this.titleLabel = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.loginFormPanel = new System.Windows.Forms.Panel();
             this.cancelButton = new System.Windows.Forms.Button();
-            this.panel1.SuspendLayout();
+            this.showPasswordCheckBox = new System.Windows.Forms.CheckBox();
+            this.loginFormPanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // emailTextBox1
+            // emailTextBox
             // 
-            this.emailTextBox1.Location = new System.Drawing.Point(12, 66);
-            this.emailTextBox1.Name = "emailTextBox1";
-            this.emailTextBox1.Size = new System.Drawing.Size(134, 20);
-            this.emailTextBox1.TabIndex = 0;
-            this.emailTextBox1.TextChanged += new System.EventHandler(this.emailTextBox1_TextChanged);
+            this.emailTextBox.Location = new System.Drawing.Point(12, 66);
+            this.emailTextBox.Name = "emailTextBox";
+            this.emailTextBox.Size = new System.Drawing.Size(134, 20);
+            this.emailTextBox.TabIndex = 0;
+            this.emailTextBox.TextChanged += new System.EventHandler(this.emailTextBox1_TextChanged);
             // 
             // emailLabel
             // 
@@ -57,15 +58,15 @@
             this.emailLabel.TabIndex = 1;
             this.emailLabel.Text = "Email:";
             // 
-            // maskedTextBox
+            // passwordMaskedTextBox
             // 
-            this.maskedTextBox.Location = new System.Drawing.Point(12, 124);
-            this.maskedTextBox.Name = "maskedTextBox";
-            this.maskedTextBox.PasswordChar = '*';
-            this.maskedTextBox.Size = new System.Drawing.Size(134, 20);
-            this.maskedTextBox.TabIndex = 2;
-            this.maskedTextBox.UseSystemPasswordChar = true;
-            this.maskedTextBox.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.maskedTextBox1_MaskInputRejected);
+            this.passwordMaskedTextBox.Location = new System.Drawing.Point(12, 124);
+            this.passwordMaskedTextBox.Name = "passwordMaskedTextBox";
+            this.passwordMaskedTextBox.PasswordChar = '*';
+            this.passwordMaskedTextBox.Size = new System.Drawing.Size(134, 20);
+            this.passwordMaskedTextBox.TabIndex = 2;
+            this.passwordMaskedTextBox.UseSystemPasswordChar = true;
+            this.passwordMaskedTextBox.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.maskedTextBox1_MaskInputRejected);
             // 
             // passwordLabel
             // 
@@ -98,19 +99,20 @@
             this.titleLabel.TabIndex = 5;
             this.titleLabel.Text = "Please enter your login information";
             // 
-            // panel1
+            // loginFormPanel
             // 
-            this.panel1.Controls.Add(this.cancelButton);
-            this.panel1.Controls.Add(this.titleLabel);
-            this.panel1.Controls.Add(this.saveButton);
-            this.panel1.Controls.Add(this.emailLabel);
-            this.panel1.Controls.Add(this.maskedTextBox);
-            this.panel1.Controls.Add(this.passwordLabel);
-            this.panel1.Controls.Add(this.emailTextBox1);
-            this.panel1.Location = new System.Drawing.Point(12, 12);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(320, 238);
-            this.panel1.TabIndex = 6;
+            this.loginFormPanel.Controls.Add(this.showPasswordCheckBox);
+            this.loginFormPanel.Controls.Add(this.cancelButton);
+            this.loginFormPanel.Controls.Add(this.titleLabel);
+            this.loginFormPanel.Controls.Add(this.saveButton);
+            this.loginFormPanel.Controls.Add(this.emailLabel);
+            this.loginFormPanel.Controls.Add(this.passwordMaskedTextBox);
+            this.loginFormPanel.Controls.Add(this.passwordLabel);
+            this.loginFormPanel.Controls.Add(this.emailTextBox);
+            this.loginFormPanel.Location = new System.Drawing.Point(12, 12);
+            this.loginFormPanel.Name = "loginFormPanel";
+            this.loginFormPanel.Size = new System.Drawing.Size(320, 238);
+            this.loginFormPanel.TabIndex = 6;
             // 
             // cancelButton
             // 
@@ -123,29 +125,41 @@
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
+            // showPasswordCheckBox
+            // 
+            this.showPasswordCheckBox.AutoSize = true;
+            this.showPasswordCheckBox.Location = new System.Drawing.Point(152, 127);
+            this.showPasswordCheckBox.Name = "showPasswordCheckBox";
+            this.showPasswordCheckBox.Size = new System.Drawing.Size(101, 17);
+            this.showPasswordCheckBox.TabIndex = 7;
+            this.showPasswordCheckBox.Text = "Show password";
+            this.showPasswordCheckBox.UseVisualStyleBackColor = true;
+            this.showPasswordCheckBox.CheckedChanged += new System.EventHandler(this.showPasswordCheckBox_CheckedChanged);
+            // 
             // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(344, 262);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.loginFormPanel);
             this.Name = "LoginForm";
             this.Text = "LoginForm";
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.loginFormPanel.ResumeLayout(false);
+            this.loginFormPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TextBox emailTextBox1;
+        private System.Windows.Forms.TextBox emailTextBox;
         private System.Windows.Forms.Label emailLabel;
-        private System.Windows.Forms.MaskedTextBox maskedTextBox;
+        private System.Windows.Forms.MaskedTextBox passwordMaskedTextBox;
         private System.Windows.Forms.Label passwordLabel;
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Label titleLabel;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel loginFormPanel;
         private System.Windows.Forms.Button cancelButton;
+        private System.Windows.Forms.CheckBox showPasswordCheckBox;
     }
 }

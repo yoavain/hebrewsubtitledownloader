@@ -40,23 +40,26 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PasswordUtility.cs" />
     <Compile Include="SratimDownloader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SratimDownloaderConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Settings\SubtitleDownloaders\Sratim.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SratimUtils\SratimUtils.csproj">
+      <Project>{46f65228-9484-444c-85c7-643226f90efc}</Project>
+      <Name>SratimUtils %28SratimUtils\SratimUtils%29</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

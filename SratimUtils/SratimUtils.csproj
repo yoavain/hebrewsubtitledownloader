@@ -4,14 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{04537D75-B33D-4048-9CBF-5ED495D36E44}</ProjectGuid>
+    <ProjectGuid>{46F65228-9484-444C-85C7-643226F90EFC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HebrewSubtitleDownloader</RootNamespace>
-    <AssemblyName>HebrewSubtitleDownloader</AssemblyName>
+    <RootNamespace>SratimUtils</RootNamespace>
+    <AssemblyName>SratimUtils</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,53 +31,22 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common.Utils">
-      <HintPath>..\External\Common.Utils.dll</HintPath>
-    </Reference>
-    <Reference Include="Core">
-      <HintPath>..\External\Core.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Security" />
     <Reference Include="Utils">
       <HintPath>..\External\Utils.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HebrewSubtitleDownloader.cs" />
-    <Compile Include="LoginForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LoginForm.Designer.cs">
-      <DependentUpon>LoginForm.cs</DependentUpon>
-    </Compile>
+    <Compile Include="PasswordUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SetupForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SetupForm.Designer.cs">
-      <DependentUpon>SetupForm.cs</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="LoginForm.resx">
-      <DependentUpon>LoginForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\HebrewSubtitleDownloader_icon_disabled.png" />
-    <EmbeddedResource Include="Resources\HebrewSubtitleDownloader_icon_enabled.png" />
-    <EmbeddedResource Include="SetupForm.resx">
-      <DependentUpon>SetupForm.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SratimUtils\SratimUtils.csproj">
-      <Project>{46f65228-9484-444c-85c7-643226f90efc}</Project>
-      <Name>SratimUtils %28SratimUtils\SratimUtils%29</Name>
-    </ProjectReference>
+    <Compile Include="SettingManager.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="SratimDownloaderConfiguration.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

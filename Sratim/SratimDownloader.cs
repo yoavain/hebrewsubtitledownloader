@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using SratimUtils;
 using SubtitleDownloader.Core;
 using SubtitleDownloader.Util;
 
@@ -113,7 +114,7 @@ namespace Sratim
         /// <returns>the content of the page</returns>
         private static string GetUrl(string url)
         {
-            var sratimCookieContainer = SratimDownloaderConfiguration.Instance.GetSratimCookieContainer();
+            var sratimCookieContainer = SratimDownloaderConfiguration.GetInstance().GetSratimCookieContainer();
             if (sratimCookieContainer == null)
             {
                 throw new Exception("Could not login to site. Please make sure to fill your email and password into Sratim.xml");
@@ -137,7 +138,7 @@ namespace Sratim
         /// <param name="downloadFile">filename to download</param>
         private static void DownloadFile(string url, string downloadFile)
         {
-            var sratimCookieContainer = SratimDownloaderConfiguration.Instance.GetSratimCookieContainer();
+            var sratimCookieContainer = SratimDownloaderConfiguration.GetInstance().GetSratimCookieContainer();
             if (sratimCookieContainer == null)
             {
                 return; // todo - yoav - message

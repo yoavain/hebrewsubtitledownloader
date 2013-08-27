@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
+using SratimUtils;
 
 namespace HebrewSubtitleDownloader
 {
@@ -8,17 +10,48 @@ namespace HebrewSubtitleDownloader
         public SetupForm()
         {
             InitializeComponent();
+
+            var sratimEmail = Settings.GetInstance().SratimEmail;
+            var sratimPassword = Settings.GetInstance().SratimPassword;
+            var validated = SratimDownloaderConfiguration.GetInstance().ValidateCredentials(sratimEmail, sratimPassword);
+            UpdateStatus(validated);
+        }
+
+        public void UpdateStatus(bool validate)
+        {
+            if (validate)
+            {
+                statusLabel.Text = "Acount validated";
+                statusLabel.ForeColor = Color.Green;
+            }
+            else
+            {
+                statusLabel.Text = "Could not login using credentials";
+                statusLabel.ForeColor = Color.Red;
+            }
+            
+            Refresh();
         }
 
         private void updateLoginInfo_Click(object sender, EventArgs e)
         {
-            var loginForm = new LoginForm();
+            var loginForm = new LoginForm(this);
             loginForm.Show();
         }
 
         private void exitButton_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void SetupForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void setupFormPanel_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
