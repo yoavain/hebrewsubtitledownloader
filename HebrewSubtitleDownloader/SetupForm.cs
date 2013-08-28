@@ -7,7 +7,7 @@ namespace HebrewSubtitleDownloader
 {
     public partial class SetupForm : Form
     {
-        private LoginForm _loginForm = null;
+        private LoginForm _loginForm;
 
         public SetupForm()
         {
@@ -48,16 +48,14 @@ namespace HebrewSubtitleDownloader
 
         private void updateLoginInfo_Click(object sender, EventArgs e)
         {
-            _loginForm = new LoginForm(this);
-            // Define the border style of the form to a dialog box.
-            _loginForm.FormBorderStyle = FormBorderStyle.FixedDialog;
-            // Set the MaximizeBox to false to remove the maximize box.
-            _loginForm.MaximizeBox = false;
-            // Set the MinimizeBox to false to remove the minimize box.
-            _loginForm.MinimizeBox = false;
-            // Set the start position of the form to the center of the screen.
-            _loginForm.StartPosition = FormStartPosition.CenterScreen;
-            // Display the form as a modal dialog box.
+            _loginForm = new LoginForm(this)
+            {
+                Text = "Hebrew Subtitle Downloader - Setting - Login",
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MaximizeBox = false,
+                MinimizeBox = false,
+                StartPosition = FormStartPosition.CenterScreen
+            };
             _loginForm.ShowDialog();
         }
 

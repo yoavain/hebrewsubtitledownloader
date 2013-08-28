@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using HtmlAgilityPack;
@@ -184,17 +185,8 @@ namespace SubsCenterOrg
       client.DownloadFile(url, archiveFile);
 
       var extractFilesFromZipOrRarFile = FileUtils.ExtractFilesFromZipOrRarFile(archiveFile);
-      var fileFist = new List<FileInfo>();
 
-      foreach (var fileInfo in extractFilesFromZipOrRarFile)
-      {
-        if (HasSubtitleExtension(fileInfo))
-        {
-          fileFist.Add(fileInfo);
-        }
-      }
-
-      return fileFist;
+        return extractFilesFromZipOrRarFile.Where(HasSubtitleExtension).ToList();
     }
 
 
@@ -440,15 +432,7 @@ namespace SubsCenterOrg
     {
       // Get all img nodes and search for "Error 404"
       var images = page.DocumentNode.SelectNodes("//img");
-      foreach (var node in images)
-      {
-        var alt = node.GetAttributeValue("alt", string.Empty);
-        if (alt.Equals(Error404String))
-        {
-          return true;
-        }
-      }
-      return false;
+      return images.Select(node => node.GetAttributeValue("alt", string.Empty)).Any(alt => alt.Equals(Error404String));
     }
 
     /// <summary>
@@ -460,15 +444,7 @@ namespace SubsCenterOrg
     {
       // Get all img nodes and search for indicator of no results
       var images = page.DocumentNode.SelectNodes("//div");
-      foreach (var node in images)
-      {
-        var alt = node.GetAttributeValue("id", string.Empty);
-        if (alt.Equals(NoResultsString))
-        {
-          return true;
-        }
-      }
-      return false;
+      return images.Select(node => node.GetAttributeValue("id", string.Empty)).Any(alt => alt.Equals(NoResultsString));
     }
 
     /// <summary>
@@ -531,21 +507,7 @@ namespace SubsCenterOrg
         var title = mainSeriesPage.DocumentNode.SelectNodes("//h3")[0].InnerText.Replace(".", "").ToLower().Trim();
 
         var spanPageName = episodePage.DocumentNode.SelectNodes("//span");
-        foreach (var node in spanPageName)
-        {
-          var atr = node.GetAttributeValue("class", string.Empty);
-          if (atr.Equals("pageName"))
-          {
-            var seasonEpisodeText = node.InnerText.Trim();
-            var matches = Regex.Matches(seasonEpisodeText, "\\d+");
-            var season = int.Parse(matches[0].Value);
-            var episode = int.Parse(matches[1].Value);
-
-            return ((title.Equals(expectedTitle) || (title.Equals(expectedCleanTitle))) && (season == expectedSeason) && (episode == expectedEpisode));
-          }
-        }
-
-        return false;
+        return (from node in spanPageName let atr = node.GetAttributeValue("class", string.Empty) where atr.Equals("pageName") select node.InnerText.Trim() into seasonEpisodeText select Regex.Matches(seasonEpisodeText, "\\d+") into matches let season = int.Parse(matches[0].Value) let episode = int.Parse(matches[1].Value) select ((title.Equals(expectedTitle) || (title.Equals(expectedCleanTitle))) && (season == expectedSeason) && (episode == expectedEpisode))).FirstOrDefault();
       }
       catch
       {

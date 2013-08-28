@@ -7,7 +7,7 @@ namespace SratimUtils
 {
     public class PasswordUtility
     {
-        private static readonly byte[] Entropy = System.Text.Encoding.Unicode.GetBytes("Your password is incorrect");
+        private static readonly byte[] Entropy = Encoding.Unicode.GetBytes("Your password is incorrect");
 
         public static string EncryptData(string decryptedString, DataProtectionScope scope)
         {
