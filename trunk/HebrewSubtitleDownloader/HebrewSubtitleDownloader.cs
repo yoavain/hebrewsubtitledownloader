@@ -30,16 +30,14 @@ namespace HebrewSubtitleDownloader
         {
             try
             {
-                var setupForm = new SetupForm();
-                // Define the border style of the form to a dialog box.
-                setupForm.FormBorderStyle = FormBorderStyle.FixedDialog;
-                // Set the MaximizeBox to false to remove the maximize box.
-                setupForm.MaximizeBox = false;
-                // Set the MinimizeBox to false to remove the minimize box.
-                setupForm.MinimizeBox = false;
-                // Set the start position of the form to the center of the screen.
-                setupForm.StartPosition = FormStartPosition.CenterScreen; 
-                // Display the form as a modal dialog box.
+                var setupForm = new SetupForm
+                {
+                    Text = "Hebrew Subtitle Dowloader - Setting",
+                    FormBorderStyle = FormBorderStyle.FixedDialog,
+                    MaximizeBox = false,
+                    MinimizeBox = false,
+                    StartPosition = FormStartPosition.CenterScreen
+                };
                 setupForm.ShowDialog();
             }
             catch (Exception)

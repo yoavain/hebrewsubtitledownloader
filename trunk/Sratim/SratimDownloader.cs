@@ -52,32 +52,20 @@ namespace Sratim
 
         public List<Subtitle> SearchSubtitles(SearchQuery query)
         {
-            var subsList = new List<Subtitle>();
             var languageList = ConvertThreeLetterToTwoLetterLanguageCodes(query.LanguageCodes);
 
             var subtitles = SearchSubtitles(query.Query, query.Year, null, null, null, languageList);
-            foreach (var subtitle in subtitles)
-            {
-                subsList.Add(new Subtitle(subtitle.SubtitleId, query.Query, subtitle.Filename,
-                    Languages.GetLanguageCode(subtitle.LanguageName)));
-            }
-            return subsList;
+            return subtitles.Select(subtitle => new Subtitle(subtitle.SubtitleId, query.Query, subtitle.Filename, Languages.GetLanguageCode(subtitle.LanguageName))).ToList();
         }
 
         public List<Subtitle> SearchSubtitles(EpisodeSearchQuery query)
         {
-            var subsList = new List<Subtitle>();
             var languageList = ConvertThreeLetterToTwoLetterLanguageCodes(query.LanguageCodes);
 
             var subtitles = SearchSubtitles(null, 0, query.SerieTitle,
                 query.Season.ToString(CultureInfo.InvariantCulture),
                 query.Episode.ToString(CultureInfo.InvariantCulture), languageList);
-            foreach (var subtitle in subtitles)
-            {
-                subsList.Add(new Subtitle(subtitle.SubtitleId, query.SerieTitle, subtitle.Filename,
-                    Languages.GetLanguageCode(subtitle.LanguageName)));
-            }
-            return subsList;
+            return subtitles.Select(subtitle => new Subtitle(subtitle.SubtitleId, query.SerieTitle, subtitle.Filename, Languages.GetLanguageCode(subtitle.LanguageName))).ToList();
         }
 
         public List<Subtitle> SearchSubtitles(ImdbSearchQuery query)
@@ -169,7 +157,7 @@ namespace Sratim
             }
             catch (Exception)
             {
-                return;
+                ;
             }
         }
 
@@ -504,16 +492,8 @@ namespace Sratim
 
             // Extract the zip file and find the new sub/srt file
             var extractFilesFromZipOrRarFile = FileUtils.ExtractFilesFromZipOrRarFile(archiveFile);
-            var fileFist = new List<FileInfo>();
-            foreach (var fileInfo in extractFilesFromZipOrRarFile)
-            {
-                if (HasSubtitleExtension(fileInfo))
-                {
-                    fileFist.Add(fileInfo);
-                }
-            }
 
-            return fileFist;
+            return extractFilesFromZipOrRarFile.Where(HasSubtitleExtension).ToList();
         }
 
 
@@ -702,12 +682,7 @@ namespace Sratim
         /// <returns>2 letters language code list</returns>
         private static List<string> ConvertThreeLetterToTwoLetterLanguageCodes(IEnumerable<string> languageCodes)
         {
-            var languageList = new List<string>();
-            foreach (var language in languageCodes)
-            {
-                languageList.Add(language.Substring(0, 2));
-            }
-            return languageList;
+            return languageCodes.Select(language => language.Substring(0, 2)).ToList();
         }
 
         /// <summary>
