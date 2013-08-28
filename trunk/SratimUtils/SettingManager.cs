@@ -110,8 +110,12 @@ namespace SratimUtils
         /// <param name="decryptedString">param value</param>
         public static void SetEncryptedParam(string paramName, string decryptedString)
         {
-            // Encrypt
-            var encyptedString = PasswordUtility.EncryptData(decryptedString, DataProtectionScope.LocalMachine);
+            var encyptedString = "";
+            if (!string.IsNullOrEmpty(paramName))
+            {
+                // Encrypt
+                encyptedString = PasswordUtility.EncryptData(decryptedString, DataProtectionScope.LocalMachine);
+            }
 
             MediaPortalSettings.SetValue(Prefix, paramName, encyptedString);
         }

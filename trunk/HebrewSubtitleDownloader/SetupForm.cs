@@ -25,12 +25,14 @@ namespace HebrewSubtitleDownloader
             {
                 statusLabel.Text = "User account validated";
                 statusLabel.ForeColor = Color.Green;
+                updateLoginInfo.Enabled = false;
                 SaveCredentials();
             }
             else
             {
                 statusLabel.Text = "Could not login using credentials";
                 statusLabel.ForeColor = Color.Red;
+                updateLoginInfo.Enabled = true;
             }
             
             Refresh();
@@ -47,7 +49,16 @@ namespace HebrewSubtitleDownloader
         private void updateLoginInfo_Click(object sender, EventArgs e)
         {
             _loginForm = new LoginForm(this);
-            _loginForm.Show();
+            // Define the border style of the form to a dialog box.
+            _loginForm.FormBorderStyle = FormBorderStyle.FixedDialog;
+            // Set the MaximizeBox to false to remove the maximize box.
+            _loginForm.MaximizeBox = false;
+            // Set the MinimizeBox to false to remove the minimize box.
+            _loginForm.MinimizeBox = false;
+            // Set the start position of the form to the center of the screen.
+            _loginForm.StartPosition = FormStartPosition.CenterScreen;
+            // Display the form as a modal dialog box.
+            _loginForm.ShowDialog();
         }
 
         private void exitButton_Click(object sender, EventArgs e)
