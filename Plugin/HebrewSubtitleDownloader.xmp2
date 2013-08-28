@@ -132,6 +132,7 @@ Click Next to continue or Cancel to exit Setup.</Value>
         <IncludedGroups>
           <string>SratimCoIl</string>
           <string>SubsCenterOrg</string>
+          <string>HebrewSubtitleDownloader</string>
         </IncludedGroups>
         <PanelName>Install Section</PanelName>
         <WizardButtonsEnum>Next</WizardButtonsEnum>
@@ -162,7 +163,21 @@ Click Next to continue or Cancel to exit Setup.</Value>
           </Items>
         </Params>
         <Actions>
-          <Items />
+          <Items>
+            <ActionItem Name="ConfigurePlugin" ActionType="ConfigurePlugin" ConditionGroup="">
+              <Params>
+                <Items>
+                  <SectionParam Name="Path to plugin">
+                    <Value>%Plugins%\Windows\HebrewSubtitleDownloader.dll</Value>
+                    <ValueType>Template</ValueType>
+                    <Description>Path to the plugin like 
+ %Plugins%\Windows\plugin.dll</Description>
+                  </SectionParam>
+                </Items>
+              </Params>
+              <ExecuteLocation>AfterPanelShow</ExecuteLocation>
+            </ActionItem>
+          </Items>
         </Actions>
         <IncludedGroups />
         <PanelName>Setup Complete</PanelName>
@@ -325,7 +340,7 @@ You must install SubCentral plugin before installing this plugin.</ExtensionDesc
         <Param1 />
         <UpdateOption>OverwriteIfOlder</UpdateOption>
         <LocalFileName>HebrewSubtitleDownloader.png</LocalFileName>
-        <ZipFileName>Installer{CopyFile}\{43fcd089-9e6a-4198-9f8b-c2d53db1c7c0}-HebrewSubtitleDownloader.png</ZipFileName>
+        <ZipFileName>Installer{CopyFile}\{3210588f-226c-4197-b620-ca8b5b82a1e8}-HebrewSubtitleDownloader.png</ZipFileName>
         <DestinationFilename />
       </FileItem>
     </Items>

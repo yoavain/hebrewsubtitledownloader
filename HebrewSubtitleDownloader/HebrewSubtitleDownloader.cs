@@ -1,6 +1,7 @@
 ﻿using System;
 using MediaPortal.Configuration;
 using MediaPortal.GUI.Library;
+using System.Windows.Forms;
 
 namespace HebrewSubtitleDownloader
 {
@@ -27,8 +28,15 @@ namespace HebrewSubtitleDownloader
 
         public void ShowPlugin()
         {
-            var setupForm = new SetupForm();
-            setupForm.Show();
+            try
+            {
+                var setupForm = new SetupForm();
+                setupForm.ShowDialog();
+            }
+            catch (Exception)
+            {
+            	MessageBox.Show("Cannot start plugin");
+            }
         }
 
         public bool CanEnable()
