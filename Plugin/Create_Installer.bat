@@ -2,14 +2,14 @@
 cls
 Title Creating MediaPortal Hebrew Subtitle Downloader Installer
 
+
 :: Check for modification
 svn status .. | findstr "^M"
 if ERRORLEVEL 1 (
 	echo No modifications in source folder.
 ) else (
-	echo There are modifications in source folder. Aborting.
-	pause
-	exit 1
+	echo There are modifications in source folder. Adding unofficial note
+	SET SAFE=_Unofficial
 )
 
 if "%programfiles(x86)%XXX"=="XXX" goto 32BIT
@@ -50,7 +50,6 @@ FOR /F "tokens=1-4 delims=." %%i IN ("%version%") DO (
 )
 
 :: Rename MPE1
-if exist "builds\HebrewSubtitleDownloader-%major%.%minor%.%build%.%revision%.MPE1" del "builds\HebrewSubtitleDownloader-%major%.%minor%.%build%.%revision%.MPE1"
-rename builds\HebrewSubtitleDownloader-MAJOR.MINOR.BUILD.REVISION.MPE1 "HebrewSubtitleDownloader-%major%.%minor%.%build%.%revision%.MPE1"
-
+if exist "builds\HebrewSubtitleDownloader-%major%.%minor%.%build%.%revision%%SAFE%.MPE1" del "builds\HebrewSubtitleDownloader-%major%.%minor%.%build%.%revision%%SAFE%.MPE1"
+rename builds\HebrewSubtitleDownloader-MAJOR.MINOR.BUILD.REVISION.MPE1 "HebrewSubtitleDownloader-%major%.%minor%.%build%.%revision%%SAFE%.MPE1"
 
