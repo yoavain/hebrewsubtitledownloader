@@ -16,14 +16,21 @@ namespace SratimUtils
                 throw new ArgumentException("decryptedString");
             }
 
-            // To byte array
-            var decryptedBytes = Encoding.ASCII.GetBytes(decryptedString);
+            try
+            {
+                // To byte array
+                var decryptedBytes = Encoding.ASCII.GetBytes(decryptedString);
 
-            // Encrypt the data
-            var encrptedBytes = ProtectedData.Protect(decryptedBytes, Entropy, scope);
+                // Encrypt the data
+                var encrptedBytes = ProtectedData.Protect(decryptedBytes, Entropy, scope);
 
-            // Return as base64 string
-            return Convert.ToBase64String(encrptedBytes);
+                // Return as base64 string
+                return Convert.ToBase64String(encrptedBytes);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public static string DecryptData(string encrptedPassword, DataProtectionScope scope)
@@ -33,14 +40,21 @@ namespace SratimUtils
                 throw new ArgumentException("encrptedPassword");
             }
 
-            // From base64
-            byte[] encryptedBytes = Convert.FromBase64String(encrptedPassword);
+            try
+            {
+                // From base64
+                byte[] encryptedBytes = Convert.FromBase64String(encrptedPassword);
 
-            // Decrypt the data
-            byte[] decryptedData = ProtectedData.Unprotect(encryptedBytes, Entropy, scope);
+                // Decrypt the data
+                byte[] decryptedData = ProtectedData.Unprotect(encryptedBytes, Entropy, scope);
 
-            // Convert to string
-            return Encoding.Default.GetString(decryptedData);
+                // Convert to string
+                return Encoding.Default.GetString(decryptedData);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }
