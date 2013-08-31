@@ -43,6 +43,23 @@ namespace SratimTest
         }
 
         [TestMethod]
+        public void TestImdbSearch()
+        {
+            var downloader = new SratimDownloader();
+            var query = new ImdbSearchQuery("0372784") { LanguageCodes = new[] { "heb" } };
+            var results = downloader.SearchSubtitles(query);
+
+            // make sure there are resuts
+            Assert.IsNotNull(results);
+            Assert.IsTrue(results.Count > 0);
+
+            // check first result
+            var subtitleFiles = downloader.SaveSubtitle(results[10]);
+            Assert.AreNotEqual(null, subtitleFiles);
+            Assert.AreNotEqual(0, subtitleFiles.Count);
+        }
+
+        [TestMethod]
         public void TestRegularExpression()
         {
             const string strRegex =

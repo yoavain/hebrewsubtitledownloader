@@ -54,7 +54,7 @@ namespace Sratim
         {
             var languageList = ConvertThreeLetterToTwoLetterLanguageCodes(query.LanguageCodes);
 
-            var subtitles = SearchSubtitles(query.Query, query.Year, null, null, null, languageList);
+            var subtitles = SearchSubtitles(query.Query, query.Year, null, null, null, languageList, false);
             return subtitles.Select(subtitle => new Subtitle(subtitle.SubtitleId, query.Query, subtitle.Filename, Languages.GetLanguageCode(subtitle.LanguageName))).ToList();
         }
 
@@ -64,13 +64,16 @@ namespace Sratim
 
             var subtitles = SearchSubtitles(null, 0, query.SerieTitle,
                 query.Season.ToString(CultureInfo.InvariantCulture),
-                query.Episode.ToString(CultureInfo.InvariantCulture), languageList);
+                query.Episode.ToString(CultureInfo.InvariantCulture), languageList, false);
             return subtitles.Select(subtitle => new Subtitle(subtitle.SubtitleId, query.SerieTitle, subtitle.Filename, Languages.GetLanguageCode(subtitle.LanguageName))).ToList();
         }
 
         public List<Subtitle> SearchSubtitles(ImdbSearchQuery query)
         {
-            throw new NotImplementedException();
+            var languageList = ConvertThreeLetterToTwoLetterLanguageCodes(query.LanguageCodes);
+
+            var subtitles = SearchSubtitles(query.ImdbId, null, null, null, null, languageList, true);
+            return subtitles.Select(subtitle => new Subtitle(subtitle.SubtitleId, query.ImdbId, subtitle.Filename, Languages.GetLanguageCode(subtitle.LanguageName))).ToList();
         }
 
         public List<FileInfo> SaveSubtitle(Subtitle subtitle)
@@ -357,13 +360,27 @@ namespace Sratim
         /// <param name="season">Season number</param>
         /// <param name="episode">Episode number</param>
         /// <param name="languageList">List of languages selected by the user</param>
-        private static IEnumerable<SubtitleData> SearchSubtitles(string title, int? year, string tvshow, string season,
-            string episode, ICollection<string> languageList)
+        /// <param name="isImdb">is IMDB ID search, which means no match check</param>
+        private static IEnumerable<SubtitleData> SearchSubtitles(string title, int? year, string tvshow, string season, string episode, ICollection<string> languageList, bool isImdb)
         {
             var subtitlesList = new List<SubtitleData>();
 
             // Check if searching for tv show or movie and build the search string
-            var searchString = tvshow != null ? tvshow.Replace(" ", "+") : title.Replace(" ", "+");
+            string searchString;
+            if (tvshow != null)
+            {
+                searchString = tvshow.Replace(" ", "+");
+            }
+            else
+            {
+                searchString = title.Replace(" ", "+");
+
+                if (isImdb)
+                {
+                    searchString = "tt" + searchString;
+                }
+
+            }
 
             // Retrieve the search results (html)
             var searchResults = GetUrl(BaseUrl + @"browse.php\?q=" + searchString);
