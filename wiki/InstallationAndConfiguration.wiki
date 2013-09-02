@@ -4,12 +4,18 @@
   Latest [http://code.google.com/p/subcentral SubCentral] plugin
 
 = Installation =
- Extract files to the folder `"SubtitleDownloaders"` under your `MediaPortal` program folder.
-  Located by default in:
-  <br>32-bit:
-  `C:\Program Files\Team MediaPortal\MediaPortal\SubtitleDownloaders\`
-  <br>64-bit:
-  `C:\Program Files (x86)\Team MediaPortal\MediaPortal\SubtitleDownloaders\`
+ Install MPE1 file
+
+ During installation, the following popup will show:
+[https://hebrewsubtitledownloader.googlecode.com/svn/wiki/configuration/Main1.png]
+ 
+ Press the Update login info button. The following popup will show:
+[https://hebrewsubtitledownloader.googlecode.com/svn/wiki/configuration/Login.png]
+
+ Enter your user and password. Press Save.
+[https://hebrewsubtitledownloader.googlecode.com/svn/wiki/configuration/Main2.png]
+
+ You're all set!
 
 = Configuration =
 
