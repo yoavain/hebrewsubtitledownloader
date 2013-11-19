@@ -64,7 +64,15 @@ namespace SratimUtils
             var loginData = new LoginData(email, password, LoginValue);
 
             // Fetch for cookie
-            var cookieData = GetCookieDataFromLoginData(loginData);
+            CookieData cookieData;
+            try
+            {
+                cookieData = GetCookieDataFromLoginData(loginData);
+            }
+            catch (Exception)
+            {
+                cookieData = null;
+            }
 
             return cookieData != null;
         }
