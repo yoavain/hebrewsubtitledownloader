@@ -44,6 +44,8 @@ namespace Sratim
         private const int MaxMoviePagesToFollow = 5;
 
         private static CookieContainer _sratimCookieContainer;
+        private static int NumberOfRetries = 0;
+        private static readonly int MaxRetries = 3;
 
         public string GetName()
         {
@@ -52,6 +54,11 @@ namespace Sratim
 
         public List<Subtitle> SearchSubtitles(SearchQuery query)
         {
+            if (!IsProviderActive())
+            {
+                throw new Exception("Could not use Sratim.co.il. Unable to validate credentials");
+            }
+
             var languageList = ConvertThreeLetterToTwoLetterLanguageCodes(query.LanguageCodes);
 
             var subtitles = SearchSubtitles(query.Query, query.Year, null, null, null, languageList, false);
@@ -60,6 +67,11 @@ namespace Sratim
 
         public List<Subtitle> SearchSubtitles(EpisodeSearchQuery query)
         {
+            if (!IsProviderActive())
+            {
+                throw new Exception("Could not use Sratim.co.il. Unable to validate credentials");
+            }
+
             var languageList = ConvertThreeLetterToTwoLetterLanguageCodes(query.LanguageCodes);
 
             var subtitles = SearchSubtitles(null, 0, query.SerieTitle,
@@ -70,6 +82,11 @@ namespace Sratim
 
         public List<Subtitle> SearchSubtitles(ImdbSearchQuery query)
         {
+            if (!IsProviderActive())
+            {
+                throw new Exception("Could not use Sratim.co.il. Unable to validate credentials");
+            }
+
             var languageList = ConvertThreeLetterToTwoLetterLanguageCodes(query.LanguageCodes);
 
             var subtitles = SearchSubtitles(query.ImdbId, null, null, null, null, languageList, true);
@@ -113,8 +130,24 @@ namespace Sratim
         private static void Init()
         {
             Settings.GetInstance().LoadSettings();
-            SratimDownloaderConfiguration.GetInstance().ValidateCredentials(Settings.GetInstance().SratimEmail, Settings.GetInstance().SratimPassword);
-            _sratimCookieContainer = SratimDownloaderConfiguration.GetInstance().GetSratimCookieContainer();
+        }
+
+        private static bool IsProviderActive()
+        {
+            if (_sratimCookieContainer == null && NumberOfRetries < MaxRetries)
+            {
+                try
+                {
+                    ++NumberOfRetries;
+                    SratimDownloaderConfiguration.GetInstance().ValidateCredentials(Settings.GetInstance().SratimEmail, Settings.GetInstance().SratimPassword);
+                    _sratimCookieContainer = SratimDownloaderConfiguration.GetInstance().GetSratimCookieContainer();
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+            return _sratimCookieContainer != null;
         }
 
         /// <summary>
