@@ -2,7 +2,10 @@
 using System.Runtime.InteropServices;
 using MediaPortal.Common.Utils;
 
-[assembly: CompatibleVersion("1.3.100.0", "1.3.100.0")]
+// Version Compatibility
+// http://wiki.team-mediaportal.com/1_MEDIAPORTAL_1/18_Contribute/6_Plugins/Plugin_Related_Changes/1.6.0_to_1.7.0
+[assembly: CompatibleVersion("1.6.100.0", "1.6.100.0")]
+
 [assembly: UsesSubsystem("MP.Config")]
 
 // General Information about an assembly is controlled through the following 
@@ -13,7 +16,7 @@ using MediaPortal.Common.Utils;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("HebrewSubtitleDownloader")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
+[assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -35,5 +38,5 @@ using MediaPortal.Common.Utils;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.3.0.$WCREV$")]
-[assembly: AssemblyFileVersion("2.3.0.$WCREV$")]
+[assembly: AssemblyVersion("2.5.0.$WCREV$")]
+[assembly: AssemblyFileVersion("2.5.0.$WCREV$")]
