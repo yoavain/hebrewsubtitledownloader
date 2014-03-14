@@ -225,6 +225,25 @@ Click Next to continue or Cancel to exit Setup.</Value>
         <Message>requires Extension version 0.0.0.0 to 0.0.0.0.</Message>
         <Name>SubCentral</Name>
       </DependencyItem>
+      <DependencyItem>
+        <Type>Installer</Type>
+        <Id />
+        <MinVersion>
+          <Major>1</Major>
+          <Minor>6</Minor>
+          <Build>100</Build>
+          <Revision>0</Revision>
+        </MinVersion>
+        <MaxVersion>
+          <Major>1</Major>
+          <Minor>7</Minor>
+          <Build>0</Build>
+          <Revision>0</Revision>
+        </MaxVersion>
+        <WarnOnly>true</WarnOnly>
+        <Message>requires Installer version 1.6.100.0 to 1.6.0.0.</Message>
+        <Name>Installer</Name>
+      </DependencyItem>
     </Items>
   </Dependencies>
   <PluginDependencies>
@@ -255,7 +274,7 @@ Click Next to continue or Cancel to exit Setup.</Value>
     <UpdateUrl>https://hebrewsubtitledownloader.googlecode.com/svn/trunk/Plugin/update.xml</UpdateUrl>
     <Version>
       <Major>2</Major>
-      <Minor>3</Minor>
+      <Minor>5</Minor>
       <Build>0</Build>
       <Revision>0</Revision>
     </Version>
@@ -266,12 +285,10 @@ Supported sites:
 * www.subscenter.org
 
 You must install SubCentral plugin before installing this plugin.</ExtensionDescription>
-    <VersionDescription>Created from scrach:
-* Added plugin configuration
-* Added login setting for Sratim.co.il</VersionDescription>
+    <VersionDescription>Compatibility for 1.7 Pre-Release</VersionDescription>
     <DevelopmentStatus>Stable</DevelopmentStatus>
     <OnlineLocation>https://hebrewsubtitledownloader.googlecode.com/files/HebrewSubtitleDownloader-{VERSION}.MPE1</OnlineLocation>
-    <ReleaseDate>2013-01-04T18:50:52</ReleaseDate>
+    <ReleaseDate>2014-03-15T18:50:52</ReleaseDate>
     <Tags>subtitle, hebrew</Tags>
     <Location>builds\HebrewSubtitleDownloader-MAJOR.MINOR.BUILD.REVISION.MPE1</Location>
     <Params>
