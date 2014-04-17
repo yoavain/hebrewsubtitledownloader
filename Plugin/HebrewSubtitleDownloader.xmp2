@@ -230,8 +230,8 @@ Click Next to continue or Cancel to exit Setup.</Value>
         <Id />
         <MinVersion>
           <Major>1</Major>
-          <Minor>6</Minor>
-          <Build>100</Build>
+          <Minor>7</Minor>
+          <Build>0</Build>
           <Revision>0</Revision>
         </MinVersion>
         <MaxVersion>
@@ -241,7 +241,7 @@ Click Next to continue or Cancel to exit Setup.</Value>
           <Revision>0</Revision>
         </MaxVersion>
         <WarnOnly>true</WarnOnly>
-        <Message>requires Installer version 1.6.100.0 to 1.6.0.0.</Message>
+        <Message>requires Installer version 1.7.0.0 to 1.7.0.0.</Message>
         <Name>Installer</Name>
       </DependencyItem>
     </Items>
@@ -252,8 +252,8 @@ Click Next to continue or Cancel to exit Setup.</Value>
         <CompatibleVersion>
           <Items>
             <CompatibleVersionItem>
-              <MinRequiredVersion>1.3.100.0</MinRequiredVersion>
-              <DesignedForVersion>1.3.100.0</DesignedForVersion>
+              <MinRequiredVersion>1.6.100.0</MinRequiredVersion>
+              <DesignedForVersion>1.6.100.0</DesignedForVersion>
             </CompatibleVersionItem>
           </Items>
         </CompatibleVersion>
@@ -274,7 +274,7 @@ Click Next to continue or Cancel to exit Setup.</Value>
     <UpdateUrl>https://hebrewsubtitledownloader.googlecode.com/svn/trunk/Plugin/update.xml</UpdateUrl>
     <Version>
       <Major>2</Major>
-      <Minor>5</Minor>
+      <Minor>6</Minor>
       <Build>0</Build>
       <Revision>0</Revision>
     </Version>
@@ -285,10 +285,10 @@ Supported sites:
 * www.subscenter.org
 
 You must install SubCentral plugin before installing this plugin.</ExtensionDescription>
-    <VersionDescription>Compatibility for 1.7 Pre-Release</VersionDescription>
+    <VersionDescription>Compatibility for 1.7 Final</VersionDescription>
     <DevelopmentStatus>Stable</DevelopmentStatus>
     <OnlineLocation>https://hebrewsubtitledownloader.googlecode.com/files/HebrewSubtitleDownloader-{VERSION}.MPE1</OnlineLocation>
-    <ReleaseDate>2014-03-15T18:50:52</ReleaseDate>
+    <ReleaseDate>2014-04-17T18:50:52</ReleaseDate>
     <Tags>subtitle, hebrew</Tags>
     <Location>builds\HebrewSubtitleDownloader-MAJOR.MINOR.BUILD.REVISION.MPE1</Location>
     <Params>
