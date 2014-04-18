@@ -287,7 +287,7 @@ Supported sites:
 You must install SubCentral plugin before installing this plugin.</ExtensionDescription>
     <VersionDescription>Compatibility for 1.7 Final</VersionDescription>
     <DevelopmentStatus>Stable</DevelopmentStatus>
-    <OnlineLocation>https://hebrewsubtitledownloader.googlecode.com/files/HebrewSubtitleDownloader-{VERSION}.MPE1</OnlineLocation>
+    <OnlineLocation>https://hebrewsubtitledownloader.googlecode.com/svn/trunk/Plugin/builds/HebrewSubtitleDownloader-{VERSION}.MPE1</OnlineLocation>
     <ReleaseDate>2014-04-17T18:50:52</ReleaseDate>
     <Tags>subtitle, hebrew</Tags>
     <Location>builds\HebrewSubtitleDownloader-MAJOR.MINOR.BUILD.REVISION.MPE1</Location>
