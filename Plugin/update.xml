@@ -1072,11 +1072,11 @@ You must install SubCentral plugin before installing this plugin.</ExtensionDesc
             <MaxVersion>
               <Major>1</Major>
               <Minor>7</Minor>
-              <Build>0</Build>
+              <Build>99</Build>
               <Revision>0</Revision>
             </MaxVersion>
             <WarnOnly>true</WarnOnly>
-            <Message>requires Installer version 1.7.0.0 to 1.7.0.0.</Message>
+            <Message>requires Installer version 1.7.0.0 to 1.7.99.0.</Message>
             <Name>Installer</Name>
           </DependencyItem>
         </Items>
@@ -1111,7 +1111,7 @@ You must install SubCentral plugin before installing this plugin.</ExtensionDesc
           <Major>2</Major>
           <Minor>6</Minor>
           <Build>0</Build>
-          <Revision>158</Revision>
+          <Revision>162</Revision>
         </Version>
         <ExtensionDescription>This plugin is an implementation of the SubtitleDownloader API for Hebrew subtitle sites. it adds Hebrew sites to the MediaPortal SubCentral plugin and updates separately.
 
@@ -1120,10 +1120,10 @@ Supported sites:
 * www.subscenter.org
 
 You must install SubCentral plugin before installing this plugin.</ExtensionDescription>
-        <VersionDescription>Compatibility for 1.7 Final</VersionDescription>
+        <VersionDescription>Compatibility for 1.7 Final / 1.7.1 HotFix</VersionDescription>
         <DevelopmentStatus>Stable</DevelopmentStatus>
-        <OnlineLocation>https://hebrewsubtitledownloader.googlecode.com/svn/trunk/Plugin/builds/HebrewSubtitleDownloader-2.6.0.158.MPE1</OnlineLocation>
-        <ReleaseDate>2014-04-18T22:02:33.3798108+03:00</ReleaseDate>
+        <OnlineLocation>https://hebrewsubtitledownloader.googlecode.com/svn/trunk/Plugin/builds/HebrewSubtitleDownloader-2.6.0.162.MPE1</OnlineLocation>
+        <ReleaseDate>2014-04-28T22:59:00.0607735+03:00</ReleaseDate>
         <Tags>subtitle, hebrew</Tags>
         <Location>builds\HebrewSubtitleDownloader-MAJOR.MINOR.BUILD.REVISION.MPE1</Location>
         <Params>
