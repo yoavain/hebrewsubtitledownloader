@@ -237,11 +237,11 @@ Click Next to continue or Cancel to exit Setup.</Value>
         <MaxVersion>
           <Major>1</Major>
           <Minor>7</Minor>
-          <Build>0</Build>
+          <Build>99</Build>
           <Revision>0</Revision>
         </MaxVersion>
         <WarnOnly>true</WarnOnly>
-        <Message>requires Installer version 1.7.0.0 to 1.7.0.0.</Message>
+        <Message>requires Installer version 1.7.0.0 to 1.7.99.0.</Message>
         <Name>Installer</Name>
       </DependencyItem>
     </Items>
@@ -252,8 +252,8 @@ Click Next to continue or Cancel to exit Setup.</Value>
         <CompatibleVersion>
           <Items>
             <CompatibleVersionItem>
-              <MinRequiredVersion>1.6.100.0</MinRequiredVersion>
-              <DesignedForVersion>1.6.100.0</DesignedForVersion>
+              <MinRequiredVersion>1.7.0.0</MinRequiredVersion>
+              <DesignedForVersion>1.7.0.0</DesignedForVersion>
             </CompatibleVersionItem>
           </Items>
         </CompatibleVersion>
@@ -285,10 +285,10 @@ Supported sites:
 * www.subscenter.org
 
 You must install SubCentral plugin before installing this plugin.</ExtensionDescription>
-    <VersionDescription>Compatibility for 1.7 Final</VersionDescription>
+    <VersionDescription>Compatibility for 1.7 Final / 1.7.1 HotFix</VersionDescription>
     <DevelopmentStatus>Stable</DevelopmentStatus>
     <OnlineLocation>https://hebrewsubtitledownloader.googlecode.com/svn/trunk/Plugin/builds/HebrewSubtitleDownloader-{VERSION}.MPE1</OnlineLocation>
-    <ReleaseDate>2014-04-17T18:50:52</ReleaseDate>
+    <ReleaseDate>2014-04-28T18:50:52</ReleaseDate>
     <Tags>subtitle, hebrew</Tags>
     <Location>builds\HebrewSubtitleDownloader-MAJOR.MINOR.BUILD.REVISION.MPE1</Location>
     <Params>
