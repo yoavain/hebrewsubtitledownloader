@@ -230,18 +230,18 @@ Click Next to continue or Cancel to exit Setup.</Value>
         <Id />
         <MinVersion>
           <Major>1</Major>
-          <Minor>8</Minor>
+          <Minor>9</Minor>
           <Build>0</Build>
           <Revision>0</Revision>
         </MinVersion>
         <MaxVersion>
           <Major>1</Major>
-          <Minor>8</Minor>
+          <Minor>9</Minor>
           <Build>999</Build>
           <Revision>999</Revision>
         </MaxVersion>
         <WarnOnly>true</WarnOnly>
-        <Message>requires Installer version 1.8.0.0 to 1.8.999.999.</Message>
+        <Message>requires Installer version 1.9.0.0 to 1.9.999.999.</Message>
         <Name>Installer</Name>
       </DependencyItem>
     </Items>
@@ -274,8 +274,8 @@ Click Next to continue or Cancel to exit Setup.</Value>
     <UpdateUrl>https://hebrewsubtitledownloader.googlecode.com/svn/trunk/Plugin/update.xml</UpdateUrl>
     <Version>
       <Major>2</Major>
-      <Minor>6</Minor>
-      <Build>5</Build>
+      <Minor>7</Minor>
+      <Build>0</Build>
       <Revision>0</Revision>
     </Version>
     <ExtensionDescription>This plugin is an implementation of the SubtitleDownloader API for Hebrew subtitle sites. it adds Hebrew sites to the MediaPortal SubCentral plugin and updates separately.
@@ -285,10 +285,10 @@ Supported sites:
 * www.subscenter.org
 
 You must install SubCentral plugin before installing this plugin.</ExtensionDescription>
-    <VersionDescription>Compatibility for 1.8 Final</VersionDescription>
+    <VersionDescription>Compatibility for 1.9 Final</VersionDescription>
     <DevelopmentStatus>Stable</DevelopmentStatus>
     <OnlineLocation>https://hebrewsubtitledownloader.googlecode.com/svn/trunk/Plugin/builds/HebrewSubtitleDownloader-{VERSION}.MPE1</OnlineLocation>
-    <ReleaseDate>2014-07-01T18:50:52</ReleaseDate>
+    <ReleaseDate>2014-09-30T18:50:52</ReleaseDate>
     <Tags>subtitle, hebrew</Tags>
     <Location>builds\HebrewSubtitleDownloader-MAJOR.MINOR.BUILD.REVISION.MPE1</Location>
     <Params>
