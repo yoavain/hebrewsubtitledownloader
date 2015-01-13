@@ -275,7 +275,7 @@ Click Next to continue or Cancel to exit Setup.</Value>
     <Version>
       <Major>2</Major>
       <Minor>7</Minor>
-      <Build>0</Build>
+      <Build>1</Build>
       <Revision>0</Revision>
     </Version>
     <ExtensionDescription>This plugin is an implementation of the SubtitleDownloader API for Hebrew subtitle sites. it adds Hebrew sites to the MediaPortal SubCentral plugin and updates separately.
@@ -288,7 +288,7 @@ You must install SubCentral plugin before installing this plugin.</ExtensionDesc
     <VersionDescription>Compatibility for 1.9 Final</VersionDescription>
     <DevelopmentStatus>Stable</DevelopmentStatus>
     <OnlineLocation>https://hebrewsubtitledownloader.googlecode.com/svn/trunk/Plugin/builds/HebrewSubtitleDownloader-{VERSION}.MPE1</OnlineLocation>
-    <ReleaseDate>2014-09-30T18:50:52</ReleaseDate>
+    <ReleaseDate>2015-01-14T18:50:52</ReleaseDate>
     <Tags>subtitle, hebrew</Tags>
     <Location>builds\HebrewSubtitleDownloader-MAJOR.MINOR.BUILD.REVISION.MPE1</Location>
     <Params>
