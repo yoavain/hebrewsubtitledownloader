@@ -52,6 +52,10 @@
     <Compile Include="SratimTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SratimUtils\SratimUtils.csproj">
+      <Project>{46F65228-9484-444C-85C7-643226F90EFC}</Project>
+      <Name>SratimUtils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sratim\Sratim.csproj">
       <Project>{91835CD4-3039-4218-8B51-F3E71E629DC8}</Project>
       <Name>Sratim</Name>
