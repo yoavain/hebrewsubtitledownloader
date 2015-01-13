@@ -9,6 +9,16 @@ namespace SratimTest
     [TestClass]
     public class SratimTest
     {
+        [TestInitialize]
+        public void Init()
+        {
+            var conf = SratimDownloaderConfiguration.GetInstance();
+            conf.ValidateCredentials("", "");
+            var sratimCookieContainer = conf.GetSratimCookieContainer();
+            Assert.AreEqual(3, sratimCookieContainer.Count);
+        }
+
+
         [TestMethod]
         public void TestExactMovieSearch()
         {
@@ -71,18 +81,6 @@ namespace SratimTest
                 @"<div style=""vertical-align:top;padding-left:14px;padding-bottom:12px;""><a href=""view.php?id=11813&amp;q=batman+begins"" title=""באטמן מתחיל (2005)"">";
 
             Assert.AreNotEqual(0, myRegex.Matches(strTargetString).Count);
-        }
-
-
-        [TestMethod]
-        public void TestConfiguration()
-        {
-/*
-            var conf = SratimDownloaderConfiguration.GetInstance();
-            conf.ValidateCredentials("", "");
-            var sratimCookieContainer = conf.GetSratimCookieContainer();
-            Assert.AreEqual(3, sratimCookieContainer.Count);
-*/
         }
     }
 }

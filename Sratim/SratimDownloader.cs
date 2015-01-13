@@ -21,7 +21,7 @@ namespace Sratim
     public class SratimDownloader : ISubtitleDownloader
     {
         // private const string BaseUrl = "http://www.sratim.co.il/"; old URL
-        public const string BaseUrl = "http://www.subtitle.co.il/";
+        public const string BaseUrl = "http://www.ktuvit.com/";
 
         public const string LoginPath = "login.php";
         // ===============================================================================
