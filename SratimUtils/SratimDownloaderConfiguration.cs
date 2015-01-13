@@ -27,7 +27,8 @@ namespace SratimUtils
         #region const
 
         // Sratim url
-        public const string SratimBaseUrl = "http://www.subtitle.co.il/";
+        // public const string SratimBaseUrl = "http://www.subtitle.co.il/";
+        public const string SratimBaseUrl = "http://www.ktuvit.com/";
         public const string SraitmLoginPath = "login.php";
 
         // login
@@ -131,8 +132,8 @@ namespace SratimUtils
                 // Set request details.
                 webRequest.Method = "POST";
                 webRequest.ServicePoint.Expect100Continue = false;
-                webRequest.Headers[HttpRequestHeader.AcceptEncoding] = "gzip";
-                webRequest.UserAgent = "Mozilla/5.0 (Windows NT 5.2; rv:7.0) Gecko/20120909 Firefox/7.0";
+                webRequest.Headers[HttpRequestHeader.AcceptEncoding] = "gzip, deflate";
+                webRequest.UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2267.0 Safari/537.36";
                 webRequest.ContentType = "application/x-www-form-urlencoded";
                 webRequest.CookieContainer = cookieContainer;
 

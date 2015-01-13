@@ -1,6 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sratim;
+using SratimUtils;
 using SubtitleDownloader.Core;
 
 namespace SratimTest
@@ -76,9 +77,12 @@ namespace SratimTest
         [TestMethod]
         public void TestConfiguration()
         {
-//            var conf = SratimDownloaderConfiguration.GetInstance();
-//            var sratimCookieContainer = conf.GetSratimCookieContainer();
-//            Assert.AreEqual(3, sratimCookieContainer.Count);
+/*
+            var conf = SratimDownloaderConfiguration.GetInstance();
+            conf.ValidateCredentials("", "");
+            var sratimCookieContainer = conf.GetSratimCookieContainer();
+            Assert.AreEqual(3, sratimCookieContainer.Count);
+*/
         }
     }
 }
