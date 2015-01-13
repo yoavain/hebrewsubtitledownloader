@@ -236,12 +236,12 @@ Click Next to continue or Cancel to exit Setup.</Value>
         </MinVersion>
         <MaxVersion>
           <Major>1</Major>
-          <Minor>9</Minor>
+          <Minor>99</Minor>
           <Build>999</Build>
           <Revision>999</Revision>
         </MaxVersion>
         <WarnOnly>true</WarnOnly>
-        <Message>requires Installer version 1.9.0.0 to 1.9.999.999.</Message>
+        <Message>requires Installer version 1.9.0.0 to 1.99.999.999.</Message>
         <Name>Installer</Name>
       </DependencyItem>
     </Items>
@@ -285,7 +285,8 @@ Supported sites:
 * www.subscenter.org
 
 You must install SubCentral plugin before installing this plugin.</ExtensionDescription>
-    <VersionDescription>Compatibility for 1.9 Final</VersionDescription>
+    <VersionDescription>* Compatibility for 1.10 Final and above
+* Fix sratim</VersionDescription>
     <DevelopmentStatus>Stable</DevelopmentStatus>
     <OnlineLocation>https://hebrewsubtitledownloader.googlecode.com/svn/trunk/Plugin/builds/HebrewSubtitleDownloader-{VERSION}.MPE1</OnlineLocation>
     <ReleaseDate>2015-01-14T18:50:52</ReleaseDate>
