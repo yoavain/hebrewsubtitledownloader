@@ -93,11 +93,10 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>subwcrev ..\..\.. ..\..\Properties\AssemblyInfo.cs ..\..\Properties\AssemblyInfo.cs</PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>svn revert ..\..\Properties\AssemblyInfo.cs
-copy /y ..\..\Settings\SubtitleDownloaders\SubsCenterOrg.xml $(TargetDir)</PostBuildEvent>
+    <PostBuildEvent>copy /y ..\..\Settings\SubtitleDownloaders\SubsCenterOrg.xml $(TargetDir)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
