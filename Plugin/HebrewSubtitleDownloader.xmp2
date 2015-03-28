@@ -269,13 +269,13 @@ Click Next to continue or Cancel to exit Setup.</Value>
     <Name>Hebrew Subtitle Downloader</Name>
     <Id>95732da5-2c37-42aa-b2cd-1640ec5ccd8c</Id>
     <Author>yoavain</Author>
-    <HomePage>http://code.google.com/p/hebrewsubtitledownloader</HomePage>
+    <HomePage>https://github.com/yoavain/hebrewsubtitledownloader</HomePage>
     <ForumPage>http://forum.team-mediaportal.com/threads/hebrew-subtitle-downloader-subcentral-addition.102994/</ForumPage>
-    <UpdateUrl>https://hebrewsubtitledownloader.googlecode.com/svn/trunk/Plugin/update.xml</UpdateUrl>
+    <UpdateUrl>https://cdn.rawgit.com/yoavain/hebrewsubtitledownloader/master/Plugin/update.xml</UpdateUrl>
     <Version>
       <Major>2</Major>
       <Minor>7</Minor>
-      <Build>1</Build>
+      <Build>2</Build>
       <Revision>0</Revision>
     </Version>
     <ExtensionDescription>This plugin is an implementation of the SubtitleDownloader API for Hebrew subtitle sites. it adds Hebrew sites to the MediaPortal SubCentral plugin and updates separately.
@@ -285,10 +285,9 @@ Supported sites:
 * www.subscenter.org
 
 You must install SubCentral plugin before installing this plugin.</ExtensionDescription>
-    <VersionDescription>* Compatibility for 1.10 Final and above
-* Fix sratim</VersionDescription>
+    <VersionDescription>* Move to GitHub</VersionDescription>
     <DevelopmentStatus>Stable</DevelopmentStatus>
-    <OnlineLocation>https://hebrewsubtitledownloader.googlecode.com/svn/trunk/Plugin/builds/HebrewSubtitleDownloader-{VERSION}.MPE1</OnlineLocation>
+    <OnlineLocation>https://github.com/yoavain/hebrewsubtitledownloader/raw/master/Plugin/builds/HebrewSubtitleDownloader-{VERSION}.MPE1</OnlineLocation>
     <ReleaseDate>2015-01-14T18:50:52</ReleaseDate>
     <Tags>subtitle, hebrew</Tags>
     <Location>builds\HebrewSubtitleDownloader-MAJOR.MINOR.BUILD.REVISION.MPE1</Location>
