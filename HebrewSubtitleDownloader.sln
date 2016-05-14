@@ -8,12 +8,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubsCenterOrgTest", "SubsCenterOrgTest\SubsCenterOrgTest.csproj", "{7DB9E724-CC1C-4D98-BC9F-ED7BAD839913}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0BCEDE33-78F0-46E8-ACE3-C7EDEE7F48E1}"
-	ProjectSection(SolutionItems) = preProject
-		HebrewSubtitleDownloader.vsmdi = HebrewSubtitleDownloader.vsmdi
-		Local.testsettings = Local.testsettings
-		TestSettings1.testsettings = TestSettings1.testsettings
-		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SratimCoIl", "SratimCoIl", "{DC7200AE-852C-4160-88D1-07417CE74EBD}"
 EndProject

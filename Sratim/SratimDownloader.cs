@@ -21,7 +21,7 @@ namespace Sratim
     public class SratimDownloader : ISubtitleDownloader
     {
         // private const string BaseUrl = "http://www.sratim.co.il/"; old URL
-        public const string BaseUrl = "http://www.ktuvit.com/";
+        public const string BaseUrl = "http://en.ktuvit.com/";
 
         public const string LoginPath = "login.php";
         // ===============================================================================
@@ -30,8 +30,7 @@ namespace Sratim
 
         private const string TvSearchResultsPattern = @"<a href=""viewseries.php\?id=(\d+)";
 
-        private const string SearchResultsPattern =
-            @"<a href=\""view.php\?id=(?<movie_id>\d+)&amp;q=(?<movie_query>[^\""""]*)\"" itemprop=\""url\"">(?<movie_hebrew>[^(]*)</a></div><div style=\""direction:ltr;\"" class=\""smtext\"">(?<movie_english>[^(]*)</div><span class=""smtext"">(?<movie_year>\d+)</span>";
+        private const string SearchResultsPattern = @"<a href=""/(?<movie_id>tt\d+)/(?<movie_path>[^/]*)/\?q=(?<query>[^\""]*)\"" title=""(?<movie_english>[^\(]*)\((?<movie_year>\d+)\)";
 
         private const string SubtitleListPattern =
             @"downloadsubtitle.php\?id=(?<fid>\d*).*?subt_lang.*?title=\""(?<language>.*?)\"".*?subtitle_title.*?title=\""(?<title>.*?)\""";
@@ -234,7 +233,7 @@ namespace Sratim
             var subtitlesList = new List<SubtitleData>();
 
             // Retrieve the subtitles page (html)
-            var subtitlePage = GetUrl(BaseUrl + "view.php?id=" + subtitlePageId + "&m=subtitles#");
+            var subtitlePage = GetUrl(BaseUrl + subtitlePageId + "?m=subtitles#!subtitles");
             if (subtitlePage == null)
             {
                 return subtitlesList;
@@ -254,22 +253,20 @@ namespace Sratim
                 var language = groupCollection["language"].Value;
                 var title = groupCollection["title"].Value;
 
-                // skip 0 length titles
-                if (title.Length == 0)
+                // skip if title is unknown
+                if (title == null || title.Length == 0)
                 {
-                    break;
+                    continue;
                 }
 
                 // Check if the subtitles found match one of our languages was selected by the user
-                string languageName;
-                SratimToScript.TryGetValue(language, out languageName);
-                if (languageName != null)
+                if (language != null)
                 {
                     string languageTwoLetter;
-                    ToOpenSubtitlesTwoLetters.TryGetValue(languageName, out languageTwoLetter);
+                    ToOpenSubtitlesTwoLetters.TryGetValue(language, out languageTwoLetter);
                     if (languageList.Contains(languageTwoLetter))
                     {
-                        subtitlesList.Add(new SubtitleData(title, fid, languageName));
+                        subtitlesList.Add(new SubtitleData(title, fid, language));
                     }
                 }
             }
@@ -285,8 +282,7 @@ namespace Sratim
         /// <param name="season">season number</param>
         /// <param name="episode">episode number</param>
         /// <returns></returns>
-        private static IEnumerable<SubtitleData> GetAllTvSubtitles(string subtitlePageId,
-            ICollection<string> languageList, string season, string episode)
+        private static IEnumerable<SubtitleData> GetAllTvSubtitles(string subtitlePageId, ICollection<string> languageList, string season, string episode)
         {
             // return object
             var subtitlesList = new List<SubtitleData>();
@@ -316,8 +312,7 @@ namespace Sratim
                 if (seasonNum.Equals(season))
                 {
                     // Retrieve the requested episode
-                    subtitlePage =
-                        GetUrl(BaseUrl + "viewseries.php?id=" + subtitlePageId + "&m=subtitles&s=" + seasonLink);
+                    subtitlePage = GetUrl(BaseUrl + "getajax.php?seasonid=" + seasonLink);
                     if (subtitlePage == null)
                     {
                         break;
@@ -335,8 +330,7 @@ namespace Sratim
                         if (episodeNum.Equals(episode))
                         {
                             subtitlePage =
-                                GetUrl(BaseUrl + "viewseries.php?id=" + subtitlePageId + "&m=subtitles&s=" + seasonLink +
-                                       "&e=" + episodeLink);
+                                GetUrl(BaseUrl + "getajax.php?episodedetails=" + episodeLink);
                             if (subtitlePage == null)
                             {
                                 break;
@@ -353,22 +347,20 @@ namespace Sratim
                                 var language = subtitleGroups["language"].Value;
                                 var title = subtitleGroups["title"].Value;
 
-                                // skip 0 length titles
-                                if (title.Length == 0)
+                                // skip if title is unknown
+                                if (title == null || title.Length == 0)
                                 {
-                                    break;
+                                    continue;
                                 }
 
                                 // Check if the subtitles found match one of our languages was selected by the user
-                                string languageName;
-                                SratimToScript.TryGetValue(language, out languageName);
-                                if (languageName != null)
+                                if (language != null)
                                 {
                                     string languageTwoLetter;
-                                    ToOpenSubtitlesTwoLetters.TryGetValue(languageName, out languageTwoLetter);
+                                    ToOpenSubtitlesTwoLetters.TryGetValue(language, out languageTwoLetter);
                                     if (languageList.Contains(languageTwoLetter))
                                     {
-                                        subtitlesList.Add(new SubtitleData(title, fid, languageName));
+                                        subtitlesList.Add(new SubtitleData(title, fid, language));
                                     }
                                 }
                             }
@@ -467,7 +459,7 @@ namespace Sratim
                     var groups = searchResultsRegex.Match(subtitleId.ToString()).Groups;
 
                     // parse movie data from page
-                    var sid = groups["movie_id"].Value;
+                    var sid = groups["movie_id"].Value + "/" + groups["movie_path"].Value;
                     var movieEnglishTitile = groups["movie_english"].Value.Trim().ToLower();
                     int movieYear;
                     if (!int.TryParse(groups["movie_year"].Value, out movieYear))
@@ -637,6 +629,7 @@ namespace Sratim
         };
 
         // Returns the corresponding script language name for the Hebrew unicode language
+        [Obsolete("Not using the hebrew pages anymore. Using the english pages")]
         private static readonly Dictionary<string, string> SratimToScript = new Dictionary<string, string>
         {
             {"עברית", "Hebrew"},
